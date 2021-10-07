@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./personne.component.css']
 })
 export class PersonneComponent implements OnInit {
-  public contentMargin = 240;
+  public contentMargin = 0;
 
   constructor() { }
 

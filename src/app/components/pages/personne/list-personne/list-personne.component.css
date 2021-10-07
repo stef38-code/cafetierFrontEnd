@@ -11,4 +11,16 @@ th.mat-sort-header-sorted {
 }
 td, th {
   width: 25%;
+  text-align: left;
 }
+.mat-column-select {
+  flex: 0 0 5% !important;
+  width: 5% !important;
+}
+.mat-column-numero {
+  flex: 0 0 10% !important;
+  width: 7% !important;
+}
+.material-icons.orange600 { color: #FB8C00; }
+.material-icons.red { color: #de6c86; }
+.material-icons.green { color: #14a21b;}

@@ -23,6 +23,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { EditPersonneComponent } from './components/pages/personne/edit-personne/edit-personne.component';
 import {MatSortModule} from "@angular/material/sort";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {HttpClientModule} from "@angular/common/http";
 const modules = [
   BrowserModule,
   BrowserAnimationsModule,
@@ -38,7 +40,8 @@ const modules = [
   MatPaginatorModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSortModule
+  MatSortModule,
+  HttpClientModule
   ];
 @NgModule({
 
@@ -52,7 +55,7 @@ const modules = [
     ListTicketComponent,
     EditPersonneComponent
   ],
-  imports: [...modules],
+  imports: [...modules, MatCheckboxModule],
   exports: [...modules],
   providers: [],
   bootstrap: [AppComponent]
