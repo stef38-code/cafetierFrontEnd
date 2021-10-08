@@ -4,13 +4,12 @@
       <mat-icon>view_stream</mat-icon>
     </button>
     <button  mat-fab [routerLink]="['/personne/edite-personne']">
-      <mat-icon>mode_edit</mat-icon>
+      <mat-icon>person_add</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container" >
   <mat-sidenav-content  [ngStyle]="{ 'margin..px': contentMargin }" >
-    <!--<app-list-personne></app-list-personne>-->
     <div class="main">
       <router-outlet #outlet="outlet"></router-outlet>
     </div>

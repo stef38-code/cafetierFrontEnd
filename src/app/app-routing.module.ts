@@ -6,6 +6,7 @@ import {HomeComponent} from "./components/pages/home/home.component";
 import { TicketComponent } from './components/pages/ticket/ticket.component';
 import {ListPersonneComponent} from "./components/pages/personne/list-personne/list-personne.component";
 import {EditPersonneComponent} from "./components/pages/personne/edit-personne/edit-personne.component";
+import {ListTicketComponent} from "./components/pages/ticket/list-ticket/list-ticket.component";
 
 const appRouteList: Routes = [
   {
@@ -26,7 +27,12 @@ const appRouteList: Routes = [
   },
   {
     path: 'ticket',
-    component: TicketComponent
+    component: TicketComponent,
+    children: [
+      {
+        path:'liste-ticket', component: ListTicketComponent
+      }
+    ]
   },
   {
     path: 'home',

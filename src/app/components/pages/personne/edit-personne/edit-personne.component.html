@@ -1,1 +1,54 @@
-<p>edit-personne works!</p>
+<div class="card m-3">
+  <h1 class="card-header">Information de la personne</h1>
+  <div class="card-body">
+    <form [formGroup]="personneForm" (ngSubmit)="submitPersonne()">
+      <div class="form-row">
+        <div class="form-group col">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Nom</mat-label>
+            <input type="text" matInput formControlName="nom" placeholder="Dupont">
+            <mat-hint>Errors appear instantly!</mat-hint>
+            <mat-error *ngIf="personneForm.get('nom')!.errors &&
+            personneForm.get('nom')!.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Prénom</mat-label>
+            <input type="text" matInput formControlName="prenom" placeholder="Dupont">
+            <mat-hint>Errors appear instantly!</mat-hint>
+            <!--<mat-error *ngIf="personneForm.get('nom').hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>-->
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="text-center">
+        <button mat-button class="btn btn-primary mr-1">SUBMIT</button>
+        <button mat-button class="btn btn-secondary" type="reset">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!--
+
+<form
+  [formGroup]="personneForm"
+  (ngSubmit)="submitPersonne()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input
+      type="text"
+      formControlName="nom">
+    <input
+      type="text"
+      formControlName="prenom">
+
+  </mat-form-field>
+  <button type="submit">SUBMIT</button>
+
+</form>
+-->

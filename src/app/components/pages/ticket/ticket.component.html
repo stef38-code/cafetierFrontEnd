@@ -1,1 +1,17 @@
-<app-list-ticket></app-list-ticket>
+<mat-toolbar color="primary" >
+  <mat-toolbar-row>
+    <!--<button  mat-fab [routerLink]="['/personne/liste-personne']">
+      <mat-icon>view_stream</mat-icon>
+    </button>
+    <button  mat-fab [routerLink]="['/personne/edite-personne']">
+      <mat-icon>person_add</mat-icon>
+    </button>-->
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav-content  >
+    <div class="main">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

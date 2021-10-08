@@ -25,6 +25,7 @@ import { EditPersonneComponent } from './components/pages/personne/edit-personne
 import {MatSortModule} from "@angular/material/sort";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
+import {ReactiveFormsModule} from "@angular/forms";
 const modules = [
   BrowserModule,
   BrowserAnimationsModule,
@@ -41,7 +42,8 @@ const modules = [
   MatFormFieldModule,
   MatInputModule,
   MatSortModule,
-  HttpClientModule
+  HttpClientModule,
+  ReactiveFormsModule
   ];
 @NgModule({
 
