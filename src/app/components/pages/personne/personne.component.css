@@ -1,10 +1,4 @@
-.mat-toolbar.mat-primary {
-  background: #eee;
-  color: #d7c7c7;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
+
 .mat-column-select {
   overflow: initial;
 }

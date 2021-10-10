@@ -21,7 +21,6 @@ export class ListPersonneComponent implements AfterViewInit {
   dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
    selection = new SelectionModel<Personne>(true, []);
    allowMultiSelect : boolean = true;
-    initialSelection: Personne[];
   private httpPersonne: HttpPersonne;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

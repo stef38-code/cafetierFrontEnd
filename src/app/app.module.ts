@@ -26,6 +26,8 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatCardModule} from "@angular/material/card";
+import {MatGridListModule} from "@angular/material/grid-list";
 const modules = [
   BrowserModule,
   BrowserAnimationsModule,
@@ -43,7 +45,7 @@ const modules = [
   MatInputModule,
   MatSortModule,
   HttpClientModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
   ];
 @NgModule({
 
@@ -57,7 +59,7 @@ const modules = [
     ListTicketComponent,
     EditPersonneComponent
   ],
-  imports: [...modules, MatCheckboxModule],
+  imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule],
   exports: [...modules],
   providers: [],
   bootstrap: [AppComponent]
