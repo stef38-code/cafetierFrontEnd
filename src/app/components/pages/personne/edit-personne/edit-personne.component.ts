@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
 import {Personne} from "../../../../model/personne";
+import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-edit-personne',
   templateUrl: './edit-personne.component.html',
@@ -12,11 +13,19 @@ export class EditPersonneComponent implements OnInit {
   personneForm: FormGroup;
   private nom: FormControl;
   private httpPersonne: HttpPersonne;
-
-  constructor(private _formBuilder: FormBuilder,private http: HttpClient) {
+  private sub: any;
+  constructor(private route: ActivatedRoute,private _formBuilder: FormBuilder,private http: HttpClient) {
     this.httpPersonne = new HttpPersonne(this.http);
     this.nom = new FormControl('', [Validators.required]);
     this.personneForm = this.createFormGroup(_formBuilder);
+
+    this.sub = this.route.params.subscribe(params => {
+      console.log("this.route.params");
+    console.group();
+    console.log(JSON.stringify(params));
+    console.groupEnd();
+    });
+
  /*     this._formBuilder.group({
       nom: [
         {

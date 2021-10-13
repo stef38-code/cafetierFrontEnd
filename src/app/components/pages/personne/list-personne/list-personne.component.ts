@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
 import {SelectionModel} from "@angular/cdk/collections";
 import {HttpClient} from "@angular/common/http";
-import {Personne} from "../../../../model/personne";
-import {merge} from "rxjs";
-import {catchError, map, startWith, switchMap} from "rxjs/operators";
+import {Links, Personne} from "../../../../model/personne";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
+
+
 // @ts-ignore
 
 
@@ -16,41 +16,38 @@ import {HttpPersonne} from "../../../../shared/backend/http-personne";
   templateUrl: './list-personne.component.html',
   styleUrls: ['./list-personne.component.css']
 })
-export class ListPersonneComponent implements AfterViewInit {
-  displayedColumns: string[] = ['select','numero','nom', 'prenom', 'nombreTicket','action'];
+export class ListPersonneComponent implements OnInit {
+  displayedColumns: string[] = ['select', 'numero', 'nom', 'prenom', 'nombreTicket', 'action'];
   dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
-   selection = new SelectionModel<Personne>(true, []);
-   allowMultiSelect : boolean = true;
+  selection = new SelectionModel<Personne>(true, []);
+  allowMultiSelect: boolean = true;
   private httpPersonne: HttpPersonne;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(private http: HttpClient) {
     this.httpPersonne = new HttpPersonne(this.http);
-   /* merge<Personne>()
-      .pipe(
-        this.getStartWith(),
-        this.getSwitchMap(),
-        this.getMap(),
-        this.getCatchError()
-      ).subscribe(data => this.dataSource.data = data);
-*/
+    this.getToutesLesPersonnes();
+    this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
+  }
+
+  private getToutesLesPersonnes() {
     this.httpPersonne!.getListPersonne().subscribe((response: any) => {
       this.dataSource.data = response;
     });
-    this.selection = new SelectionModel<Personne>(this.allowMultiSelect,this.dataSource.data, false);
   }
-/*
-  private getCatchError():observableOf<Personne> {
-    return catchError(() => {
-      /!*          this.isLoadingResults = false;
-                // Catch if the GitHub API has reached its rate limit. Return empty data.
-                this.isRateLimitReached = true;*!/
 
-      return observableOf<Personne>([]);
-    });
-  }*/
+  /*
+      private getCatchError():observableOf<Personne> {
+        return catchError(() => {
+          /!*          this.isLoadingResults = false;
+                    // Catch if the GitHub API has reached its rate limit. Return empty data.
+                    this.isRateLimitReached = true;*!/
+
+          return observableOf<Personne>([]);
+        });
+      }*/
 
   /*private getMap() {
     return map(data => {
@@ -74,7 +71,7 @@ export class ListPersonneComponent implements AfterViewInit {
     });
   }*/
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -87,6 +84,7 @@ export class ListPersonneComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -101,8 +99,35 @@ export class ListPersonneComponent implements AfterViewInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  openDialog(update: string, personne: Personne ) {
+  openDialog(update: string, personne: Personne) {
+    if (window.confirm('êtes-vous sûr de supprimer '.concat(personne.nom, " ", personne.prenom, " ?"))) {
+      let links: Links[] = personne.links;
+      let find: Links | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
+      if (find) {
+        console.log("url delete:".concat(find.href))
+        this.httpPersonne.deletePersonne(find.href);
+        //this.getToutesLesPersonnes();
+      }
+    }
+  }
 
+  isDesactiveEditer(row: Personne): boolean {
+    var links = row.links;
+    return !links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+    /*console.log("isDesactive");
+    console.group();
+    console.log(JSON.stringify(row));
+    console.groupEnd();*/
+  }
+
+  isDesactiveSupprimer(row: Personne) {
+    var links = row.links;
+    return !links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
+  }
+
+  editer(row: Personne): any {
+    var links = row.links;
+    return links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
   }
 }
 

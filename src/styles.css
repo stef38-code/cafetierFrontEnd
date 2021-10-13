@@ -4,15 +4,41 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /*couleur des boutons*/
-.material-icons.orange600 { color: #FB8C00;
-  margin:2px; }
-.material-icons.red { color: #de6c86;
-  margin:2px; }
+.material-icons.orange600 {
+  color: #FB8C00;
+  margin:2px;
+}
+.material-icons.orange600:disabled {
+  color: #484544;
+  margin:2px;
+  cursor: not-allowed !important;
+}
+.material-icons.red {
+  color: #de6c86;
+  margin:2px;
+}
+.material-icons.red:disabled {
+  color: #484544;
+  margin:2px;
+  cursor: not-allowed !important;
+}
 .material-icons.green { color: #14a21b;
-  margin:2px;}
+  margin:2px;
+}
+.material-icons.green:disabled {
+  color: #484544;
+  margin:2px;
+  cursor: not-allowed !important;
+}
+
 .material-icons.blue {
   color: #1435a2;
   margin:2px;
+}
+.material-icons.blue:disabled {
+  color: #484544;
+  margin:2px;
+  cursor: not-allowed !important;
 }
 /* couleur du toolbar
  */
