@@ -1,12 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Personne} from "../../../../model/personne";
 import {SelectionModel} from "@angular/cdk/collections";
 import {HttpTicket} from "../../../../shared/backend/http-ticket";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {HttpClient} from "@angular/common/http";
-import {Ticket} from "../../../../model/ticket";
+import {Ticket,Personne} from "../../../../model/_index";
 
 @Component({
   selector: 'app-list-ticket',
@@ -15,21 +14,20 @@ import {Ticket} from "../../../../model/ticket";
 })
 export class ListTicketComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['select','numero','montant','action'];
-  dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
-  selection = new SelectionModel<Personne>(true, []);
+  displayedColumns: string[] = ['select','numero','montant','nom','prenom','action'];
+  dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
+  selection = new SelectionModel<Ticket>(true, []);
   allowMultiSelect : boolean = true;
-  initialSelection: Personne[];
   private httpTicket: HttpTicket;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   constructor(private http: HttpClient) {
     this.httpTicket = new HttpTicket(this.http);
     this.httpTicket!.getListTicket().subscribe((response: any) => {
       this.dataSource.data = response;
     });
-    this.selection = new SelectionModel<Personne>(this.allowMultiSelect,this.dataSource.data, false);
+    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect,this.dataSource.data, false);
   }
 
   ngAfterViewInit() {

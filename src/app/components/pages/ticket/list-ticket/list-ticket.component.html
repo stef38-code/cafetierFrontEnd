@@ -31,12 +31,23 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Montant</th>
         <td mat-cell *matCellDef="let row"> {{row.montant}} </td>
       </ng-container>
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>nom</th>
+        <td mat-cell *matCellDef="let row"> {{row.personne.nom}} </td>
+      </ng-container>
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>prenom</th>
+        <td mat-cell *matCellDef="let row"> {{row.personne.prenom}} </td>
+      </ng-container>
       <!-- Action Column -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let row" class="action-link">
           <button  class="material-icons green" mat-fab (click)="openDialog('Update',row)">
             <mat-icon>edit</mat-icon>
+          </button>
+          <button class="material-icons red" mat-fab (click)="openDialog('Delete',row)">
+            <mat-icon>star_rate</mat-icon>
           </button>
           <button class="material-icons red" mat-fab (click)="openDialog('Delete',row)">
             <mat-icon>delete_forever</mat-icon>

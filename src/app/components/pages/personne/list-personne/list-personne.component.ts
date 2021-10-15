@@ -4,7 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
 import {SelectionModel} from "@angular/cdk/collections";
 import {HttpClient} from "@angular/common/http";
-import {Links, Personne} from "../../../../model/personne";
+import {Personne,Links} from "../../../../model/_index";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
 
 
@@ -23,8 +23,8 @@ export class ListPersonneComponent implements OnInit {
   allowMultiSelect: boolean = true;
   private httpPersonne: HttpPersonne;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
   constructor(private http: HttpClient) {
     this.httpPersonne = new HttpPersonne(this.http);
@@ -33,44 +33,10 @@ export class ListPersonneComponent implements OnInit {
   }
 
   private getToutesLesPersonnes() {
-    this.httpPersonne!.getListPersonne().subscribe((response: any) => {
+    this.httpPersonne!.lister().subscribe((response: any) => {
       this.dataSource.data = response;
     });
   }
-
-  /*
-      private getCatchError():observableOf<Personne> {
-        return catchError(() => {
-          /!*          this.isLoadingResults = false;
-                    // Catch if the GitHub API has reached its rate limit. Return empty data.
-                    this.isRateLimitReached = true;*!/
-
-          return observableOf<Personne>([]);
-        });
-      }*/
-
-  /*private getMap() {
-    return map(data => {
-      // Flip flag to show that loading has finished.
-      /!* this.isLoadingResults = false;
-       this.isRateLimitReached = false;
-       this.resultsLength = data.total_count;*!/
-
-      return data;
-    });
-  }*/
-
-  /*private getStartWith() {
-    return startWith({});
-  }
-
-  private getSwitchMap() {
-    return switchMap(() => {
-      /!*this.isLoadingResults = true;*!/
-      return this.httpPersonne!.getListPersonne();
-    });
-  }*/
-
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -105,8 +71,9 @@ export class ListPersonneComponent implements OnInit {
       let find: Links | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
       if (find) {
         console.log("url delete:".concat(find.href))
-        this.httpPersonne.deletePersonne(find.href);
-        //this.getToutesLesPersonnes();
+        this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
+          this.dataSource.data = response;
+        });
       }
     }
   }
@@ -128,6 +95,16 @@ export class ListPersonneComponent implements OnInit {
   editer(row: Personne): any {
     var links = row.links;
     return links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+  }
+
+  editPersonne(row: Personne):any {
+    var links = row.links;
+    let lienEditier: Links | undefined = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0)) ;
+    if (lienEditier) {
+      return { id: lienEditier.href} ;
+    }else{
+      return { };
+    }
   }
 }
 

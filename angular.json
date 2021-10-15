@@ -104,5 +104,8 @@
       }
     }
   },
-  "defaultProject": "cafetierFrontEnd"
+  "defaultProject": "cafetierFrontEnd",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

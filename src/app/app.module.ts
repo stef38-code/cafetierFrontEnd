@@ -28,7 +28,12 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatGridListModule} from "@angular/material/grid-list";
-
+import {ModelModule} from './model/model.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import * as fromCafeteria from './shared/reducers/reducers/cafeteria.reducer';
 const modules = [
   BrowserModule,
   BrowserAnimationsModule,
@@ -48,6 +53,7 @@ const modules = [
   HttpClientModule,
   FormsModule,
   ReactiveFormsModule,
+
   ];
 @NgModule({
 
@@ -62,8 +68,8 @@ const modules = [
     EditPersonneComponent
 
   ],
-  imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule],
-  exports: [...modules],
+  imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule, StoreModule.forRoot({}, {}), EffectsModule.forRoot([]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }), StoreModule.forFeature(fromCafeteria.cafeteriaFeatureKey, fromCafeteria.reducer)],
+  exports: [...modules,ModelModule],
   providers: [],
   bootstrap: [AppComponent],
 })

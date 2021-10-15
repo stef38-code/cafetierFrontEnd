@@ -14,62 +14,56 @@ export class EditPersonneComponent implements OnInit {
   private nom: FormControl;
   private httpPersonne: HttpPersonne;
   private sub: any;
+  private order: string='';
+  private url: string='';
+
   constructor(private route: ActivatedRoute,private _formBuilder: FormBuilder,private http: HttpClient) {
+    this.nom = this._formBuilder.control('nom', Validators.required);
     this.httpPersonne = new HttpPersonne(this.http);
     this.nom = new FormControl('', [Validators.required]);
     this.personneForm = this.createFormGroup(_formBuilder);
-
-    this.sub = this.route.params.subscribe(params => {
-      console.log("this.route.params");
-    console.group();
-    console.log(JSON.stringify(params));
-    console.groupEnd();
-    });
-
- /*     this._formBuilder.group({
-      nom: [
-        {
-          value : '',
-          disabled: false
-        },
-        Validators.required
-      ],
-      prenom: [
-        {
-          value : '',
-          disabled: false
-        },
-        Validators.required
-      ]
-      ,
-      numero: [
-        {
-          value : '',
-          disabled: false
-        },
-        Validators.required
-      ]
-    });*/
+    this.route.queryParams
+      .subscribe(params => {
+        this.url = params.id;
+        }
+      );
+    if(this.url){
+      console.log("Edition d'une personne existante");
+      this.httpPersonne.editer(this.url).subscribe((response: Personne) => {
+        console.group();
+          console.log(JSON.stringify(response));
+          console.log(JSON.stringify(response.nom));
+          this.personneForm.patchValue({
+            nom: response.nom,
+            prenom: response.prenom
+          });
+          this.personneForm.get('nom')!.updateValueAndValidity();
+          this.personneForm.get('prenom')!.updateValueAndValidity();
+        console.groupEnd();
+      },error => {
+        console.group();
+        console.log(JSON.stringify(error));
+        console.groupEnd();
+        }
+      );
+    }
   }
 
   createFormGroup(formBuilder: FormBuilder) {
     return formBuilder.group({
-      nom: new FormControl(),
+      nom: this.nom,
       prenom: new FormControl(),
       numero: new FormControl(),
     })
   }
   submitPersonne() {
     const personne: Personne = Object.assign({}, this.personneForm.value);
-    this.httpPersonne!.addPersonne(personne).subscribe((response: any) => {
+    this.httpPersonne!.ajouter(personne).subscribe((response: any) => {
       console.log(response);
     },(error) => {                              //Error callback
       console.error('error caught in component')
-      /*this.errorMessage = error;
-      this.loading = false;*/
       console.log(error);
       alert(JSON.stringify(error));
-      //throw error;   //You can also throw the error to a global error handler
     });
   }
   ngOnInit(): void {
