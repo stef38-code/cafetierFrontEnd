@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
-import {Personne} from "../../../../model/personne";
+import {Personne} from "../../../../shared/state/model/personne.model";
 import {ActivatedRoute} from "@angular/router";
+import {Store} from "@ngrx/store";
+import * as fromRoot from '../../../../shared/state/reducers';
+import * as personneCollection from '../../../../shared/state/actions/personne.collection.action';
+
 @Component({
   selector: 'app-edit-personne',
   templateUrl: './edit-personne.component.html',
@@ -17,7 +21,11 @@ export class EditPersonneComponent implements OnInit {
   private order: string='';
   private url: string='';
 
-  constructor(private route: ActivatedRoute,private _formBuilder: FormBuilder,private http: HttpClient) {
+  constructor(private route: ActivatedRoute,
+              private _formBuilder: FormBuilder,
+              private http: HttpClient,
+              private store: Store<fromRoot.State>
+  ) {
     this.nom = this._formBuilder.control('nom', Validators.required);
     this.httpPersonne = new HttpPersonne(this.http);
     this.nom = new FormControl('', [Validators.required]);
@@ -47,6 +55,15 @@ export class EditPersonneComponent implements OnInit {
         }
       );
     }
+    let personne: Personne = {
+      nom:'Robert',
+      prenom:'Henry',
+      id:'1111111111111',
+      nombreTicket:12,
+      numero:'1234',
+      links:[]
+    }
+    this.store.dispatch(new personneCollection.AddPersonneAction(personne));
   }
 
   createFormGroup(formBuilder: FormBuilder) {

@@ -1,7 +1,6 @@
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Personne} from "../../model/personne";
-import {Ticket} from "../../model/ticket";
+import {Ticket} from "../../shared/state/model/ticket.model";
 
 export class HttpTicket {
   constructor(private http: HttpClient) { }

@@ -4,8 +4,11 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
 import {SelectionModel} from "@angular/cdk/collections";
 import {HttpClient} from "@angular/common/http";
-import {Personne,Links} from "../../../../model/_index";
+import {Lien} from "../../../../shared/state/model/lien.model";
+import {Ticket} from "../../../../shared/state/model/ticket.model";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
+import {Store} from "@ngrx/store";
+
 
 
 // @ts-ignore
@@ -18,18 +21,19 @@ import {HttpPersonne} from "../../../../shared/backend/http-personne";
 })
 export class ListPersonneComponent implements OnInit {
   displayedColumns: string[] = ['select', 'numero', 'nom', 'prenom', 'nombreTicket', 'action'];
-  dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
-  selection = new SelectionModel<Personne>(true, []);
+  dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
+  selection = new SelectionModel<Ticket>(true, []);
   allowMultiSelect: boolean = true;
   private httpPersonne: HttpPersonne;
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,) {
     this.httpPersonne = new HttpPersonne(this.http);
-    this.getToutesLesPersonnes();
-    this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
+    //this.getToutesLesPersonnes();
+    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
+
   }
 
   private getToutesLesPersonnes() {
@@ -65,21 +69,21 @@ export class ListPersonneComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  openDialog(update: string, personne: Personne) {
-    if (window.confirm('êtes-vous sûr de supprimer '.concat(personne.nom, " ", personne.prenom, " ?"))) {
-      let links: Links[] = personne.links;
-      let find: Links | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
+  openDialog(update: string, personne: Ticket) {
+   /* if (window.confirm('êtes-vous sûr de supprimer '.concat(personne.nom, " ", personne.prenom, " ?"))) {
+      let links: Lien[] = personne.links;
+      let find: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
       if (find) {
         console.log("url delete:".concat(find.href))
         this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
           this.dataSource.data = response;
         });
       }
-    }
+    }*/
   }
 
-  isDesactiveEditer(row: Personne): boolean {
-    var links = row.links;
+  isDesactiveEditer(row: Ticket): boolean {
+    var links: Lien[] = row.links;
     return !links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
     /*console.log("isDesactive");
     console.group();
@@ -87,19 +91,19 @@ export class ListPersonneComponent implements OnInit {
     console.groupEnd();*/
   }
 
-  isDesactiveSupprimer(row: Personne) {
-    var links = row.links;
+  isDesactiveSupprimer(row: Ticket) {
+    var links: Lien[] = row.links;
     return !links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
   }
 
-  editer(row: Personne): any {
-    var links = row.links;
+  editer(row: Ticket): any {
+    var links: Lien[] = row.links;
     return links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
   }
 
-  editPersonne(row: Personne):any {
-    var links = row.links;
-    let lienEditier: Links | undefined = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0)) ;
+  editPersonne(row: Ticket):any {
+    var links: Lien[] = row.links;
+    let lienEditier: Lien | undefined = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0)) ;
     if (lienEditier) {
       return { id: lienEditier.href} ;
     }else{

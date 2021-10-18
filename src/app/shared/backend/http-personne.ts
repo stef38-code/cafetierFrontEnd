@@ -1,5 +1,5 @@
 import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
-import {Personne} from "../../model/personne";
+import {Personne} from "../../shared/state/model/personne.model";
 import {Observable} from "rxjs";
 
 export class HttpPersonne {

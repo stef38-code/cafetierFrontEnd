@@ -5,7 +5,8 @@ import {HttpTicket} from "../../../../shared/backend/http-ticket";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {HttpClient} from "@angular/common/http";
-import {Ticket,Personne} from "../../../../model/_index";
+import {Ticket} from "../../../../shared/state/model/ticket.model";
+import {Personne} from "../../../../shared/state/model/personne.model";
 
 @Component({
   selector: 'app-list-ticket',
@@ -24,9 +25,9 @@ export class ListTicketComponent implements AfterViewInit {
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   constructor(private http: HttpClient) {
     this.httpTicket = new HttpTicket(this.http);
-    this.httpTicket!.getListTicket().subscribe((response: any) => {
+   /* this.httpTicket!.getListTicket().subscribe((response: any) => {
       this.dataSource.data = response;
-    });
+    });*/
     this.selection = new SelectionModel<Ticket>(this.allowMultiSelect,this.dataSource.data, false);
   }
 

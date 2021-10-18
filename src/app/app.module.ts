@@ -1,39 +1,40 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LayoutComponent } from './components/layout/layout.component';
-import { PersonneComponent } from './components/pages/personne/personne.component';
-import { TicketComponent } from './components/pages/ticket/ticket.component';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {LayoutComponent} from './components/layout/layout.component';
+import {PersonneComponent} from './components/pages/personne/personne.component';
+import {TicketComponent} from './components/pages/ticket/ticket.component';
 import {MatListModule} from "@angular/material/list";
 import {RouterModule} from "@angular/router";
 import {MatIconModule} from "@angular/material/icon";
-import { MatSidenavModule} from "@angular/material/sidenav";
+import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './components/pages/home/home.component';
+import {AppRoutingModule} from './app-routing.module';
+import {HomeComponent} from './components/pages/home/home.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { ListPersonneComponent } from './components/pages/personne/list-personne/list-personne.component';
-import { ListTicketComponent } from './components/pages/ticket/list-ticket/list-ticket.component';
+import {ListPersonneComponent} from './components/pages/personne/list-personne/list-personne.component';
+import {ListTicketComponent} from './components/pages/ticket/list-ticket/list-ticket.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import { EditPersonneComponent } from './components/pages/personne/edit-personne/edit-personne.component';
+import {EditPersonneComponent} from './components/pages/personne/edit-personne/edit-personne.component';
 import {MatSortModule} from "@angular/material/sort";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {ModelModule} from './model/model.module';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import * as fromCafeteria from './shared/reducers/reducers/cafeteria.reducer';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from "../environments/environment";
+import {reducer} from "./shared/state/reducers";
+import {StoreRouterConnectingModule} from "@ngrx/router-store";
+
 const modules = [
   BrowserModule,
   BrowserAnimationsModule,
@@ -53,7 +54,6 @@ const modules = [
   HttpClientModule,
   FormsModule,
   ReactiveFormsModule,
-
   ];
 @NgModule({
 
@@ -68,8 +68,14 @@ const modules = [
     EditPersonneComponent
 
   ],
-  imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule, StoreModule.forRoot({}, {}), EffectsModule.forRoot([]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }), StoreModule.forFeature(fromCafeteria.cafeteriaFeatureKey, fromCafeteria.reducer)],
-  exports: [...modules,ModelModule],
+  imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
+    StoreModule.forRoot(reducer),
+    StoreRouterConnectingModule.forRoot(),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    /*EffectsModule.run(BookEffects),
+    EffectsModule.run(CollectionEffects),*/
+],
+  exports: [...modules],
   providers: [],
   bootstrap: [AppComponent],
 })
