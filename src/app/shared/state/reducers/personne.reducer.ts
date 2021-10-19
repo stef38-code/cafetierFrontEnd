@@ -2,61 +2,26 @@ import {Personne} from '../model/personne.model';
 import * as personneAction from '../actions/personne.action';
 import {createSelector} from "@ngrx/store";
 
-export interface State {
+export interface StatePersonne {
   ids: string[];
   entities: { [id: string]: Personne };
   selectedPersonneId: string | null;
 };
-export const initialState: State = {
+export const initialState: StatePersonne = {
   ids: [],
   entities: {},
-  selectedPersonneId: null,
+  selectedPersonneId: '',
 };
 
-export function reducer(state = initialState, action: personneAction.Actions): State {
+export function reducer(state = initialState, action: personneAction.Actions): StatePersonne {
   switch (action.type) {
-    case personneAction.SEARCH_COMPLETE: {
-      const personnes = action.payload;
-      const newPersonne = personnes.filter(personne => !state.entities[personne.id]);
-
-      const newTicketIds = newPersonne.map(personne => personne.id);
-      const newTicketEntities = newPersonne.reduce((entities: { [id: string]: Personne }, personne: Personne) => {
-        return Object.assign(entities, {
-          [personne.id]: personne
-        });
-      }, {});
-
-      return {
-        ids: [...state.ids, ...newTicketIds],
-        entities: Object.assign({}, state.entities, newTicketEntities),
-        selectedPersonneId: state.selectedPersonneId
-      };
-    }
-
-    case personneAction.LOAD: {
-      const personne = action.payload;
-
-      if (state.ids.indexOf(personne.id) > -1) {
-        return state;
-      }
-
-      return {
-        ids: [...state.ids, personne.id],
-        entities: Object.assign({}, state.entities, {
-          [personne.id]: personne
-        }),
-        selectedPersonneId: state.selectedPersonneId
-      };
-    }
-
-    case personneAction.SELECT: {
+   case personneAction.SELECT: {
       return {
         ids: state.ids,
         entities: state.entities,
         selectedPersonneId: action.payload
       };
     }
-
     default: {
       return state;
     }
@@ -72,11 +37,11 @@ export function reducer(state = initialState, action: personneAction.Actions): S
  * use-case.
  */
 
-export const getEntities = (state: State) => state.entities;
+export const getEntities = (state: StatePersonne) => state.entities;
 
-export const getIds = (state: State) => state.ids;
+export const getIds = (state: StatePersonne) => state.ids;
 
-export const getSelectedId = (state: State) => state.selectedPersonneId;
+export const getSelectedId = (state: StatePersonne) => state.selectedPersonneId;
 
 export const getSelected = createSelector(getEntities, getSelectedId, (entities, selectedId) => {
   if (selectedId)

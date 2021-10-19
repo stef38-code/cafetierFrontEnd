@@ -6,7 +6,6 @@ import {Personne} from "../../../../shared/state/model/personne.model";
 import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../../../shared/state/reducers';
-import * as personneCollection from '../../../../shared/state/actions/personne.collection.action';
 
 @Component({
   selector: 'app-edit-personne',
@@ -63,7 +62,7 @@ export class EditPersonneComponent implements OnInit {
       numero:'1234',
       links:[]
     }
-    this.store.dispatch(new personneCollection.AddPersonneAction(personne));
+    //this.store.dispatch(new personneCollection.AddPersonneAction(personne));
   }
 
   createFormGroup(formBuilder: FormBuilder) {
