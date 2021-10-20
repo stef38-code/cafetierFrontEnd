@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
@@ -8,6 +8,11 @@ import {Lien} from "../../../../shared/state/model/lien.model";
 import {Ticket} from "../../../../shared/state/model/ticket.model";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
 import {Store} from "@ngrx/store";
+import {Personne} from "../../../../shared/state/model/personne.model";
+import * as fromRoot from '../../../../shared/state/reducers';
+import {Observable} from "rxjs";
+import * as froReducer from  "../../../../shared/state/reducers";
+import * as fromPersonneStore from "../../../../shared/state/selectors/personne.selector";
 
 
 
@@ -20,19 +25,25 @@ import {Store} from "@ngrx/store";
   styleUrls: ['./list-personne.component.css']
 })
 export class ListPersonneComponent implements OnInit {
+
   displayedColumns: string[] = ['select', 'numero', 'nom', 'prenom', 'nombreTicket', 'action'];
-  dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
-  selection = new SelectionModel<Ticket>(true, []);
+  dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
+  selection = new SelectionModel<Personne>(true, []);
   allowMultiSelect: boolean = true;
   private httpPersonne: HttpPersonne;
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
-  constructor(private http: HttpClient,) {
+  private personneEntitiesStore$: Observable<Personne[]>;
+
+  constructor(private http: HttpClient,store: Store<fromRoot.State>) {
+    this.personneEntitiesStore$= store.select(fromPersonneStore.getPersonneEntites);
     this.httpPersonne = new HttpPersonne(this.http);
-    //this.getToutesLesPersonnes();
-    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
+    //
+    this.personneEntitiesStore$.subscribe(res => console.log("Personne[]",res));
+    this.personneEntitiesStore$.subscribe(res => this.dataSource.data = res);
+    this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
 
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {HttpPersonne} from "../../../../shared/backend/http-personne";
@@ -6,7 +6,7 @@ import {Personne} from "../../../../shared/state/model/personne.model";
 import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
 import * as fromRoot from '../../../../shared/state/reducers';
-
+import * as fromPersonne from '../../../../shared/state/actions/personne.action';
 @Component({
   selector: 'app-edit-personne',
   templateUrl: './edit-personne.component.html',
@@ -19,6 +19,7 @@ export class EditPersonneComponent implements OnInit {
   private sub: any;
   private order: string='';
   private url: string='';
+  @Output() add = new EventEmitter<Personne>();
 
   constructor(private route: ActivatedRoute,
               private _formBuilder: FormBuilder,
@@ -62,7 +63,16 @@ export class EditPersonneComponent implements OnInit {
       numero:'1234',
       links:[]
     }
-    //this.store.dispatch(new personneCollection.AddPersonneAction(personne));
+    let personne2: Personne = {
+      nom:'Pompette',
+      prenom:'Julie',
+      id:'222222',
+      nombreTicket:12,
+      numero:'1234',
+      links:[]
+    }
+   this.store.dispatch(new fromPersonne.Add(personne));
+   this.store.dispatch(new fromPersonne.Add(personne2));
   }
 
   createFormGroup(formBuilder: FormBuilder) {
@@ -74,13 +84,14 @@ export class EditPersonneComponent implements OnInit {
   }
   submitPersonne() {
     const personne: Personne = Object.assign({}, this.personneForm.value);
-    this.httpPersonne!.ajouter(personne).subscribe((response: any) => {
+   /* this.httpPersonne!.ajouter(personne).subscribe((response: any) => {
       console.log(response);
     },(error) => {                              //Error callback
       console.error('error caught in component')
       console.log(error);
       alert(JSON.stringify(error));
-    });
+    });*/
+    this.add.emit(personne);
   }
   ngOnInit(): void {
   }

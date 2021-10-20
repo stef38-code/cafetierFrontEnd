@@ -32,9 +32,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from "../environments/environment";
-import {reducers} from "./shared/state/reducers";
-import {StoreRouterConnectingModule} from "@ngrx/router-store";
-import { CollectionPersonneEffects } from './shared/state/effects/collection-personne.effects';
+import {reducer} from "./shared/state/reducers";
 
 const modules = [
   BrowserModule,
@@ -70,11 +68,9 @@ const modules = [
 
   ],
   imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot({reducer}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    /*EffectsModule.forFeature([CollectionPersonneEffects]),*/
-    /*EffectsModule.run(BookEffects),
-    EffectsModule.run(CollectionEffects),*/
+/*    EffectsModule.forRoot([PersonneCollectionEffects]),*/
 ],
   exports: [...modules],
   providers: [],

@@ -6,6 +6,7 @@
 
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort table-striped>
+    <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
