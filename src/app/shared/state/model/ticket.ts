@@ -1,5 +1,5 @@
-import {Lien} from "./lien.model";
-import {Personne} from "./personne.model";
+import {Lien} from "./lien";
+import {Personne} from "./personne";
 
 export interface Ticket {
   id: string;

@@ -7,6 +7,10 @@ import { TicketComponent } from './components/pages/ticket/ticket.component';
 import {ListPersonneComponent} from "./components/pages/personne/list-personne/list-personne.component";
 import {EditPersonneComponent} from "./components/pages/personne/edit-personne/edit-personne.component";
 import {ListTicketComponent} from "./components/pages/ticket/list-ticket/list-ticket.component";
+import {EditTicketComponent} from "./components/pages/ticket/edit-ticket/edit-ticket.component";
+import {ListCategorieComponent} from "./components/pages/categorie/list-categorie/list-categorie.component";
+import {EditCategorieComponent} from "./components/pages/categorie/edit-categorie/edit-categorie.component";
+import {CategorieComponent} from "./components/pages/categorie/categorie.component";
 
 const appRouteList: Routes = [
   {
@@ -31,6 +35,21 @@ const appRouteList: Routes = [
     children: [
       {
         path:'liste-ticket', component: ListTicketComponent
+      },
+      {
+        path:'edite-ticket', component: EditTicketComponent
+      }
+    ]
+  },
+  {
+    path: 'categorie',
+    component: CategorieComponent,
+    children: [
+      {
+        path:'liste-categorie', component: ListCategorieComponent
+      },
+      {
+        path:'edite-categorie', component: EditCategorieComponent
       }
     ]
   },

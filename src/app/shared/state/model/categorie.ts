@@ -1,4 +1,4 @@
-import {Lien} from "./lien.model";
+import {Lien} from "./lien";
 
 export interface Categorie {
   id: string;

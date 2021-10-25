@@ -1,7 +1,9 @@
 <form [formGroup]="personneForm" (ngSubmit)="submitPersonne()">
 <mat-card>
   <mat-card-header>
-    <mat-card-title class="card-container-center">Information de la personne</mat-card-title>
+    <mat-card-title class="card-container-center">
+      Information de la personne
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
 
@@ -45,7 +47,6 @@
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
-
   </mat-card-content>
   <mat-card-actions align="end">
     <button mat-button class="material-icons blue" [disabled]="!personneForm.valid">

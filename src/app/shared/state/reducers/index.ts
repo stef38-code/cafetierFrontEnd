@@ -33,35 +33,47 @@ import {storeFreeze} from 'ngrx-store-freeze';
  * the state of the reducer plus any selector functions. The `* as`
  * notation packages up all of the exports into a single object.
  */
-import * as fromPersonneStore from '../store/personne.store';
-import * as fromPersonne from './personne.reducer';
+import {PersonneStore} from '../store/personne';
+import {PersonneReducer} from './personne';
+import {TicketStore} from '../store/Ticket';
+import {TicketReducer} from './ticket';
+import {CategorieStore} from '../store/Categorie';
+import {CategorieRecuder} from './catgorie';
+import {SystemReducer} from "./system";
+import {SystemStore} from "../store/system";
 
-import {createSelector} from "reselect";
+export namespace ApplicationStore {
 
-/**
- */
-export interface State {
-  personnes: fromPersonneStore.StatePersonne;
-}
-
-
-/**
-  */
-export const reducers : ActionReducerMap<State, any> = {
-  personnes: fromPersonne.reducer
-};
-
-const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
-const productionReducer: ActionReducer<State> = combineReducers(reducers);
-
-export function reducer(state: any, action: any) {
-  if (environment.production) {
-    console.log("-productionReducer----");
-    return productionReducer(state, action);
-  } else {
-    console.log("-developmentReducer----");
-    return developmentReducer(state, action);
+  /**
+   */
+  export interface State {
+    personnes: PersonneStore.State;
+    tickets: TicketStore.State;
+    categories: CategorieStore.State;
+    system: SystemStore.State;
   }
+
+
+  /**
+   */
+  export const reducers: ActionReducerMap<State, any> = {
+    personnes: PersonneReducer.reducer,
+    tickets: TicketReducer.reducer,
+    categories: CategorieRecuder.reducer,
+    system: SystemReducer.reducer
+  };
+
+  const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
+  const productionReducer: ActionReducer<State> = combineReducers(reducers);
+
+  export function reducer(state: any, action: any) {
+    if (environment.production) {
+      console.log("-productionReducer----");
+      return productionReducer(state, action);
+    } else {
+      console.log("-developmentReducer----");
+      return developmentReducer(state, action);
+    }
+  }
+
 }
-
-

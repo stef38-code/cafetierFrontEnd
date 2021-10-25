@@ -1,22 +1,20 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from "@angular/material/sort";
 import {SelectionModel} from "@angular/cdk/collections";
-import {HttpClient} from "@angular/common/http";
-import {Lien} from "../../../../shared/state/model/lien.model";
-import {Ticket} from "../../../../shared/state/model/ticket.model";
-import {HttpPersonne} from "../../../../shared/backend/http-personne";
+import {Lien} from "../../../../shared/state/model/lien";
+import {Ticket} from "../../../../shared/state/model/ticket";
 import {Store} from "@ngrx/store";
-import {Personne} from "../../../../shared/state/model/personne.model";
-import * as fromRoot from '../../../../shared/state/reducers';
+import {Personne} from "../../../../shared/state/model/personne";
 import {Observable} from "rxjs";
-import * as froReducer from  "../../../../shared/state/reducers";
-import * as fromPersonneStore from "../../../../shared/state/selectors/personne.selector";
+import {PersonneSelector} from "../../../../shared/state/selectors/personne";
+import {PersonneAction} from "../../../../shared/state/actions/personne-action";
+import {ApplicationStore} from "../../../../shared/state/reducers";
+import {SystemSelector} from "../../../../shared/state/selectors/system";
 
 
 
-// @ts-ignore
 
 
 @Component({
@@ -30,31 +28,28 @@ export class ListPersonneComponent implements OnInit {
   dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
   selection = new SelectionModel<Personne>(true, []);
   allowMultiSelect: boolean = true;
-  private httpPersonne: HttpPersonne;
-
+  isLoading = false;
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
   private personneEntitiesStore$: Observable<Personne[]>;
+  private systemStore$: Observable<boolean>;
 
-  constructor(private http: HttpClient,store: Store<fromRoot.State>) {
-    this.personneEntitiesStore$= store.select(fromPersonneStore.getPersonneEntites);
-    this.httpPersonne = new HttpPersonne(this.http);
+  constructor(private store: Store<ApplicationStore.State>) {
+    this.personneEntitiesStore$= store.select(PersonneSelector.getPersonneEntites);
+    this.systemStore$= store.select(SystemSelector.getSystemLoading);
     //
-    this.personneEntitiesStore$.subscribe(res => console.log("Personne[]",res));
-    this.personneEntitiesStore$.subscribe(res => this.dataSource.data = res);
+    this.personneEntitiesStore$.subscribe(res => this.dataSource = new MatTableDataSource<Personne>(res));
+    this.systemStore$.subscribe(res => this.isLoading = res);
     this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
 
-  }
 
-  private getToutesLesPersonnes() {
-    this.httpPersonne!.lister().subscribe((response: any) => {
-      this.dataSource.data = response;
-    });
   }
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.store.dispatch(new PersonneAction.Load());
+    this.selection.clear();
   }
 
   applyFilter(event: Event) {
@@ -96,10 +91,6 @@ export class ListPersonneComponent implements OnInit {
   isDesactiveEditer(row: Ticket): boolean {
     var links: Lien[] = row.links;
     return !links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
-    /*console.log("isDesactive");
-    console.group();
-    console.log(JSON.stringify(row));
-    console.groupEnd();*/
   }
 
   isDesactiveSupprimer(row: Ticket) {
@@ -120,6 +111,10 @@ export class ListPersonneComponent implements OnInit {
     }else{
       return { };
     }
+  }
+
+  editerPersonne(row: Personne) {
+    this.store.dispatch(new PersonneAction.editerAction(row.id));
   }
 }
 

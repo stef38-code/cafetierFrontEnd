@@ -40,6 +40,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin:2px;
   cursor: not-allowed !important;
 }
+
+.material-icons.yellow {
+  color: #f3c50e;
+  margin:2px;
+}
+.material-icons.yellow:disabled {
+  color: #484544;
+  margin:2px;
+  cursor: not-allowed !important;
+}
 /* couleur du toolbar
  */
 .mat-toolbar.mat-primary {

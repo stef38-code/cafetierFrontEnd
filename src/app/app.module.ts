@@ -32,7 +32,17 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from "../environments/environment";
-import {reducer} from "./shared/state/reducers";
+import {ApplicationStore} from "./shared/state/reducers";
+import { CollectionPersonneEffects } from './shared/state/effects/collection-personne.effects';
+import { CollectionTicketEffects } from './shared/state/effects/collection-ticket.effects';
+import { CollectionCategorieEffects } from './shared/state/effects/collection-categorie.effects';
+import { CategorieComponent } from './components/pages/categorie/categorie.component';
+import { ListCategorieComponent } from './components/pages/categorie/list-categorie/list-categorie.component';
+import { EditCategorieComponent } from './components/pages/categorie/edit-categorie/edit-categorie.component';
+import { EditTicketComponent } from './components/pages/ticket/edit-ticket/edit-ticket.component';
+import reducer = ApplicationStore.reducer;
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SpinnerComponent} from "./components/spinner/spinner.component";
 
 const modules = [
   BrowserModule,
@@ -64,14 +74,20 @@ const modules = [
     HomeComponent,
     ListPersonneComponent,
     ListTicketComponent,
-    EditPersonneComponent
-
+    EditPersonneComponent,
+    CategorieComponent,
+    ListCategorieComponent,
+    EditCategorieComponent,
+    EditTicketComponent,
+    SpinnerComponent,
+    SpinnerComponent,
   ],
   imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
     StoreModule.forRoot({reducer}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-/*    EffectsModule.forRoot([PersonneCollectionEffects]),*/
-],
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    EffectsModule.forRoot([CollectionPersonneEffects]),
+    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects]), MatProgressSpinnerModule,
+  ],
   exports: [...modules],
   providers: [],
   bootstrap: [AppComponent],

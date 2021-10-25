@@ -1,11 +1,12 @@
+<app-spinner [visible]="!isLoading"></app-spinner>
 <div style="display: block; margin: 10px">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
   </mat-form-field>
 
-  <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort table-striped>
+  <div class="mat-elevation-z8" >
+    <table mat-table [dataSource]="dataSource" matSort>
     <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
@@ -48,7 +49,9 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let row" class="action-link">
-          <button class="material-icons green" mat-fab [disabled]="isDesactiveEditer(row)" [routerLink]="['/personne/edite-personne']" [queryParams]="editPersonne(row)">
+          <button class="material-icons green" mat-fab [disabled]="isDesactiveEditer(row)"
+                  [routerLink]="['/personne/edite-personne']"
+                  (click)="editerPersonne(row)">
             <mat-icon>history_edu</mat-icon>
           </button>
           <button class="material-icons red" mat-fab [disabled]="isDesactiveSupprimer(row)" (click)="openDialog('Delete',row)">

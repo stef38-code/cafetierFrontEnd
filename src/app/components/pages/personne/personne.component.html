@@ -1,10 +1,10 @@
 <mat-toolbar color="primary" >
   <mat-toolbar-row>
-    <button  mat-fab [routerLink]="['/personne/liste-personne']">
+    <button  mat-fab class="material-icons yellow" [routerLink]="['/personne/liste-personne']">
       <mat-icon>view_stream</mat-icon>
     </button>
-    <button  mat-fab [routerLink]="['/personne/edite-personne']">
-      <mat-icon>person_add</mat-icon>
+    <button  mat-fab class="material-icons green" [routerLink]="['/personne/edite-personne']" (click)="newPersonne()">
+      <mat-icon>exposure_plus_1</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
