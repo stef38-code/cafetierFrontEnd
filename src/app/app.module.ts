@@ -33,16 +33,17 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from "../environments/environment";
 import {ApplicationStore} from "./shared/state/reducers";
-import { CollectionPersonneEffects } from './shared/state/effects/collection-personne.effects';
-import { CollectionTicketEffects } from './shared/state/effects/collection-ticket.effects';
-import { CollectionCategorieEffects } from './shared/state/effects/collection-categorie.effects';
-import { CategorieComponent } from './components/pages/categorie/categorie.component';
-import { ListCategorieComponent } from './components/pages/categorie/list-categorie/list-categorie.component';
-import { EditCategorieComponent } from './components/pages/categorie/edit-categorie/edit-categorie.component';
-import { EditTicketComponent } from './components/pages/ticket/edit-ticket/edit-ticket.component';
-import reducer = ApplicationStore.reducer;
+import {CollectionPersonneEffects} from './shared/state/effects/collection-personne.effects';
+import {CollectionTicketEffects} from './shared/state/effects/collection-ticket.effects';
+import {CollectionCategorieEffects} from './shared/state/effects/collection-categorie.effects';
+import {CategorieComponent} from './components/pages/categorie/categorie.component';
+import {ListCategorieComponent} from './components/pages/categorie/list-categorie/list-categorie.component';
+import {EditCategorieComponent} from './components/pages/categorie/edit-categorie/edit-categorie.component';
+import {EditTicketComponent} from './components/pages/ticket/edit-ticket/edit-ticket.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import reducer = ApplicationStore.reducer;
 
 const modules = [
   BrowserModule,
@@ -63,7 +64,8 @@ const modules = [
   HttpClientModule,
   FormsModule,
   ReactiveFormsModule,
-  ];
+];
+
 @NgModule({
 
   declarations: [
@@ -86,10 +88,14 @@ const modules = [
     StoreModule.forRoot({reducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([CollectionPersonneEffects]),
-    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects]), MatProgressSpinnerModule,
+    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects]), MatProgressSpinnerModule, MatDialogModule,
   ],
   exports: [...modules],
-  providers: [],
+  providers: [{
+    provide: MatDialogRef,
+    useValue: {}
+  },],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}

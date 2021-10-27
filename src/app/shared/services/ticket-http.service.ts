@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Ticket} from "../state/model/ticket";
@@ -8,9 +8,11 @@ import {Ticket} from "../state/model/ticket";
 })
 export class TicketHttpService {
   private ApiURL: string = 'http://localhost:8080/ticket';
-  constructor(private httpclient: HttpClient) { }
+
+  constructor(private httpclient: HttpClient) {
+  }
+
   lister(): Observable<Ticket[]> {
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     return this.httpclient.get<Ticket[]>(this.ApiURL);
   }
 }

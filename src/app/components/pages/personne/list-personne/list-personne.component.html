@@ -1,13 +1,13 @@
-<app-spinner [visible]="!isLoading"></app-spinner>
+<app-spinner [visible]="isLoading"></app-spinner>
 <div style="display: block; margin: 10px">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
   </mat-form-field>
 
-  <div class="mat-elevation-z8" >
+  <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
-    <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
+      <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
@@ -17,15 +17,15 @@
           </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-      (change)="$event ? selection.toggle(row) : null"
-      [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-      </td>
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
       </ng-container>
       <!-- identifiant -->
       <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header >Identifiant</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Identifiant</th>
         <td mat-cell *matCellDef="let row"> {{row.numero}} </td>
       </ng-container>
       <!-- Nom -->
@@ -47,14 +47,15 @@
       </ng-container>
       <!-- Action Column -->
       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef> Actions</th>
         <td mat-cell *matCellDef="let row" class="action-link">
           <button class="material-icons green" mat-fab [disabled]="isDesactiveEditer(row)"
                   [routerLink]="['/personne/edite-personne']"
                   (click)="editerPersonne(row)">
             <mat-icon>history_edu</mat-icon>
           </button>
-          <button class="material-icons red" mat-fab [disabled]="isDesactiveSupprimer(row)" (click)="openDialog('Delete',row)">
+          <button class="material-icons red" mat-fab [disabled]="isDesactiveSupprimer(row)"
+                  (click)="openDialog('Delete',row)">
             <mat-icon>person_remove</mat-icon>
           </button>
         </td>
