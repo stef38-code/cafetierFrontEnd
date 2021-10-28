@@ -1,0 +1,60 @@
+<form [formGroup]="personneForm" (ngSubmit)="submitPersonne()">
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="card-container-center">
+      Information de la personne
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+      <mat-grid-list cols="2" rowHeight="4rem">
+        <mat-grid-tile  >
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-label>Sélectionner un identifiant</mat-label>
+            <select matNativeControl required formControlName="numero">
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+            <mat-error *ngIf="personneForm.get('numero')!.errors &&
+            personneForm.get('numero')!.hasError('required')">
+              L'identifiant est <strong>obligatoire</strong>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="2" rowHeight="4rem">
+        <mat-grid-tile>
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-label>Nom</mat-label>
+            <input type="text" matInput required formControlName="nom" placeholder="Dupont">
+            <!--<mat-hint>Errors appear instantly!</mat-hint>-->
+            <mat-error *ngIf="personneForm.get('nom')!.errors &&
+            personneForm.get('nom')!.hasError('required')">
+              Le nom est <strong>obligatoire</strong>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-label>Prénom</mat-label>
+            <input type="text" matInput required formControlName="prenom" placeholder="Dupont">
+            <!--            <mat-hint>Errors appear instantly!</mat-hint>-->
+            <mat-error *ngIf="personneForm.get('prenom')!.errors &&
+            personneForm.get('prenom')!.hasError('required')">
+              Le prénom est <strong>obligatoire</strong>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button class="material-icons blue" [disabled]="!personneForm.valid">
+      <mat-icon>done</mat-icon>
+    </button>
+    <button mat-button class="material-icons red" [routerLink]="['/personne/liste-personne']">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+</form>

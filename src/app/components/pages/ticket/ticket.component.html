@@ -1,0 +1,17 @@
+<mat-toolbar color="primary" >
+  <mat-toolbar-row>
+    <button  mat-fab class="material-icons yellow" [routerLink]="['/ticket/liste-ticket']">
+      <mat-icon>view_stream</mat-icon>
+    </button>
+    <button  mat-fab class="material-icons green" [routerLink]="['/ticket/edite-ticket']">
+      <mat-icon>exposure_plus_1</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container" >
+  <mat-sidenav-content  >
+    <div class="main">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
