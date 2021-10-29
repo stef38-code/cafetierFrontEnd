@@ -1,55 +1,82 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 /*couleur des boutons*/
+.material-icons.white {
+  color: white;
+  margin: 2px;
+}
+
+.material-icons.white:disabled {
+  color: white;
+  margin: 2px;
+  cursor: not-allowed !important;
+}
+
 .material-icons.orange600 {
   color: #FB8C00;
-  margin:2px;
+  margin: 2px;
 }
+
 .material-icons.orange600:disabled {
   color: #484544;
-  margin:2px;
+  margin: 2px;
   cursor: not-allowed !important;
 }
+
 .material-icons.red {
   color: #de6c86;
-  margin:2px;
+  margin: 2px;
 }
+
 .material-icons.red:disabled {
   color: #484544;
-  margin:2px;
+  margin: 2px;
   cursor: not-allowed !important;
 }
-.material-icons.green { color: #14a21b;
-  margin:2px;
+
+.material-icons.green {
+  color: #14a21b;
+  margin: 2px;
 }
+
 .material-icons.green:disabled {
   color: #484544;
-  margin:2px;
+  margin: 2px;
   cursor: not-allowed !important;
 }
 
 .material-icons.blue {
   color: #1435a2;
-  margin:2px;
+  margin: 2px;
 }
+
 .material-icons.blue:disabled {
   color: #484544;
-  margin:2px;
+  margin: 2px;
   cursor: not-allowed !important;
 }
 
 .material-icons.yellow {
   color: #f3c50e;
-  margin:2px;
+  margin: 2px;
 }
+
 .material-icons.yellow:disabled {
   color: #484544;
-  margin:2px;
+  margin: 2px;
   cursor: not-allowed !important;
 }
+
 /* couleur du toolbar
  */
 .mat-toolbar.mat-primary {
@@ -59,17 +86,26 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   top: 0;
   z-index: 1;
 }
+
 /**
 mat-card
  */
-.mat-card-header-text{
+.mat-card-header-text {
   width: 100% !important;
   justify-content: center /* for center*/
 
 }
+
 /**
 
  */
 .full-width {
   width: 100%;
+}
+
+/**
+bouton des dialogs
+ */
+.mat-dialog-actions {
+  justify-content: flex-end;
 }

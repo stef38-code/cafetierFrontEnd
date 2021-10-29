@@ -2,6 +2,7 @@ import {createSelector} from "reselect";
 import {RootSelector} from "./root";
 import {ApplicationStore} from "../reducers";
 import {PersonneStore} from "../store/personne";
+import {Categorie} from "../model/categorie";
 
 export namespace PersonneSelector {
   /**
@@ -29,7 +30,8 @@ export namespace PersonneSelector {
       prenom: '',
       id: '',
       nombreTicket: 0,
-      numero: '',
+      categorie: {} as Categorie,
+      tickets: [],
       links: []
     }
   });

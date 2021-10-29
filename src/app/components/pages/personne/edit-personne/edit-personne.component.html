@@ -1,60 +1,52 @@
-<form [formGroup]="personneForm" (ngSubmit)="submitPersonne()">
-<mat-card>
-  <mat-card-header>
-    <mat-card-title class="card-container-center">
-      Information de la personne
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
+<h1 mat-dialog-title mat-primary>Edition d'une personne</h1>
+<mat-dialog-content (ngSubmit)="submitPersonne()" [formGroup]="personneForm">
 
-      <mat-grid-list cols="2" rowHeight="4rem">
-        <mat-grid-tile  >
-          <mat-form-field class="full-width" appearance="legacy">
-            <mat-label>Sélectionner un identifiant</mat-label>
-            <select matNativeControl required formControlName="numero">
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
-            <mat-error *ngIf="personneForm.get('numero')!.errors &&
-            personneForm.get('numero')!.hasError('required')">
-              L'identifiant est <strong>obligatoire</strong>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <mat-grid-list cols="2" rowHeight="4rem">
-        <mat-grid-tile>
-          <mat-form-field class="full-width" appearance="legacy">
-            <mat-label>Nom</mat-label>
-            <input type="text" matInput required formControlName="nom" placeholder="Dupont">
-            <!--<mat-hint>Errors appear instantly!</mat-hint>-->
-            <mat-error *ngIf="personneForm.get('nom')!.errors &&
-            personneForm.get('nom')!.hasError('required')">
-              Le nom est <strong>obligatoire</strong>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="full-width" appearance="legacy">
-            <mat-label>Prénom</mat-label>
-            <input type="text" matInput required formControlName="prenom" placeholder="Dupont">
-            <!--            <mat-hint>Errors appear instantly!</mat-hint>-->
-            <mat-error *ngIf="personneForm.get('prenom')!.errors &&
-            personneForm.get('prenom')!.hasError('required')">
-              Le prénom est <strong>obligatoire</strong>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-button class="material-icons blue" [disabled]="!personneForm.valid">
-      <mat-icon>done</mat-icon>
-    </button>
-    <button mat-button class="material-icons red" [routerLink]="['/personne/liste-personne']">
-      <mat-icon>cancel</mat-icon>
-    </button>
-  </mat-card-actions>
-</mat-card>
-</form>
+  <mat-grid-list cols="1" rowHeight="4rem">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="legacy" class="full-width">
+        <mat-label>Nom</mat-label>
+        <input formControlName="nom" matInput placeholder="Dupont" required type="text">
+        <mat-error *ngIf="personneForm.get('nom')!.errors &&
+               personneForm.get('nom')!.hasError('required')">
+          Le nom est <strong>obligatoire</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="4rem">
+    <mat-grid-tile>
+      <mat-form-field appearance="legacy" class="full-width">
+        <mat-label>Prénom</mat-label>
+        <input formControlName="prenom" matInput placeholder="Dupont" required type="text">
+        <mat-error *ngIf="personneForm.get('prenom')!.errors &&
+               personneForm.get('prenom')!.hasError('required')">
+          Le prénom est <strong>obligatoire</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="4rem">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-form-field appearance="legacy" class="full-width">
+        <mat-label>Sélectionner un identifiant</mat-label>
+        <mat-select formControlName="categorie" matNativeControl required>
+          <mat-option *ngFor="let p of elementsCategorie" [value]="p.id">
+            {{ p.nom }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="personneForm.get('categorie')!.errors &&
+               personneForm.get('categorie')!.hasError('required')">
+          L'identifiant est <strong>obligatoire</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button [disabled]="!personneForm.valid" class="material-icons blue" mat-button>
+    <mat-icon>done</mat-icon>
+  </button>
+  <button (click)="close()" class="material-icons red" mat-button>
+    <mat-icon>cancel</mat-icon>
+  </button>
+</mat-dialog-actions>
