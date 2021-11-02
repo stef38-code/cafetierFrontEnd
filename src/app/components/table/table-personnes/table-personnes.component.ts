@@ -9,10 +9,10 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Observable} from "rxjs";
 import {SystemSelector} from "../../../shared/state/selectors/system";
-import {PersonneAction} from "../../../shared/state/actions/personne-action";
+import {CollectionPersonneAction} from "../../../shared/state/actions/collection-personnes-action";
 import {Ticket} from "../../../shared/state/model/ticket";
 import {Lien} from "../../../shared/state/model/lien";
-import {PersonneSelector} from "../../../shared/state/selectors/personne";
+import {CollectionPersonneSelector} from "../../../shared/state/selectors/collection-personnes";
 import {DialoguePersonneComponent} from "../../dialogue/dialogue-personne/dialogue-personne.component";
 
 @Component({
@@ -39,10 +39,10 @@ export class TablePersonnesComponent implements OnInit {
 
   constructor(private store: Store<ApplicationStore.State>,
               private dialog: MatDialog) {
-    this.personneEntitiesStore$ = store.select(PersonneSelector.getPersonneEntites);
+    this.personneEntitiesStore$ = store.select(CollectionPersonneSelector.getPersonneEntites);
     this.systemStore$ = store.select(SystemSelector.getSystemLoading);
     //
-    this.personneEntitiesStore$.subscribe(res => this.dataSource = new MatTableDataSource<Personne>(res));
+    this.personneEntitiesStore$.subscribe(res => this.dataSource.data = res);
     this.systemStore$.subscribe(res => this.isLoading = res);
     /*    this.dataSource = new MatTableDataSource<Personne>(this.data);*/
     this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
@@ -51,9 +51,9 @@ export class TablePersonnesComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    //this.store.dispatch(new PersonneAction.Load());
+    this.store.dispatch(new CollectionPersonneAction.Load());
     this.selection.clear();
-
+    this.translate();
   }
 
   applyFilter(event: Event) {
@@ -118,7 +118,7 @@ export class TablePersonnesComponent implements OnInit {
   }
 
   editerPersonne(row: Personne) {
-    this.store.dispatch(new PersonneAction.editerAction(row.id));
+    this.store.dispatch(new CollectionPersonneAction.editerAction(row.id));
     this.editDialoguePersonne();
   }
 
@@ -127,9 +127,9 @@ export class TablePersonnesComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '25ems';
-    dialogConfig.height = '10ems';
-
+    /*    dialogConfig.width = 'auto';
+        dialogConfig.height = 'auto';
+        dialogConfig.*/
     /*   {
          19:        width: '50%',
          20:        height: '50%',
@@ -145,5 +145,19 @@ export class TablePersonnesComponent implements OnInit {
       val => console.log("Dialog output:", val)
     );
 
+  }
+
+  getNomCategorie(row: Personne): string {
+    if (row.categorie) return row.categorie.nom;
+
+    return 'N/A';
+  }
+
+  private translate() {
+    this.paginator._intl.itemsPerPageLabel = 'Items par page';
+    this.paginator._intl.nextPageLabel = 'Page suivante';
+    this.paginator._intl.previousPageLabel = 'Page précédente';
+    this.paginator._intl.firstPageLabel = 'Première page';
+    this.paginator._intl.lastPageLabel = 'Dernière page';
   }
 }

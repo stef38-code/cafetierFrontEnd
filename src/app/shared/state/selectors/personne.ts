@@ -1,29 +1,22 @@
 import {createSelector} from "reselect";
 import {RootSelector} from "./root";
 import {ApplicationStore} from "../reducers";
-import {PersonneStore} from "../store/personne";
 import {Categorie} from "../model/categorie";
+import {PersonneStore} from "../store/personne";
 
 export namespace PersonneSelector {
   /**
    * ---> personnes
    */
-  export const getPersonnes = createSelector(RootSelector.getRootState, (state: ApplicationStore.State) => state.personnes);
+  export const getPersonne = createSelector(RootSelector.getRootState, (state: ApplicationStore.State) => state.personne);
   /******************************************************************************
    *
    */
-  export const getEntities = (state: PersonneStore.State) => state.entities;
-  export const getSelectedId = (state: PersonneStore.State) => state.selectedId;
-  export const getIds = (state: PersonneStore.State) => state.ids;
+  export const getEntitie = (state: PersonneStore.State) => state.entitie;
 
-  export const getPersonneEntities = createSelector(getPersonnes, getEntities);
-  export const getCollectionPersonneIds = createSelector(getPersonnes, getIds);
-  export const getPersonneEntites = createSelector(getPersonneEntities, getCollectionPersonneIds, (entities, ids) => {
-    return ids.map(id => entities[id]);
-  });
-  export const getSelected = createSelector(getEntities, getSelectedId, (entities, selectedPersonneId) => {
-    if (selectedPersonneId) {
-      return entities[selectedPersonneId];
+  export const getSelected = createSelector(getPersonne, getEntitie, (entitie) => {
+    if (entitie) {
+      return entitie;
     }
     return {
       nom: '',
@@ -35,5 +28,4 @@ export namespace PersonneSelector {
       links: []
     }
   });
-  export const getSelectedPersonne = createSelector(getPersonnes, getSelected);
 }

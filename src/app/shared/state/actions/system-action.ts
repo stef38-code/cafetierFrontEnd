@@ -1,6 +1,4 @@
 import {Action} from '@ngrx/store';
-import {Personne} from "../model/personne";
-import {PersonneTypeAction} from "./personne-type-action";
 import {SystemTypeAction} from "./system-type-action";
 
 export namespace SystemAction {
@@ -12,6 +10,7 @@ export namespace SystemAction {
   export class Stop implements Action {
     public readonly type = SystemTypeAction.STOP;
   }
+
   /**
    *
    */

@@ -4,10 +4,10 @@ import {Personne} from "../../../../shared/state/model/personne";
 import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
-import {PersonneSelector} from "../../../../shared/state/selectors/personne";
+import {CollectionPersonneSelector} from "../../../../shared/state/selectors/collection-personnes";
 import {ApplicationStore} from "../../../../shared/state/reducers";
 import {MatDialogRef} from "@angular/material/dialog";
-import {CategorieSelector} from "../../../../shared/state/selectors/categorie";
+import {CollectionCategorieSelector} from "../../../../shared/state/selectors/collection-categories";
 import {Categorie} from "../../../../shared/state/model/categorie";
 
 @Component({
@@ -40,7 +40,7 @@ export class EditPersonneComponent implements OnInit {
     this.categories = this._formBuilder.control('', Validators.required);
     this.personneForm = this.createFormGroup(_formBuilder);
     //
-    this.personne$ = store.select(PersonneSelector.getSelectedPersonne);
+    this.personne$ = store.select(CollectionPersonneSelector.getSelectedPersonne);
     this.personne$.subscribe(res => {
       console.log("categorie:", res.categorie.id);
       this.personneForm.patchValue({
@@ -49,7 +49,7 @@ export class EditPersonneComponent implements OnInit {
         categorie: res.categorie.id
       });
     });
-    this.categorieObservable$ = store.select(CategorieSelector.getCategorieEntites);
+    this.categorieObservable$ = store.select(CollectionCategorieSelector.getCategorieEntites);
     this.categorieObservable$.subscribe(res => {
       this.elementsCategorie = res;
     });

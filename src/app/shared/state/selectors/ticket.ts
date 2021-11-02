@@ -1,37 +1,28 @@
 import {createSelector} from "reselect";
 import {RootSelector} from "./root";
 import {ApplicationStore} from "../reducers";
-import {PersonneStore} from "../store/personne";
-import {TicketStore} from "../store/Ticket";
+import {TicketStore} from "../store/ticket";
 
 export namespace TicketSelector {
   /**
    * ---> tickets
    */
-  export const getTickets = createSelector(RootSelector.getRootState, (state: ApplicationStore.State) => state.tickets);
+  export const getTicket = createSelector(RootSelector.getRootState, (state: ApplicationStore.State) => state.ticket);
   /******************************************************************************
    *
    */
-  export const getEntities = (state: TicketStore.State) => state.entities;
-  export const getSelectedId = (state: TicketStore.State) => state.selectedId;
-  export const getIds = (state: TicketStore.State) => state.ids;
-
-  export const getTicketEntities = createSelector(getTickets, getEntities);
-  export const getCollectionTicketIds = createSelector(getTickets, getIds);
-  export const getTicketEntites = createSelector(getTicketEntities, getCollectionTicketIds, (entities, ids) => {
-    return ids.map(id => entities[id]);
-  });
-  export const getSelected = createSelector(getEntities, getSelectedId, (entities, selectedId) => {
-    if (selectedId) {
-      return entities[selectedId];
+  export const getEntitie = (state: TicketStore.State) => state.entitie;
+  export const getTicketSelected = createSelector(getTicket, getEntitie);
+  export const getSelected = createSelector(getTicket, getEntitie, (entitie) => {
+    if (entitie) {
+      return entitie;
     }
     return {
       id: '',
-      montant:'',
-      numero:'',
+      montant: '',
+      numero: '',
       personne: null,
       links: []
     }
   });
-  export const getSelectedPersonne = createSelector(getTickets, getSelected);
 }

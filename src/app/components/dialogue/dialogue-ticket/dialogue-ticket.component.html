@@ -1,1 +1,36 @@
-<p>dialogue-ticket works!</p>
+<h2 mat-dialog-title>Edition d'un ticket</h2>
+<mat-dialog-content [formGroup]="editForm">
+  <mat-grid-list cols="1" rowHeight="60px">
+    <mat-grid-tile>
+      <mat-form-field appearance="standard">
+
+        <input formControlName="numero"
+               matInput
+               placeholder="numero">
+
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field appearance="standard">
+
+        <input formControlName="montant"
+               matInput
+               placeholder="montant">
+
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+
+  <button (click)="close()"
+          class="mat-raised-button mat-warn material-icons white">
+    <mat-icon inline=true>cancel</mat-icon>
+  </button>
+
+  <button (click)="save()" [disabled]="!editForm.valid"
+          class="mat-raised-button mat-primary material-icons white">
+    <mat-icon inline=true>done</mat-icon>
+  </button>
+
+</mat-dialog-actions>

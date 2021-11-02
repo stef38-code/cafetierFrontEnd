@@ -15,4 +15,16 @@ export class CategorieHttpService {
   lister(): Observable<Categorie[]> {
     return this.httpclient.get<Categorie[]>(this.ApiURL);
   }
+
+  add(categorie: any): Observable<Categorie> {
+    const headers = {'content-type': 'application/json'};
+    const body = JSON.stringify(categorie.payload);
+    console.log("const body", body);
+    return this.httpclient.post<Categorie>(this.ApiURL, body, {'headers': headers});
+  }
+
+  delete(href: string): Observable<any> {
+    const headers = {'content-type': 'application/json'};
+    return this.httpclient.delete<Categorie>(href, {'headers': headers});
+  }
 }

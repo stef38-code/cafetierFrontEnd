@@ -7,8 +7,8 @@ import {ActivatedRoute} from "@angular/router";
 import {Store} from "@ngrx/store";
 import {ApplicationStore} from "../../../shared/state/reducers";
 import {MatDialogRef} from "@angular/material/dialog";
-import {PersonneSelector} from "../../../shared/state/selectors/personne";
-import {CategorieSelector} from "../../../shared/state/selectors/categorie";
+import {CollectionPersonneSelector} from "../../../shared/state/selectors/collection-personnes";
+import {CollectionCategorieSelector} from "../../../shared/state/selectors/collection-categories";
 import {MatTableDataSource} from "@angular/material/table";
 import {Ticket} from "../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -25,9 +25,12 @@ export class DialoguePersonneComponent implements OnInit {
   dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
   selection = new SelectionModel<Ticket>(true, []);
   allowMultiSelect: boolean = true;
+
+  @Input() displayedColumns: string[] = ['numero', 'montant', 'action'];
+
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
-  @Input() displayedColumns: string[] = ['numero', 'montant', 'action'];
+
 
   personneForm: FormGroup;
   personne$: Observable<Personne>;
@@ -37,23 +40,20 @@ export class DialoguePersonneComponent implements OnInit {
   private prenom: FormControl;
   private categories: FormControl;
   private categorieObservable$: Observable<Categorie[]>;
-  private sub: any;
-  private order: string = '';
-  private url: string = '';
 
   constructor(private route: ActivatedRoute,
               private _formBuilder: FormBuilder,
               private store: Store<ApplicationStore.State>,
               @Optional() private dialogRef: MatDialogRef<DialoguePersonneComponent>
   ) {
-    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
+
 
     this.nom = this._formBuilder.control('nom', Validators.required);
     this.prenom = this._formBuilder.control('', Validators.required);
     this.categories = this._formBuilder.control('', Validators.required);
     this.personneForm = this.createFormGroup(_formBuilder);
     //
-    this.personne$ = store.select(PersonneSelector.getSelectedPersonne);
+    this.personne$ = store.select(CollectionPersonneSelector.getSelectedPersonne);
     this.personne$.subscribe(res => {
       this.dataSource.data = res.tickets;
       this.personneForm.patchValue({
@@ -62,10 +62,11 @@ export class DialoguePersonneComponent implements OnInit {
         categorie: res.categorie.id
       });
     });
-    this.categorieObservable$ = store.select(CategorieSelector.getCategorieEntites);
+    this.categorieObservable$ = store.select(CollectionCategorieSelector.getCategorieEntites);
     this.categorieObservable$.subscribe(res => {
       this.elementsCategorie = res;
     });
+    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
   }
 
   createFormGroup(formBuilder: FormBuilder) {
@@ -82,7 +83,9 @@ export class DialoguePersonneComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.selection.clear();
   }
 
   save() {
@@ -123,5 +126,6 @@ export class DialoguePersonneComponent implements OnInit {
 
 
   }
+
 }
 

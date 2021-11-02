@@ -7,12 +7,16 @@ export namespace SystemReducer {
     switch (action.type) {
       case SystemTypeAction.START: {
         return {
-          loading: true
+          loading: true,
+          erreurMessage: '',
+          erreurTitre: ''
         };
       }
       case SystemTypeAction.STOP: {
         return {
-          loading: false
+          loading: false,
+          erreurMessage: '',
+          erreurTitre: ''
         };
       }
       default: {

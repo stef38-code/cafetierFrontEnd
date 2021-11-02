@@ -24,8 +24,12 @@
       </ng-container>
       <!-- identifiant -->
       <ng-container matColumnDef="categorie">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
-        <td *matCellDef="let row" mat-cell> {{row.categorie.nom}} </td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Catégorie</th>
+        <td *matCellDef="let row" mat-cell>
+          <!-- <ng-container *ngIf="row.categorie != null;">{{row.categorie.nom || 'N/A'}} </ng-container>
+           <ng-container *ngIf="row.categorie == null;">{{getNomCategorie(row)}}</ng-container>-->
+          {{getNomCategorie(row)}}
+        </td>
       </ng-container>
       <!-- Nom -->
       <ng-container matColumnDef="nom">
@@ -35,7 +39,7 @@
 
       <!-- Prenom -->
       <ng-container matColumnDef="prenom">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Prenom</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Prénom</th>
         <td *matCellDef="let row" mat-cell> {{row.prenom}}</td>
       </ng-container>
 
@@ -67,6 +71,6 @@
       </tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" aria-label="Sélectionnez une page"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[ 10, 25, 100, 200]" aria-label="Sélectionnez une page"></mat-paginator>
   </div>
 </div>

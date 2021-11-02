@@ -1,7 +1,6 @@
 import {createSelector} from "reselect";
 import {RootSelector} from "./root";
 import {ApplicationStore} from "../reducers";
-import {PersonneStore} from "../store/personne";
 import {SystemStore} from "../store/system";
 
 export namespace SystemSelector {

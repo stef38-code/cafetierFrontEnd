@@ -8,10 +8,11 @@ import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {ApplicationStore} from "../../../shared/state/reducers";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {CategorieSelector} from "../../../shared/state/selectors/categorie";
+import {CollectionCategorieSelector} from "../../../shared/state/selectors/collection-categories";
 import {Ticket} from "../../../shared/state/model/ticket";
 import {Lien} from "../../../shared/state/model/lien";
-import {EditCategorieComponent} from "../../pages/categorie/edit-categorie/edit-categorie.component";
+import {CategorieAction} from "../../../shared/state/actions/categorie-action";
+import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dialogue-categorie.component";
 
 @Component({
   selector: 'app-table-categories',
@@ -31,12 +32,18 @@ export class TableCategoriesComponent implements OnInit {
 
   private categorieEntitiesStore$: Observable<Categorie[]>;
 
-  constructor(private store: Store<ApplicationStore.State>, private dialog: MatDialog) {
-    this.categorieEntitiesStore$ = store.select(CategorieSelector.getCategorieEntites);
+  constructor(private store: Store<ApplicationStore.State>,
+              private dialog: MatDialog) {
+    this.categorieEntitiesStore$ = store.select(CollectionCategorieSelector.getCategorieEntites);
     //
-    this.categorieEntitiesStore$.subscribe(res => this.dataSource = new MatTableDataSource<Categorie>(res));
-    this.selection = new SelectionModel<Categorie>(this.allowMultiSelect, this.dataSource.data, false);
-
+    /*this.categorieEntitiesStore$.subscribe(res => this.dataSource = new MatTableDataSource<Categorie>(res));*/
+    this.categorieEntitiesStore$.subscribe(res => {
+      console.log("=========================  Update des Catégories ====================================");
+      this.dataSource.data = res;
+      //this.changeDetectorRefs.markForCheck();
+    });
+    this.selection = new SelectionModel<Categorie>(this.allowMultiSelect, this.dataSource.data, true);
+//this.translate();
   }
 
   ngOnInit(): void {
@@ -99,13 +106,12 @@ export class TableCategoriesComponent implements OnInit {
 
   editCategorie(row: Categorie) {
     const dialogConfig = new MatDialogConfig<Categorie>();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    dialogConfig.data = row;
-
-    const dialogRef = this.dialog.open(EditCategorieComponent,
+    //dialogConfig.data = row;
+    this.store.dispatch(new CategorieAction.Load(row));
+    const dialogRef = this.dialog.open(DialogueCategorieComponent,
       dialogConfig);
 
 
@@ -113,5 +119,31 @@ export class TableCategoriesComponent implements OnInit {
       val => console.log("Dialog output:", val)
     );
 
+  }
+
+  supprimerCategorie(categorie: Categorie) {
+    if (window.confirm('êtes-vous sûr de supprimer '.concat(categorie.nom, " ", categorie.libelle, " ?"))) {
+      this.suppression(categorie);
+    }
+  }
+
+  private translate() {
+    this.paginator._intl.itemsPerPageLabel = 'Items par page';
+    this.paginator._intl.nextPageLabel = 'Page suivante';
+    this.paginator._intl.previousPageLabel = 'Page précédente';
+    this.paginator._intl.firstPageLabel = 'Première page';
+    this.paginator._intl.lastPageLabel = 'Dernière page';
+  }
+
+  private suppression(categorie: Categorie) {
+    let links: Lien[] = categorie.links;
+    let find: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
+    if (find) {
+      this.store.dispatch(new CategorieAction.Delete(categorie));
+      /*console.log("url delete:".concat(find.href))
+      this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
+        this.dataSource.data = response;
+      });*/
+    }
   }
 }
