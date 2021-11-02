@@ -50,6 +50,10 @@ import {TablePersonnesComponent} from './components/table/table-personnes/table-
 import {DialoguePersonneComponent} from './components/dialogue/dialogue-personne/dialogue-personne.component';
 import {DialogueTicketComponent} from './components/dialogue/dialogue-ticket/dialogue-ticket.component';
 import {DialogueCategorieComponent} from './components/dialogue/dialogue-categorie/dialogue-categorie.component';
+import {CategorieEffectsEffects} from './shared/state/effects/categorie-effects.effects';
+import {PersonneEffectsEffects} from './shared/state/effects/personne-effects.effects';
+import {TicketEffectsEffects} from './shared/state/effects/ticket-effects.effects';
+import {DialogueErrorComponent} from './components/dialogue/dialogue-error/dialogue-error.component';
 import reducer = ApplicationStore.reducer;
 
 const modules = [
@@ -96,12 +100,13 @@ const modules = [
     DialoguePersonneComponent,
     DialogueTicketComponent,
     DialogueCategorieComponent,
+    DialogueErrorComponent,
   ],
   imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
     StoreModule.forRoot({reducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([CollectionPersonneEffects]),
-    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects]), MatProgressSpinnerModule, MatDialogModule,
+    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects, CategorieEffectsEffects, PersonneEffectsEffects, TicketEffectsEffects]), MatProgressSpinnerModule, MatDialogModule,
   ],
   exports: [...modules],
   providers: [{

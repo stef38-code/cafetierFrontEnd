@@ -7,8 +7,11 @@ import {MatSort} from "@angular/material/sort";
 import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {ApplicationStore} from "../../../shared/state/reducers";
-import {TicketSelector} from "../../../shared/state/selectors/ticket";
+import {CollectionTicketSelector} from "../../../shared/state/selectors/collection-tickets";
+import {CollectionTicketAction} from "../../../shared/state/actions/collection-tickets-action";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {TicketAction} from "../../../shared/state/actions/ticket-action";
+import {DialogueTicketComponent} from "../../dialogue/dialogue-ticket/dialogue-ticket.component";
 
 @Component({
   selector: 'app-table-tickets',
@@ -31,17 +34,19 @@ export class TableTicketsComponent implements OnInit {
 
   private ticketEntitiesStore$: Observable<Ticket[]>;
 
-  constructor(private store: Store<ApplicationStore.State>) {
-    this.ticketEntitiesStore$ = store.select(TicketSelector.getTicketEntites);
+  constructor(private store: Store<ApplicationStore.State>,
+              private dialog: MatDialog) {
+    this.ticketEntitiesStore$ = store.select(CollectionTicketSelector.getTicketEntites);
     //
     this.ticketEntitiesStore$.subscribe(res => this.dataSource.data = res);
     this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
+    //this.translate();
   }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.store.dispatch(new TicketAction.Load());
+    this.store.dispatch(new CollectionTicketAction.Load());
     this.selection.clear();
   }
 
@@ -71,5 +76,36 @@ export class TableTicketsComponent implements OnInit {
   openDialog(update: string, ticket: Ticket) {
 
 
+  }
+
+  isAffecte(row: Ticket): boolean {
+    if (row.personne && row.personne.nom && row.personne.prenom) {
+      return true;
+    }
+    return false;
+  }
+
+  editDialog(row: Ticket) {
+    const dialogConfig = new MatDialogConfig<Ticket>();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //dialogConfig.data = row;
+    this.store.dispatch(new TicketAction.Load(row));
+    const dialogRef = this.dialog.open(DialogueTicketComponent,
+      dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(
+      val => console.log("Dialog output:", val)
+    );
+  }
+
+  private translate() {
+    this.paginator._intl.itemsPerPageLabel = 'Items par page';
+    this.paginator._intl.nextPageLabel = 'Page suivante';
+    this.paginator._intl.previousPageLabel = 'Page précédente';
+    this.paginator._intl.firstPageLabel = 'Première page';
+    this.paginator._intl.lastPageLabel = 'Dernière page';
   }
 }

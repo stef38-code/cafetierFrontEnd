@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {HttpClient} from "@angular/common/http";
-import {PersonneTypeAction} from "../actions/personne-type-action";
-import {PersonneAction} from "../actions/personne-action";
+import {CollectionPersonnesTypesActions} from "../actions/collection-personnes-types-actions";
+import {CollectionPersonneAction} from "../actions/collection-personnes-action";
 import {map, tap} from "rxjs/operators";
 import {Personne} from "../model/personne";
 import {PersonneHttpService} from "../../services/personne-http.service";
@@ -15,7 +15,7 @@ import {SystemAction} from "../actions/system-action";
 export class CollectionPersonneEffects {
   effectLoadSuccessPersonne$ = createEffect(
     () => this.action$.pipe(
-      ofType(PersonneTypeAction.LOAD_SUCCESS_ACTION),
+      ofType(CollectionPersonnesTypesActions.LOAD_SUCCESS_ACTION),
       tap((payload) => console.log('Action LOAD_SUCCESS_ACTION Dispatched', payload))
     ),
     {dispatch: false}
@@ -23,12 +23,12 @@ export class CollectionPersonneEffects {
   private httpPersonne: PersonneHttpService;
   effectLoadPersonne$ = createEffect(
     () => this.action$.pipe(
-      ofType(PersonneTypeAction.LOAD),
+      ofType(CollectionPersonnesTypesActions.LOAD),
       map(action => {
           this.httpPersonne!.lister().subscribe(
             (r: Personne[]) => {
               this.store.dispatch(new SystemAction.Start());
-              this.store.dispatch(new PersonneAction.LoadSuccessAction(r));
+              this.store.dispatch(new CollectionPersonneAction.LoadSuccessAction(r));
               this.store.dispatch(new SystemAction.Stop());
             },
             e => console.log("error chargement des personne", e)

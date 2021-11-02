@@ -103,9 +103,43 @@ mat-card
   width: 100%;
 }
 
+.my-width {
+  width: 450px !important;
+}
+
 /**
 bouton des dialogs
  */
+.mat- dialog- container {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.mat-dialog-container > * {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-dialog-content {
+  max-height: inherit !important;
+}
+
 .mat-dialog-actions {
+  display: block !important;
+  flex-grow: inherit;
+  flex-shrink: inherit;
+  padding: 12px 0 0 !important;
   justify-content: flex-end;
 }
+
+.dialog-headline {
+  font-weight: 500;
+  margin: -1em -1em 0;
+  padding: 1em;
+  text-align: center;
+  font-size: 1.5em;
+  background-color: darkgrey;
+  color: white;
+  border: solid;
+}
+

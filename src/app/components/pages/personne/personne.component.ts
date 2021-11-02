@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {PersonneAction} from "../../../shared/state/actions/personne-action";
+import {CollectionPersonneAction} from "../../../shared/state/actions/collection-personnes-action";
 import {Store} from "@ngrx/store";
 import {ApplicationStore} from "../../../shared/state/reducers";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Personne} from "../../../shared/state/model/personne";
-import {EditPersonneComponent} from "./edit-personne/edit-personne.component";
+import {DialoguePersonneComponent} from "../../dialogue/dialogue-personne/dialogue-personne.component";
 
 @Component({
   selector: 'app-personne',
@@ -21,16 +21,26 @@ export class PersonneComponent implements OnInit {
   }
 
   newPersonne() {
-    this.store.dispatch(new PersonneAction.editerAction(""));
+    this.store.dispatch(new CollectionPersonneAction.editerAction(""));
   }
 
-  editPersonne() {
+  editDialoguePersonne() {
+    this.store.dispatch(new CollectionPersonneAction.editerAction(''));
     const dialogConfig = new MatDialogConfig<Personne>();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    /*    dialogConfig.width = 'auto';
+        dialogConfig.height = 'auto';
+        dialogConfig.*/
+    /*   {
+         19:        width: '50%',
+         20:        height: '50%',
+         21:        maxWidth: '100vw',
+         22:        maxHeight: '100vh',
+         23:      }*/
 
-    const dialogRef = this.dialog.open(EditPersonneComponent,
+    const dialogRef = this.dialog.open(DialoguePersonneComponent,
       dialogConfig);
 
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Categorie} from "../../../shared/state/model/categorie";
-import {EditCategorieComponent} from "./edit-categorie/edit-categorie.component";
+import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dialogue-categorie.component";
 
 @Component({
   selector: 'app-categorie',
@@ -28,9 +28,9 @@ export class CategorieComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    dialogConfig.data = row;
+    //dialogConfig.data = row;
 
-    const dialogRef = this.dialog.open(EditCategorieComponent,
+    const dialogRef = this.dialog.open(DialogueCategorieComponent,
       dialogConfig);
 
 
