@@ -3,6 +3,7 @@ import {RootSelector} from "./root";
 import {ApplicationStore} from "../reducers";
 import {Categorie} from "../model/categorie";
 import {PersonneStore} from "../store/personne";
+import {Personne} from "../model/personne";
 
 export namespace PersonneSelector {
   /**
@@ -13,7 +14,7 @@ export namespace PersonneSelector {
    *
    */
   export const getEntitie = (state: PersonneStore.State) => state.entitie;
-
+  export const getPersonneSelected = createSelector(getPersonne, getEntitie);
   export const getSelected = createSelector(getPersonne, getEntitie, (entitie) => {
     if (entitie) {
       return entitie;
@@ -26,6 +27,6 @@ export namespace PersonneSelector {
       categorie: {} as Categorie,
       tickets: [],
       links: []
-    }
+    } as Personne;
   });
 }

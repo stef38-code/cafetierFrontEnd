@@ -3,6 +3,18 @@
   max-width: 500px;
   width: 100%;
 }*/
+.mat-form-field {
+  margin-left: 1px;
+}
+
+.mat-form-field {
+  width: 250px;
+}
+
+.mat-table .table {
+  width: 250px;
+}
+
 
 
 

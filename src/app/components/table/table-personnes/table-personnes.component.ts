@@ -14,6 +14,7 @@ import {Ticket} from "../../../shared/state/model/ticket";
 import {Lien} from "../../../shared/state/model/lien";
 import {CollectionPersonneSelector} from "../../../shared/state/selectors/collection-personnes";
 import {DialoguePersonneComponent} from "../../dialogue/dialogue-personne/dialogue-personne.component";
+import {PersonneAction} from "../../../shared/state/actions/personne-action";
 
 @Component({
   selector: 'app-table-personnes',
@@ -118,8 +119,8 @@ export class TablePersonnesComponent implements OnInit {
   }
 
   editerPersonne(row: Personne) {
-    this.store.dispatch(new CollectionPersonneAction.editerAction(row.id));
-    this.editDialoguePersonne();
+    this.store.dispatch(new PersonneAction.Load(row));
+    //this.editDialoguePersonne();
   }
 
   editDialoguePersonne() {
@@ -159,5 +160,12 @@ export class TablePersonnesComponent implements OnInit {
     this.paginator._intl.previousPageLabel = 'Page précédente';
     this.paginator._intl.firstPageLabel = 'Première page';
     this.paginator._intl.lastPageLabel = 'Dernière page';
+  }
+
+  countTicket(row: Personne) {
+    if (row.tickets && row.tickets.length > 0) {
+      return row.tickets.length;
+    }
+    return 0;
   }
 }

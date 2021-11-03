@@ -6,18 +6,19 @@ export namespace TicketReducer {
   export function reducer(state = TicketStore.initialState, action: TicketAction.Actions): TicketStore.State {
     switch (action.type) {
       case TicketTypesActions.LOAD: {
-        return state;
+        return {entitie: action.payload};
       }
       case TicketTypesActions.ADD: {
-        state.entitie = action.payload;
-
-        return state;
+        return {
+          entitie: action.payload
+        };
 
       }
 
       case TicketTypesActions.LOAD_SUCCESS_ACTION: {
-        state.entitie = action.payload;
-        return state;
+        return Object.assign({}, state, {
+          entitie: action.payload
+        });
       }
       case TicketTypesActions.EDIT: {
         return {

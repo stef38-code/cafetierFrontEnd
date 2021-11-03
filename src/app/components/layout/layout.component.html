@@ -1,16 +1,16 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <button mat-icon-button  (click)="drawer.toggle();">
+    <button (click)="drawer.toggle();" mat-icon-button>
       <mat-icon routerLinkActive="active-icon">menu</mat-icon>
     </button>
     <span class="toolbar-spacer "></span>
     <span>Cafeteria</span>
     <span class="toolbar-spacer "></span>
-<!--
+    <!--
 
-    <button  mat-fab color="warn" [routerLink]="['/home']">
-      <mat-icon>home</mat-icon>
-    </button>-->
+        <button  mat-fab color="warn" [routerLink]="['/home']">
+          <mat-icon>home</mat-icon>
+        </button>-->
 
 
     <!--<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
@@ -35,7 +35,7 @@
 
 </mat-toolbar>
 
-<mat-sidenav-container class="sidenav-container" >
+<mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -43,18 +43,23 @@
     [mode]=" 'side'"
     [opened]="isMenuOpen">
 
-    <mat-nav-list >
-      <a [routerLink]="['/personne/liste-personne']" mat-list-item href="#" routerLinkActive="active"><mat-icon routerLinkActive="active-icon">group</mat-icon><span class="ml-5" > Etudiants</span></a>
-      <a [routerLink]="['/ticket/liste-ticket']" mat-list-item href="#" routerLinkActive="active"><mat-icon routerLinkActive="active-icon">euro_symbol</mat-icon><span class="ml-5" > Tickets</span></a>
-      <a [routerLink]="['/categorie/liste-categorie']" mat-list-item href="#" routerLinkActive="active"><mat-icon routerLinkActive="active-icon">school</mat-icon><span class="ml-5" > Catégorie</span></a>
-
+    <mat-nav-list>
+      <a [routerLink]="['/personne/liste-personne']" href="#" mat-list-item routerLinkActive="active">
+        <mat-icon routerLinkActive="active-icon">group</mat-icon>
+        <span class="ml-5"> Etudiants</span></a>
+      <a [routerLink]="['/ticket/liste-ticket']" href="#" mat-list-item routerLinkActive="active">
+        <mat-icon routerLinkActive="active-icon">euro_symbol</mat-icon>
+        <span class="ml-5"> Tickets</span></a>
+      <a [routerLink]="['/categorie/liste-categorie']" href="#" mat-list-item routerLinkActive="active">
+        <mat-icon routerLinkActive="active-icon">school</mat-icon>
+        <span class="ml-5"> Catégorie</span></a>
 
 
     </mat-nav-list>
 
   </mat-sidenav>
 
-  <mat-sidenav-content  [ngStyle]="{ 'margin-left.px': contentMargin }" >
+  <mat-sidenav-content [ngStyle]="{ 'margin-left.px': contentMargin }">
     <div class="main">
       <router-outlet #outlet="outlet"></router-outlet>
     </div>

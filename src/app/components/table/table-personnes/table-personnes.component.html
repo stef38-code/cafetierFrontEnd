@@ -46,13 +46,14 @@
       <!-- Nombre de tickets -->
       <ng-container matColumnDef="nombreTicket">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Nombre Tickets</th>
-        <td *matCellDef="let row" mat-cell> {{row.nombreTicket}} </td>
+        <td *matCellDef="let row" mat-cell> {{countTicket(row) || 0}} </td>
       </ng-container>
       <!-- Action Column -->
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell> Actions</th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button (click)="editerPersonne(row)" [disabled]="isDesactiveEditer(row)" class="material-icons green"
+          <button (click)="editerPersonne(row)" [disabled]="isDesactiveEditer(row)"
+                  [routerLink]="['/personne/edite-personne']" class="material-icons green"
                   mat-fab>
             <mat-icon>history_edu</mat-icon>
           </button>

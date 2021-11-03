@@ -6,7 +6,8 @@ export namespace PersonneReducer {
   export function reducer(state = PersonneStore.initialState, action: PersonneAction.Actions): PersonneStore.State {
     switch (action.type) {
       case PersonneTypesActions.LOAD: {
-        return state;
+        console.log("PersonneTypesActions.LOAD", action.payload);
+        return {entitie: action.payload}
       }
       case PersonneTypesActions.ADD: {
         state.entitie = action.payload;

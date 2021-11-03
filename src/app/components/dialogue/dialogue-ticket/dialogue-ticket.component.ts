@@ -21,6 +21,8 @@ export class DialogueTicketComponent implements OnInit {
   private numero: FormControl;
   private montant: FormControl;
   private id: FormControl;
+  private nom: FormControl;
+  private prenom: FormControl;
   private data: Ticket = {
     montant: 0,
     numero: '',
@@ -40,8 +42,10 @@ export class DialogueTicketComponent implements OnInit {
       this.data = res;
     });
     this.numero = new FormControl('', [Validators.required]);
-    this.montant = new FormControl('', [Validators.required]);
+    this.montant = new FormControl(0, [Validators.required]);
     this.id = new FormControl('');
+    this.nom = new FormControl('');
+    this.prenom = new FormControl('');
     this.editForm = this.createFormGroup(fb);
   }
 
@@ -49,7 +53,9 @@ export class DialogueTicketComponent implements OnInit {
     this.editForm.patchValue({
       numero: this.data.numero,
       montant: this.data.montant,
-      id: this.data.id
+      id: this.data.id,
+      nom: this.data.personne.nom,
+      prenom: this.data.personne.prenom
     });
   }
 
@@ -58,6 +64,8 @@ export class DialogueTicketComponent implements OnInit {
       montant: this.montant,
       numero: this.numero,
       id: this.id,
+      nom: this.nom,
+      prenom: this.prenom
     })
   }
 
@@ -66,13 +74,13 @@ export class DialogueTicketComponent implements OnInit {
     /*    console.log('save(this.editForm.value)',JSON.stringify(this.editForm.value));
         console.log('save(data)',JSON.stringify(this.data));*/
     const ticket: Ticket = Object.assign({}, this.data, {
+      id: this.montant.value,
       montant: this.montant.value,
-      numero: this.numero.value
+      numero: this.numero.value,
     });
     /*console.log('save(categorie)',JSON.stringify(categorie));*/
 
     this.store.dispatch(new TicketAction.Add(ticket));
-
   }
 
   close() {

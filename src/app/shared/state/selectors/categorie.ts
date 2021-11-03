@@ -6,7 +6,7 @@ import {Categorie} from "../model/categorie";
 
 export namespace CategorieSelector {
   /**
-   * ---> tickets
+   * ---> Categorie
    */
   export const getCategorie = createSelector(RootSelector.getRootState, (state: ApplicationStore.State) => state.categorie);
   /******************************************************************************

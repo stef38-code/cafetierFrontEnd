@@ -13,6 +13,9 @@ export namespace PersonneAction {
 
   export class Load implements Action {
     public readonly type = PersonneTypesActions.LOAD;
+
+    constructor(public payload: Personne) {
+    }
   }
 
   export class LoadSuccessAction implements Action {
