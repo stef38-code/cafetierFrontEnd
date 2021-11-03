@@ -1,6 +1,7 @@
 import {PersonneStore} from "../store/personne";
 import {PersonneAction} from "../actions/personne-action";
 import {PersonneTypesActions} from "../actions/personne-types-actions";
+import {Personne} from "../model/personne";
 
 export namespace PersonneReducer {
   export function reducer(state = PersonneStore.initialState, action: PersonneAction.Actions): PersonneStore.State {
@@ -10,12 +11,16 @@ export namespace PersonneReducer {
         return {entitie: action.payload}
       }
       case PersonneTypesActions.ADD: {
-        state.entitie = action.payload;
-
-        return state;
+        return {entitie: action.payload}
 
       }
+      case PersonneTypesActions.DELETE: {
+        return state;
+      }
+      case PersonneTypesActions.CLEAR: {
+        return {entitie: {} as Personne}
 
+      }
       case PersonneTypesActions.LOAD_SUCCESS_ACTION: {
         state.entitie = action.payload;
         return state;

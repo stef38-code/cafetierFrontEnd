@@ -25,10 +25,24 @@ export namespace PersonneAction {
     }
   }
 
+  export class Delete implements Action {
+    public readonly type = PersonneTypesActions.DELETE;
+
+    constructor(public payload: Personne) {
+    }
+  }
+
   export class LoadFailAction implements Action {
     public readonly type = PersonneTypesActions.LOAD_FAIL_ACTION;
 
     constructor(public payload: Error) {
+    }
+  }
+
+  export class Clear implements Action {
+    public readonly type = PersonneTypesActions.CLEAR;
+
+    constructor() {
     }
   }
 
@@ -45,8 +59,12 @@ export namespace PersonneAction {
   export type Actions =
     Add
     | Load
+    | Delete
+    | Clear
     | LoadSuccessAction
     | LoadFailAction
     | editerAction
     ;
+
+
 }

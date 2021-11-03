@@ -168,4 +168,22 @@ export class TablePersonnesComponent implements OnInit {
     }
     return 0;
   }
+
+  Supprimer(personne: Personne) {
+    if (window.confirm('êtes-vous sûr de supprimer '.concat(personne.nom, " ", personne.prenom, " ?"))) {
+      this.suppression(personne);
+    }
+  }
+
+  private suppression(personne: Personne) {
+    let links: Lien[] = personne.links;
+    let find: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
+    if (find) {
+      this.store.dispatch(new PersonneAction.Delete(personne));
+      /*console.log("url delete:".concat(find.href))
+      this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
+        this.dataSource.data = response;
+      });*/
+    }
+  }
 }

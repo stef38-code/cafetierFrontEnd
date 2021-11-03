@@ -1,8 +1,10 @@
 <form (ngSubmit)="submitPersonne()" [formGroup]="personneForm">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm">
-        <!---->
+  <mat-card>
+    <mat-card-content>
+
+
+      <mat-card fxLayout fxLayoutGap="5px">
+        <!--<mat-card>-->
         <mat-form-field appearance="standard">
           <mat-label>Nom</mat-label>
           <input formControlName="nom" matInput placeholder="Dupont" required type="text">
@@ -11,25 +13,18 @@
             Le nom est <strong>obligatoire</strong>
           </mat-error>
         </mat-form-field>
-        <!---->
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm">
-        <!---->
-        <mat-form-field appearance="standard" class="full-width">
+        <!--</mat-card>
+        <mat-card>-->
+        <mat-form-field appearance="standard">
           <mat-label>Prénom</mat-label>
           <input formControlName="prenom" matInput placeholder="Dupont" required type="text">
           <mat-error *ngIf="personneForm.get('prenom')!.errors &&
-               personneForm.get('prenom')!.hasError('required')">
+              personneForm.get('prenom')!.hasError('required')">
             Le prénom est <strong>obligatoire</strong>
           </mat-error>
         </mat-form-field>
-        <!---->
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm">
+        <!-- </mat-card>
+         <mat-card>-->
         <mat-form-field appearance="standard" class="full-width">
           <mat-label>Sélectionner un identifiant</mat-label>
           <mat-select formControlName="categorie" matNativeControl required>
@@ -38,122 +33,262 @@
             </mat-option>
           </mat-select>
           <mat-error *ngIf="personneForm.get('categorie')!.errors &&
-               personneForm.get('categorie')!.hasError('required')">
+              personneForm.get('categorie')!.hasError('required')">
             L'identifiant est <strong>obligatoire</strong>
           </mat-error>
         </mat-form-field>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div>
-      <div style="display: compact; margin: 1px">
-        <mat-form-field appearance="standard">
-          <mat-label>Filter</mat-label>
-          <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
-        </mat-form-field>
-
-        <div class="mat-elevation-z6">
-          <table [dataSource]="dataSource" mat-table matSort>
-            <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
-              <th *matHeaderCellDef mat-header-cell>
-                <mat-checkbox (change)="$event ? masterToggle() : null"
-                              [checked]="selection.hasValue() && isAllSelected()"
-                              [indeterminate]="selection.hasValue() && !isAllSelected()">
-                </mat-checkbox>
-              </th>
-              <td *matCellDef="let row" mat-cell>
-                <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                              (click)="$event.stopPropagation()"
-                              [checked]="selection.isSelected(row)">
-                </mat-checkbox>
-              </td>
-            </ng-container>
-            <!-- identifiant -->
-            <ng-container matColumnDef="numero">
-              <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
-              <td *matCellDef="let row" mat-cell> {{row.numero}} </td>
-            </ng-container>
-            <!-- Nom -->
-            <ng-container matColumnDef="montant">
-              <th *matHeaderCellDef mat-header-cell mat-sort-header>Montant</th>
-              <td *matCellDef="let row" mat-cell> {{row.montant}} </td>
-            </ng-container>
-            <!-- Action Column -->
-            <ng-container matColumnDef="action">
-              <th *matHeaderCellDef mat-header-cell> Actions</th>
-              <td *matCellDef="let row" class="action-link" mat-cell>
-
-                <button (click)="openDialog('Delete',row)" class="material-icons red" mat-fab>
-                  <mat-icon>star_rate</mat-icon>
-                </button>
-
-              </td>
-            </ng-container>
-            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-
-            <!-- Dans le cas d'une recherche null depuis le filtre -->
-            <tr *matNoDataRow class="mat-row">
-              <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
-            </tr>
-          </table>
-
-          <mat-paginator [pageSizeOptions]="[5]" aria-label="Sélectionnez une page"
-          ></mat-paginator>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <mat-card>
-    <mat-card-content>
-      <mat-grid-list cols="3" rowHeight="60px">
-        <mat-grid-tile>
-
-        </mat-grid-tile>
-        <mat-grid-tile>
-
-        </mat-grid-tile>
-        <!---->
-        <mat-grid-tile>
-          <!---->
-          <mat-form-field appearance="standard" class="full-width">
-            <mat-label>Sélectionner un identifiant</mat-label>
-            <mat-select formControlName="categorie" matNativeControl required>
-              <mat-option *ngFor="let p of elementsCategorie" [value]="p.id">
-                {{ p.nom }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="personneForm.get('categorie')!.errors &&
-               personneForm.get('categorie')!.hasError('required')">
-              L'identifiant est <strong>obligatoire</strong>
-            </mat-error>
+        <!--</mat-card>-->
+      </mat-card>
+      <mat-card fxLayout="row" fxLayoutGap="5px">
+        <mat-card class="child-1">
+          <!-- -->
+          <mat-form-field appearance="standard">
+            <mat-label>Filter</mat-label>
+            <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
           </mat-form-field>
-          <!---->
-        </mat-grid-tile>
-      </mat-grid-list>
 
-      <mat-grid-list cols="3">
-        <mat-grid-tile>
+          <div class="mat-elevation-z6">
+            <table [dataSource]="dataSource" mat-table matSort>
+              <ng-container matColumnDef="select">
+                <th *matHeaderCellDef mat-header-cell>
+                  <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </th>
+                <td *matCellDef="let row" mat-cell>
+                  <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                                (click)="$event.stopPropagation()"
+                                [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="numero">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
+                <td *matCellDef="let row" mat-cell> {{row.numero}} </td>
+              </ng-container>
+              <ng-container matColumnDef="montant">
+                <th *matHeaderCellDef mat-header-cell mat-sort-header>Montant</th>
+                <td *matCellDef="let row" mat-cell> {{row.montant}} </td>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <th *matHeaderCellDef mat-header-cell> Actions</th>
+                <td *matCellDef="let row" class="action-link" mat-cell>
 
-        </mat-grid-tile>
-      </mat-grid-list>
+                  <button (click)="openDialog('Delete',row)" class="material-icons red" mat-fab>
+                    <mat-icon>star_rate</mat-icon>
+                  </button>
 
+                </td>
+              </ng-container>
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+              <tr *matNoDataRow class="mat-row">
+                <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+              </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5]" aria-label="Sélectionnez une page"
+            ></mat-paginator>
+          </div>
+          <!-- -->
+
+
+        </mat-card>
+        <mat-card class="child-2"></mat-card>
+        <mat-card class="child-3">3. Children</mat-card>
+      </mat-card>
 
     </mat-card-content>
 
+
     <mat-card-actions align="end">
-      <button [disabled]="!personneForm.valid" class="material-icons blue" mat-button>
+      <button [disabled]="!personneForm.valid" class="material-icons green" mat-button>
         <mat-icon>done</mat-icon>
       </button>
       <button [routerLink]="['/personne/liste-personne']" class="material-icons red" mat-button>
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-card-actions>
+
   </mat-card>
+  <!--<form fxLayout="column" fxLayoutAlign="space-around none">
+
+    <div fxLayout="row" >
+      <mat-form-field class="flex-item">
+        <input matInput type="text" placeholder="FIRSTNAME" formControlName="firstName">
+      </mat-form-field>
+
+      <mat-form-field class="flex-item">
+        <input matInput type="text" placeholder="LASTNAME" formControlName="lastName">
+      </mat-form-field>
+      <mat-form-field class="flex-item">
+        <input matInput  type="text"  placeholder="EMAIL" formControlName="email">
+      </mat-form-field>
+    </div>
+
+    <div>
+
+    </div>
+
+  </form>
+-->
+  <!--<div  fxLayout="column">
+    <div class="row">
+      <div class="col-sm">
+        &lt;!&ndash;&ndash;&gt;
+        <mat-form-field appearance="standard" fxFlex>
+          <mat-label>Nom</mat-label>
+          <input formControlName="nom" matInput placeholder="Dupont" required type="text">
+          <mat-error *ngIf="personneForm.get('nom')!.errors &&
+               personneForm.get('nom')!.hasError('required')">
+            Le nom est <strong>obligatoire</strong>
+          </mat-error>
+        </mat-form-field>
+        &lt;!&ndash;&ndash;&gt;
+      </div>
+    </div>-->
+  <!-- <div class="row">
+     <div class="col-sm">
+       &lt;!&ndash;&ndash;&gt;
+       <mat-form-field appearance="standard" class="full-width">
+         <mat-label>Prénom</mat-label>
+         <input formControlName="prenom" matInput placeholder="Dupont" required type="text">
+         <mat-error *ngIf="personneForm.get('prenom')!.errors &&
+              personneForm.get('prenom')!.hasError('required')">
+           Le prénom est <strong>obligatoire</strong>
+         </mat-error>
+       </mat-form-field>
+       &lt;!&ndash;&ndash;&gt;
+     </div>
+   </div>
+   <div class="row">
+     <div class="col-sm">
+       <mat-form-field appearance="standard" class="full-width">
+         <mat-label>Sélectionner un identifiant</mat-label>
+         <mat-select formControlName="categorie" matNativeControl required>
+           <mat-option *ngFor="let p of elementsCategorie" [value]="p.id">
+             {{ p.nom }}
+           </mat-option>
+         </mat-select>
+         <mat-error *ngIf="personneForm.get('categorie')!.errors &&
+              personneForm.get('categorie')!.hasError('required')">
+           L'identifiant est <strong>obligatoire</strong>
+         </mat-error>
+       </mat-form-field>
+     </div>
+   </div>
+ </div>
+ <div>
+   <div>
+     <div style="display: compact; margin: 1px">
+       <mat-form-field appearance="standard">
+         <mat-label>Filter</mat-label>
+         <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
+       </mat-form-field>
+
+       <div class="mat-elevation-z6">
+         <table [dataSource]="dataSource" mat-table matSort>
+           &lt;!&ndash; Checkbox Column &ndash;&gt;
+           <ng-container matColumnDef="select">
+             <th *matHeaderCellDef mat-header-cell>
+               <mat-checkbox (change)="$event ? masterToggle() : null"
+                             [checked]="selection.hasValue() && isAllSelected()"
+                             [indeterminate]="selection.hasValue() && !isAllSelected()">
+               </mat-checkbox>
+             </th>
+             <td *matCellDef="let row" mat-cell>
+               <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                             (click)="$event.stopPropagation()"
+                             [checked]="selection.isSelected(row)">
+               </mat-checkbox>
+             </td>
+           </ng-container>
+           &lt;!&ndash; identifiant &ndash;&gt;
+           <ng-container matColumnDef="numero">
+             <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
+             <td *matCellDef="let row" mat-cell> {{row.numero}} </td>
+           </ng-container>
+           &lt;!&ndash; Nom &ndash;&gt;
+           <ng-container matColumnDef="montant">
+             <th *matHeaderCellDef mat-header-cell mat-sort-header>Montant</th>
+             <td *matCellDef="let row" mat-cell> {{row.montant}} </td>
+           </ng-container>
+           &lt;!&ndash; Action Column &ndash;&gt;
+           <ng-container matColumnDef="action">
+             <th *matHeaderCellDef mat-header-cell> Actions</th>
+             <td *matCellDef="let row" class="action-link" mat-cell>
+
+               <button (click)="openDialog('Delete',row)" class="material-icons red" mat-fab>
+                 <mat-icon>star_rate</mat-icon>
+               </button>
+
+             </td>
+           </ng-container>
+           <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+           <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+           &lt;!&ndash; Dans le cas d'une recherche null depuis le filtre &ndash;&gt;
+           <tr *matNoDataRow class="mat-row">
+             <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+           </tr>
+         </table>
+
+         <mat-paginator [pageSizeOptions]="[5]" aria-label="Sélectionnez une page"
+         ></mat-paginator>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+ <mat-card>
+   <mat-card-content>
+     <mat-grid-list cols="3" rowHeight="60px">
+       <mat-grid-tile>
+
+       </mat-grid-tile>
+       <mat-grid-tile>
+
+       </mat-grid-tile>
+       &lt;!&ndash;&ndash;&gt;
+       <mat-grid-tile>
+         &lt;!&ndash;&ndash;&gt;
+         <mat-form-field appearance="standard" class="full-width">
+           <mat-label>Sélectionner un identifiant</mat-label>
+           <mat-select formControlName="categorie" matNativeControl required>
+             <mat-option *ngFor="let p of elementsCategorie" [value]="p.id">
+               {{ p.nom }}
+             </mat-option>
+           </mat-select>
+           <mat-error *ngIf="personneForm.get('categorie')!.errors &&
+              personneForm.get('categorie')!.hasError('required')">
+             L'identifiant est <strong>obligatoire</strong>
+           </mat-error>
+         </mat-form-field>
+         &lt;!&ndash;&ndash;&gt;
+       </mat-grid-tile>
+     </mat-grid-list>
+
+     <mat-grid-list cols="3">
+       <mat-grid-tile>
+
+       </mat-grid-tile>
+     </mat-grid-list>
+
+
+   </mat-card-content>
+
+   <mat-card-actions align="end">
+     <button [disabled]="!personneForm.valid" class="material-icons blue" mat-button>
+       <mat-icon>done</mat-icon>
+     </button>
+     <button [routerLink]="['/personne/liste-personne']" class="material-icons red" mat-button>
+       <mat-icon>cancel</mat-icon>
+     </button>
+   </mat-card-actions>
+ </mat-card>-->
 </form>
 
 

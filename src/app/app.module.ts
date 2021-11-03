@@ -54,6 +54,7 @@ import {CategorieEffectsEffects} from './shared/state/effects/categorie-effects.
 import {PersonneEffectsEffects} from './shared/state/effects/personne-effects.effects';
 import {TicketEffectsEffects} from './shared/state/effects/ticket-effects.effects';
 import {DialogueErrorComponent} from './components/dialogue/dialogue-error/dialogue-error.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
 import reducer = ApplicationStore.reducer;
 
 const modules = [
@@ -75,7 +76,8 @@ const modules = [
   HttpClientModule,
   FormsModule,
   ReactiveFormsModule,
-  MatSelectModule
+  MatSelectModule,
+  FlexLayoutModule
 ];
 
 @NgModule({

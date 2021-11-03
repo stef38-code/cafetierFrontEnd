@@ -12,9 +12,64 @@
 }
 
 .mat-table .table {
-  width: 250px;
+  width: 300px;
 }
 
 
+.child-1 {
+  background-color: orange;
+}
+
+.child-2 {
+  background-color: yellow;
+}
+
+.child-3 {
+  background-color: green;
+}
+
+.container {
+  margin: 15px;
+  height: 200px;
+  border: 2px solid red;
+}
 
 
+table {
+  width: 100%;
+  height: 75%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+td, th {
+  width: 25%;
+  text-align: left;
+}
+
+.mat-column-select {
+  flex: 0 0 5% !important;
+  width: 5% !important;
+}
+
+.mat-column-montant {
+  flex: 0 0 5% !important;
+  width: 20% !important;
+}
+
+.mat-column-numero {
+  flex: 0 0 5% !important;
+  width: 20% !important;
+}
+
+.mat-column-actions {
+  flex: 0 0 10% !important;
+  width: 30% !important;
+}

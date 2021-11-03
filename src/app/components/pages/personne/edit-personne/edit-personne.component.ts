@@ -14,6 +14,8 @@ import {SelectionModel} from "@angular/cdk/collections";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {PersonneSelector} from "../../../../shared/state/selectors/personne";
+import {PersonneAction} from "../../../../shared/state/actions/personne-action";
+
 
 @Component({
   selector: 'app-edit-personne',
@@ -44,6 +46,7 @@ export class EditPersonneComponent implements OnInit {
   private url: string = '';
 
   @Output() add = new EventEmitter<Personne>();
+  private data: Personne = {} as Personne;
 
   constructor(private route: ActivatedRoute,
               private _formBuilder: FormBuilder,
@@ -57,7 +60,7 @@ export class EditPersonneComponent implements OnInit {
     //
     this.personne$ = store.select(PersonneSelector.getPersonneSelected);
     this.personne$.subscribe(res => {
-      console.log("edition de la personne", res);
+      this.data = res;
       this.dataSource.data = res.tickets ? res.tickets : [];
       console.log("Ticket de la personne", res.tickets);
       this.personneForm.patchValue({
@@ -84,8 +87,25 @@ export class EditPersonneComponent implements OnInit {
   }
 
   submitPersonne() {
-    const personne: Personne = Object.assign({}, this.personneForm.value);
-    this.add.emit(personne);
+    let categorieObject: Categorie = this.findCategorie(this.categories.value);
+    const personne: Personne = Object.assign({}, this.data, {
+      nom: this.nom.value,
+      prenom: this.prenom.value,
+      categorie: categorieObject,
+    });
+    console.log('save Personne(categorie)', JSON.stringify(personne));
+
+    this.store.dispatch(new PersonneAction.Add(personne));
+  }
+
+  findCategorie(id: string): Categorie {
+    let categorie = this.elementsCategorie.find(obj => {
+      return obj.id === id
+    });
+    if (categorie) {
+      return categorie;
+    }
+    return {} as Categorie;
   }
 
   ngOnInit(): void {
