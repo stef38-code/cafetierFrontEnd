@@ -55,6 +55,8 @@ import {PersonneEffectsEffects} from './shared/state/effects/personne-effects.ef
 import {TicketEffectsEffects} from './shared/state/effects/ticket-effects.effects';
 import {DialogueErrorComponent} from './components/dialogue/dialogue-error/dialogue-error.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {TicketsAffectesComponent} from './components/pages/personne/edit-personne/tickets-affectes/tickets-affectes.component';
+import {TicketsNonAffectesComponent} from './components/pages/personne/edit-personne/tickets-non-affectes/tickets-non-affectes.component';
 import reducer = ApplicationStore.reducer;
 
 const modules = [
@@ -103,6 +105,8 @@ const modules = [
     DialogueTicketComponent,
     DialogueCategorieComponent,
     DialogueErrorComponent,
+    TicketsAffectesComponent,
+    TicketsNonAffectesComponent,
   ],
   imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
     StoreModule.forRoot({reducer}),
