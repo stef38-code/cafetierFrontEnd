@@ -49,7 +49,7 @@ export namespace PersonneAction {
   export class editerAction implements Action {
     public readonly type = PersonneTypesActions.EDIT;
 
-    constructor() {
+    constructor(public payload: Personne) {
     }
   }
 

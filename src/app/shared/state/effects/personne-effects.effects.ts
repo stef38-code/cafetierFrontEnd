@@ -25,10 +25,10 @@ export class PersonneEffectsEffects {
 
           console.log(JSON.stringify(c));
           this.httpPersonne!.add(payload).subscribe(
-            () => {
+            (res) => {
               this.store.dispatch(new SystemAction.Start());
               this.store.dispatch(new CollectionPersonneAction.Load());
-              this.store.dispatch(new PersonneAction.Clear());
+              this.store.dispatch(new PersonneAction.Load(res));
               this.store.dispatch(new SystemAction.Stop());
             });
           return {} as Personne;
@@ -40,6 +40,28 @@ export class PersonneEffectsEffects {
     {dispatch: false}
   );
 
+  /* effectEditCategorie$ = createEffect(
+     () => {
+       return this.actions$.pipe(
+         ofType(PersonneTypesActions.EDIT),
+         map((url:any) => {
+           console.log("edition",JSON.stringify(url));
+           this.httpPersonne!.editer(url.payload).subscribe(
+             (res) => {
+               this.store.dispatch(new SystemAction.Start());
+               this.store.dispatch(new CollectionPersonneAction.Load());
+               console.log("---Personne editable----",JSON.stringify(res));
+               this.store.dispatch(new PersonneAction.Load(res));
+               this.store.dispatch(new SystemAction.Stop());
+             });
+           return {} as Personne;
+         })
+         ,
+         tap((payload: Personne) => console.log('Action Editer Dispatched', payload))
+       );
+     },
+     {dispatch: false}
+   );*/
   constructor(private actions$: Actions,
               private http$: HttpClient,
               private store: Store<ApplicationStore.State>) {

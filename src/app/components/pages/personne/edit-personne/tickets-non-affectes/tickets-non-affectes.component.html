@@ -1,1 +1,51 @@
-<p>tickets-non-affectes works!</p>
+<!-- -->
+<mat-form-field appearance="standard">
+  <mat-label>Filter</mat-label>
+  <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
+</mat-form-field>
+
+<div class="mat-elevation-z6">
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="select">
+      <th *matHeaderCellDef mat-header-cell>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" mat-cell>
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                      (click)="$event.stopPropagation()"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="numero">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
+      <td *matCellDef="let row" mat-cell> {{row.numero}} </td>
+    </ng-container>
+    <ng-container matColumnDef="montant">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Montant</th>
+      <td *matCellDef="let row" mat-cell> {{row.montant}} </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th *matHeaderCellDef mat-header-cell> Actions</th>
+      <td *matCellDef="let row" class="action-link" mat-cell>
+
+        <button (click)="affecter(row)" [disabled]="!idPersonne" class="material-icons green" mat-fab>
+          <mat-icon>add_card</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5]" aria-label="Sélectionnez une page"
+  ></mat-paginator>
+</div>

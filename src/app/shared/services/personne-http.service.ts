@@ -39,6 +39,8 @@ export class PersonneHttpService {
 
   editer(url: string): Observable<Personne> {
     const headers = {'content-type': 'application/json'};
-    return this.httpclient.get<Personne>(url, {'headers': headers})
+    let personneObservable = this.httpclient.get<Personne>(url, {'headers': headers});
+    console.log('http edit personne', personneObservable);
+    return personneObservable;
   }
 }

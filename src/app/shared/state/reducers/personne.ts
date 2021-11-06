@@ -26,9 +26,8 @@ export namespace PersonneReducer {
         return state;
       }
       case PersonneTypesActions.EDIT: {
-        return {
-          entitie: state.entitie,
-        };
+        console.log("PersonneTypesActions.EDIT", action.payload);
+        return {entitie: action.payload};
       }
       default: {
         return state;
