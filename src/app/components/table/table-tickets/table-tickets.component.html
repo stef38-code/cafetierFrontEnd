@@ -60,7 +60,7 @@
           <button (click)="editDialog(row)" class="material-icons green" mat-fab>
             <mat-icon>edit</mat-icon>
           </button>
-          <button *ngIf="isAffecte(row)" class="material-icons red" mat-fab>
+          <button (click)="liberer(row)" *ngIf="isAffecte(row)" class="material-icons red" mat-fab>
             <mat-icon>star_rate</mat-icon>
           </button>
           <button (click)="openDialog('Delete',row)" class="material-icons red" mat-fab>

@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Personne} from "../state/model/personne";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonneHttpService {
 
-  private ApiURL: string = 'http://localhost:8080/personne';
+  private ApiURL: string = environment.hostBackend.concat('personne');
   optionRequete: any = {
     headers: new HttpHeaders({
       'Access-Control-Allow-Origin': '*'

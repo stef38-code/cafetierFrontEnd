@@ -59,16 +59,12 @@ export class DialogueCategorieComponent implements OnInit {
 
   save() {
     this.dialogRef.close(this.editForm.value);
-    /*    console.log('save(this.editForm.value)',JSON.stringify(this.editForm.value));
-        console.log('save(data)',JSON.stringify(this.data));*/
     const categorie: Categorie = Object.assign({}, this.data, {
       nom: this.nom.value,
       libelle: this.description.value
     });
-    /*console.log('save(categorie)',JSON.stringify(categorie));*/
-
     this.store.dispatch(new CategorieAction.Add(categorie));
-
+    this.close();
   }
 
   isDesactiveSave(): boolean {

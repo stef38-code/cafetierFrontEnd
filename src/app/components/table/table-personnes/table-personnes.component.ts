@@ -46,7 +46,7 @@ export class TablePersonnesComponent implements OnInit {
     this.personneEntitiesStore$.subscribe(res => this.dataSource.data = res);
     this.systemStore$.subscribe(res => this.isLoading = res);
     /*    this.dataSource = new MatTableDataSource<Personne>(this.data);*/
-    this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, false);
+    this.selection = new SelectionModel<Personne>(this.allowMultiSelect, this.dataSource.data, true);
   }
 
   ngOnInit(): void {

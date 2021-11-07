@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {Ticket} from "../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -12,6 +12,9 @@ import {CollectionTicketAction} from "../../../shared/state/actions/collection-t
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {TicketAction} from "../../../shared/state/actions/ticket-action";
 import {DialogueTicketComponent} from "../../dialogue/dialogue-ticket/dialogue-ticket.component";
+import {HttpClient} from "@angular/common/http";
+import {TicketHttpService} from "../../../shared/services/ticket-http.service";
+import {Lien} from "../../../shared/state/model/lien";
 
 @Component({
   selector: 'app-table-tickets',
@@ -31,22 +34,30 @@ export class TableTicketsComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
-
   private ticketEntitiesStore$: Observable<Ticket[]>;
+  links: Lien[] = {} as Lien[];
+  private httpTicket: TicketHttpService;
 
   constructor(private store: Store<ApplicationStore.State>,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private http$: HttpClient,
+              private changeDetectorRefs: ChangeDetectorRef) {
     this.ticketEntitiesStore$ = store.select(CollectionTicketSelector.getTicketEntites);
     //
-    this.ticketEntitiesStore$.subscribe(res => this.dataSource.data = res);
-    this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
+    this.ticketEntitiesStore$.subscribe(
+      res => {
+        console.log("Chargement des tickets-----", res);
+        this.dataSource.data = res ? res : [];
+      }
+    );
+    //this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
     //this.translate();
+    this.httpTicket = new TicketHttpService(this.http$);
   }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.store.dispatch(new CollectionTicketAction.Load());
     this.selection.clear();
   }
 
@@ -107,5 +118,15 @@ export class TableTicketsComponent implements OnInit {
     this.paginator._intl.previousPageLabel = 'Page précédente';
     this.paginator._intl.firstPageLabel = 'Première page';
     this.paginator._intl.lastPageLabel = 'Dernière page';
+  }
+
+  liberer(row: Ticket) {
+    let links: Lien[] = row.links;
+    const linkLiberer: Lien | undefined = links.find(link => (link.rel === 'liberer' && link.type === 'DELETE' && link.href.length !== 0));
+    if (linkLiberer) {
+      this.httpTicket!.liberer(linkLiberer.href).unsubscribe();
+      this.store.dispatch(new CollectionTicketAction.Load());
+      this.changeDetectorRefs.detectChanges();
+    }
   }
 }

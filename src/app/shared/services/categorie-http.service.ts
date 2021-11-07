@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Categorie} from "../state/model/categorie";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategorieHttpService {
-  private ApiURL: string = 'http://localhost:8080/categories';
+  private ApiURL: string = environment.hostBackend.concat('categories');
 
   constructor(private httpclient: HttpClient) {
   }

@@ -1,39 +1,30 @@
-<h2 mat-dialog-title>Edition d'une catégorie</h2>
-
-
 <mat-dialog-content [formGroup]="editForm">
-  <mat-grid-list cols="1" rowHeight="60px">
-    <mat-grid-tile>
-      <mat-form-field appearance="standard">
-
-        <input formControlName="nom"
-               matInput
-               placeholder="Nom de la catégorie">
-
-      </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <mat-form-field appearance="standard">
-
-        <input formControlName="description"
-               matInput
-               placeholder="Description">
-
-      </mat-form-field>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <mat-card class="mat-elevation-z0" fxLayout="column" fxLayoutGap="5px">
+    <mat-form-field appearance="standard">
+      <mat-label>Nom de la catégorie</mat-label>
+      <input formControlName="nom"
+             matInput
+             placeholder="Nom de la catégorie">
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Description</mat-label>
+      <input formControlName="description"
+             matInput
+             placeholder="Description">
+    </mat-form-field>
+  </mat-card>
 </mat-dialog-content>
 
 <mat-dialog-actions>
 
   <button (click)="close()"
-          class="mat-raised-button mat-warn material-icons white">
-    <mat-icon inline=true>cancel</mat-icon>
+          class="mat-flat-button mat-warn">
+    Annuler
   </button>
 
   <button (click)="save()" [disabled]="!editForm.valid"
-          class="mat-raised-button mat-primary material-icons white">
-    <mat-icon inline=true>done</mat-icon>
+          class="mat-flat-button mat-primary">
+    Valider
   </button>
 
 </mat-dialog-actions>
