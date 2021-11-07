@@ -1,11 +1,13 @@
-import {Personne} from "../model/personne";
-
 export namespace SystemStore {
 
   export interface State {
-    loading: boolean
+    loading: boolean,
+    erreurTitre: string,
+    erreurMessage: string,
   };
   export const initialState: State = {
-    loading: false
+    loading: false,
+    erreurTitre: '',
+    erreurMessage: '',
   };
 }
