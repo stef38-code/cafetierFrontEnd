@@ -1,45 +1,57 @@
 import {Action} from '@ngrx/store';
-import {Personne} from "../model/personne";
-import {PersonneTypeAction} from "./personne-type-action";
 import {Categorie} from "../model/categorie";
-import {CategorieTypeAction} from "./categorie-type-action";
+import {CategorieTypesActions} from "./categorie-types-actions";
 
 export namespace CategorieAction {
 
   export class Add implements Action {
-    public readonly type =  CategorieTypeAction.ADD;
+    public readonly type = CategorieTypesActions.ADD;
+
+    constructor(public payload: Categorie) {
+    }
+  }
+
+  export class Delete implements Action {
+    public readonly type = CategorieTypesActions.DELETE;
 
     constructor(public payload: Categorie) {
     }
   }
 
   export class Load implements Action {
-    public readonly type =  CategorieTypeAction.LOAD;
+    public readonly type = CategorieTypesActions.LOAD;
+
+    constructor(public payload: Categorie) {
+    }
   }
 
   export class LoadSuccessAction implements Action {
-    public readonly type =  CategorieTypeAction.LOAD_SUCCESS_ACTION;
+    public readonly type = CategorieTypesActions.LOAD_SUCCESS_ACTION;
 
-    constructor(public payload: Categorie[]) {
+    constructor(public payload: Categorie) {
     }
   }
 
   export class LoadFailAction implements Action {
-    public readonly type =  CategorieTypeAction.LOAD_FAIL_ACTION;
+    public readonly type = CategorieTypesActions.LOAD_FAIL_ACTION;
 
     constructor(public payload: Error) {
     }
   }
-  export class editerAction implements Action {
-    public readonly type =  CategorieTypeAction.EDIT;
 
-    constructor(public payload: string) { }
+  export class editerAction implements Action {
+    public readonly type = CategorieTypesActions.EDIT;
+
+    constructor() {
+    }
   }
+
   /**
    *
    */
   export type Actions =
     Add
+    | Delete
     | Load
     | LoadSuccessAction
     | LoadFailAction

@@ -1,50 +1,33 @@
-import {Personne} from '../model/personne';
-import {PersonneAction} from '../actions/personne-action';
-import {PersonneStore} from '../store/personne';
-import {PersonneTypeAction} from "../actions/personne-type-action";
+import {PersonneStore} from "../store/personne";
+import {PersonneAction} from "../actions/personne-action";
+import {PersonneTypesActions} from "../actions/personne-types-actions";
+import {Personne} from "../model/personne";
 
 export namespace PersonneReducer {
   export function reducer(state = PersonneStore.initialState, action: PersonneAction.Actions): PersonneStore.State {
     switch (action.type) {
-      case PersonneTypeAction.LOAD: {
+      case PersonneTypesActions.LOAD: {
+        console.log("PersonneTypesActions.LOAD", action.payload);
+        return {entitie: action.payload}
+      }
+      case PersonneTypesActions.ADD: {
+        return {entitie: action.payload}
+
+      }
+      case PersonneTypesActions.DELETE: {
         return state;
       }
-      case PersonneTypeAction.ADD: {
-        const personne: Personne = action.payload;
-        if (state.ids.indexOf(personne.id) > -1) {
-          return state;
-        }
-        return Object.assign({}, state, {
-          ids: [...state.ids, personne.id],
-          entities: Object.assign({}, state.entities, {
-            [personne.id]: personne
-          }),
-          selectedId: state.selectedId
-        });
-      }
+      case PersonneTypesActions.CLEAR: {
+        return {entitie: {} as Personne}
 
-      case PersonneTypeAction.LOAD_SUCCESS_ACTION: {
-        const personnes = action.payload;
-        const newPersonnes = personnes.filter(personne => !state.entities[personne.id]);
-
-        const newPersonneIds = newPersonnes.map(personne => personne.id);
-        const newPersonneEntities = newPersonnes.reduce((entities: { [id: string]: Personne }, personne: Personne) => {
-          return Object.assign(entities, {
-            [personne.id]: personne
-          });
-        }, {});
-        return {
-          ids: [...state.ids, ...newPersonneIds],
-          entities: Object.assign({}, state.entities, newPersonneEntities),
-          selectedId: state.selectedId
-        };
       }
-      case PersonneTypeAction.EDIT: {
-        return {
-          ids: state.ids,
-          entities: state.entities,
-          selectedId: action.payload
-        };
+      case PersonneTypesActions.LOAD_SUCCESS_ACTION: {
+        state.entitie = action.payload;
+        return state;
+      }
+      case PersonneTypesActions.EDIT: {
+        console.log("PersonneTypesActions.EDIT", action.payload);
+        return {entitie: action.payload};
       }
       default: {
         return state;

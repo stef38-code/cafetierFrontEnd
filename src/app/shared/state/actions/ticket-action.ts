@@ -1,40 +1,44 @@
 import {Action} from '@ngrx/store';
-import {Personne} from "../model/personne";
-import {PersonneTypeAction} from "./personne-type-action";
 import {Ticket} from "../model/ticket";
-import {TicketTypeAction} from "./ticket-type-action";
+import {TicketTypesActions} from "./ticket-types-actions";
 
 export namespace TicketAction {
 
   export class Add implements Action {
-    public readonly type = TicketTypeAction.ADD;
+    public readonly type = TicketTypesActions.ADD;
 
     constructor(public payload: Ticket) {
     }
   }
 
   export class Load implements Action {
-    public readonly type = TicketTypeAction.LOAD;
+    public readonly type = TicketTypesActions.LOAD;
+
+    constructor(public payload: Ticket) {
+    }
   }
 
   export class LoadSuccessAction implements Action {
-    public readonly type = TicketTypeAction.LOAD_SUCCESS_ACTION;
+    public readonly type = TicketTypesActions.LOAD_SUCCESS_ACTION;
 
-    constructor(public payload: Ticket[]) {
+    constructor(public payload: Ticket) {
     }
   }
 
   export class LoadFailAction implements Action {
-    public readonly type = TicketTypeAction.LOAD_FAIL_ACTION;
+    public readonly type = TicketTypesActions.LOAD_FAIL_ACTION;
 
     constructor(public payload: Error) {
     }
   }
-  export class editerAction implements Action {
-    public readonly type = TicketTypeAction.EDIT;
 
-    constructor(public payload: string) { }
+  export class editerAction implements Action {
+    public readonly type = TicketTypesActions.EDIT;
+
+    constructor() {
+    }
   }
+
   /**
    *
    */

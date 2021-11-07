@@ -1,0 +1,29 @@
+<mat-dialog-content [formGroup]="editForm">
+  <mat-card class="mat-elevation-z0" fxLayout="column" fxLayoutGap="5px">
+    <mat-form-field appearance="standard">
+      <mat-label>Numéro</mat-label>
+      <input formControlName="numero"
+             matInput
+             placeholder="201225AZ">
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Montant</mat-label>
+      <input formControlName="montant" matInput
+             placeholder="0"
+             type="number">
+    </mat-form-field>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+
+  <button (click)="close()"
+          class="mat-flat-button mat-warn">
+    Annuler
+  </button>
+
+  <button (click)="save()" [disabled]="!editForm.valid"
+          class="mat-flat-button mat-primary">
+    Valider
+  </button>
+
+</mat-dialog-actions>

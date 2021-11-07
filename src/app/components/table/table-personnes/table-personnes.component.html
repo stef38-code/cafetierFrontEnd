@@ -1,0 +1,77 @@
+<div style="display: block; margin: 10px">
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table [dataSource]="dataSource" mat-table matSort>
+      <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th *matHeaderCellDef mat-header-cell>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td *matCellDef="let row" mat-cell>
+          <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                        (click)="$event.stopPropagation()"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <!-- identifiant -->
+      <ng-container matColumnDef="categorie">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Catégorie</th>
+        <td *matCellDef="let row" mat-cell>
+          <!-- <ng-container *ngIf="row.categorie != null;">{{row.categorie.nom || 'N/A'}} </ng-container>
+           <ng-container *ngIf="row.categorie == null;">{{getNomCategorie(row)}}</ng-container>-->
+          {{getNomCategorie(row)}}
+        </td>
+      </ng-container>
+      <!-- Nom -->
+      <ng-container matColumnDef="nom">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Nom</th>
+        <td *matCellDef="let row" mat-cell> {{row.nom}} </td>
+      </ng-container>
+
+      <!-- Prenom -->
+      <ng-container matColumnDef="prenom">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Prénom</th>
+        <td *matCellDef="let row" mat-cell> {{row.prenom}}</td>
+      </ng-container>
+
+      <!-- Nombre de tickets -->
+      <ng-container matColumnDef="nombreTicket">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Nombre Tickets</th>
+        <td *matCellDef="let row" mat-cell> {{countTicket(row) || 0}} </td>
+      </ng-container>
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th *matHeaderCellDef mat-header-cell> Actions</th>
+        <td *matCellDef="let row" class="action-link" mat-cell>
+          <button (click)="editerPersonne(row)" [disabled]="isDesactiveEditer(row)"
+                  [routerLink]="['/personne/edite-personne']" class="material-icons green"
+                  mat-fab>
+            <mat-icon>history_edu</mat-icon>
+          </button>
+          <button (click)="Supprimer(row)" [disabled]="isDesactiveSupprimer(row)" class="material-icons red"
+                  mat-fab>
+            <mat-icon>person_remove</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+      <!-- Dans le cas d'une recherche null depuis le filtre -->
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[ 10, 25, 100, 200]" aria-label="Sélectionnez une page"></mat-paginator>
+  </div>
+</div>

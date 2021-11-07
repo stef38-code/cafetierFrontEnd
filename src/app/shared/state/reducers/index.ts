@@ -6,7 +6,7 @@
  *
  * More: https://egghead.io/lessons/javascript-redux-implementing-combinereducers-from-scratch
  */
-import {ActionReducer, ActionReducerMap, combineReducers, createFeatureSelector} from '@ngrx/store';
+import {ActionReducer, ActionReducerMap, combineReducers} from '@ngrx/store';
 import {environment} from '../../../../environments/environment';
 
 /**
@@ -33,23 +33,32 @@ import {storeFreeze} from 'ngrx-store-freeze';
  * the state of the reducer plus any selector functions. The `* as`
  * notation packages up all of the exports into a single object.
  */
-import {PersonneStore} from '../store/personne';
-import {PersonneReducer} from './personne';
-import {TicketStore} from '../store/Ticket';
-import {TicketReducer} from './ticket';
-import {CategorieStore} from '../store/Categorie';
-import {CategorieRecuder} from './catgorie';
+import {CollectionPersonnesStore} from '../store/collection-personnes';
+import {CollectionPersonnesReducer} from './collection-personnes';
+import {CollectionTicketsStore} from '../store/collection-tickets';
+import {CollectionTicketsReducer} from './collection-tickets';
+import {CollectionCategoriesStore} from '../store/collection-categories';
+import {CollectionCategoriesRecuder} from './collection-categories';
+import {CategorieRecuder} from './categorie';
 import {SystemReducer} from "./system";
 import {SystemStore} from "../store/system";
+import {PersonneStore} from "../store/personne";
+import {CategorieStore} from "../store/categorie";
+import {TicketStore} from "../store/ticket";
+import {PersonneReducer} from "./personne";
+import {TicketReducer} from "./ticket";
 
 export namespace ApplicationStore {
 
   /**
    */
   export interface State {
-    personnes: PersonneStore.State;
-    tickets: TicketStore.State;
-    categories: CategorieStore.State;
+    personnes: CollectionPersonnesStore.State;
+    personne: PersonneStore.State;
+    tickets: CollectionTicketsStore.State;
+    ticket: TicketStore.State;
+    categories: CollectionCategoriesStore.State;
+    categorie: CategorieStore.State;
     system: SystemStore.State;
   }
 
@@ -57,9 +66,12 @@ export namespace ApplicationStore {
   /**
    */
   export const reducers: ActionReducerMap<State, any> = {
-    personnes: PersonneReducer.reducer,
-    tickets: TicketReducer.reducer,
-    categories: CategorieRecuder.reducer,
+    personnes: CollectionPersonnesReducer.reducer,
+    personne: PersonneReducer.reducer,
+    tickets: CollectionTicketsReducer.reducer,
+    ticket: TicketReducer.reducer,
+    categories: CollectionCategoriesRecuder.reducer,
+    categorie: CategorieRecuder.reducer,
     system: SystemReducer.reducer
   };
 
