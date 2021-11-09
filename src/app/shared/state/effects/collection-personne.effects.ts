@@ -11,8 +11,6 @@ import {ApplicationStore} from "../reducers";
 import {SystemAction} from "../actions/system-action";
 import {Categorie} from "../model/categorie";
 import {Lien} from "../model/lien";
-import {CollectionCategorieAction} from "../actions/collection-categories-action";
-import {CollectionTicketAction} from "../actions/collection-tickets-action";
 import {PersonneTypesActions} from "../actions/personne-types-actions";
 
 
@@ -55,14 +53,14 @@ export class CollectionPersonneEffects {
           const linkDelete: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
           if (linkDelete) {
             console.log("delete:", JSON.stringify(linkDelete));
-            this.httpPersonne!.supprimer(linkDelete.href).subscribe(
+            /*this.httpPersonne!.supprimer(linkDelete.href).subscribe(
               () => {
                 this.store.dispatch(new SystemAction.Start());
                 this.store.dispatch(new CollectionCategorieAction.Load());
                 this.store.dispatch(new CollectionPersonneAction.Load());
                 this.store.dispatch(new CollectionTicketAction.Load());
                 this.store.dispatch(new SystemAction.Stop());
-              });
+              });*/
           }
           return {} as Categorie;
         })

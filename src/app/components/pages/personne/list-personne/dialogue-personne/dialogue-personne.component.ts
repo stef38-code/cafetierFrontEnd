@@ -1,19 +1,20 @@
 import {Component, EventEmitter, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
-import {Categorie} from "../../../shared/state/model/categorie";
-import {Personne} from "../../../shared/state/model/personne";
-import {ActivatedRoute} from "@angular/router";
-import {Store} from "@ngrx/store";
-import {ApplicationStore} from "../../../shared/state/reducers";
-import {MatDialogRef} from "@angular/material/dialog";
-import {CollectionPersonneSelector} from "../../../shared/state/selectors/collection-personnes";
-import {CollectionCategorieSelector} from "../../../shared/state/selectors/collection-categories";
 import {MatTableDataSource} from "@angular/material/table";
-import {Ticket} from "../../../shared/state/model/ticket";
+import {Ticket} from "../../../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Categorie} from "../../../../../shared/state/model/categorie";
+import {Observable} from "rxjs";
+import {Personne} from "../../../../../shared/state/model/personne";
+import {ActivatedRoute} from "@angular/router";
+import {Store} from "@ngrx/store";
+import {ApplicationStore} from "../../../../../shared/state/reducers";
+import {MatDialogRef} from "@angular/material/dialog";
+import {PersonneSelector} from "../../../../../shared/state/selectors/personne";
+import {CollectionCategorieSelector} from "../../../../../shared/state/selectors/collection-categories";
+import {PersonneAction} from "../../../../../shared/state/actions/personne-action";
 
 @Component({
   selector: 'app-dialogue-personne',
@@ -21,7 +22,6 @@ import {MatSort} from "@angular/material/sort";
   styleUrls: ['./dialogue-personne.component.css']
 })
 export class DialoguePersonneComponent implements OnInit {
-
   dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
   selection = new SelectionModel<Ticket>(true, []);
   allowMultiSelect: boolean = true;
@@ -31,41 +31,46 @@ export class DialoguePersonneComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
-
   personneForm: FormGroup;
-  personne$: Observable<Personne>;
-  public elementsCategorie: Categorie[] = [];
-  @Output() add = new EventEmitter<Personne>();
   private nom: FormControl;
+  public elementsCategorie: Categorie[] = [];
   private prenom: FormControl;
   private categories: FormControl;
+  personne$: Observable<Personne>;
   private categorieObservable$: Observable<Categorie[]>;
+  @Output() add = new EventEmitter<Personne>();
+  private sub: any;
+  private order: string = '';
+  private url: string = '';
+  private data: Personne = {} as Personne;
 
   constructor(private route: ActivatedRoute,
               private _formBuilder: FormBuilder,
               private store: Store<ApplicationStore.State>,
               @Optional() private dialogRef: MatDialogRef<DialoguePersonneComponent>
   ) {
-
-
-    this.nom = this._formBuilder.control('nom', Validators.required);
+    this.nom = this._formBuilder.control('', Validators.required);
     this.prenom = this._formBuilder.control('', Validators.required);
     this.categories = this._formBuilder.control('', Validators.required);
     this.personneForm = this.createFormGroup(_formBuilder);
     //
-    this.personne$ = store.select(CollectionPersonneSelector.getSelectedPersonne);
+    this.personne$ = store.select(PersonneSelector.getPersonneSelected);
     this.personne$.subscribe(res => {
-      this.dataSource.data = res.tickets;
+      this.data = res;
+      this.dataSource.data = res.tickets ? res.tickets : [];
+      console.log("Ticket de la personne", res.tickets);
       this.personneForm.patchValue({
         nom: res.nom,
         prenom: res.prenom,
-        categorie: res.categorie.id
+        categorie: res.categorie ? res.categorie.id : ''
       });
     });
     this.categorieObservable$ = store.select(CollectionCategorieSelector.getCategorieEntites);
     this.categorieObservable$.subscribe(res => {
       this.elementsCategorie = res;
     });
+
+
     this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
   }
 
@@ -78,8 +83,25 @@ export class DialoguePersonneComponent implements OnInit {
   }
 
   submitPersonne() {
-    const personne: Personne = Object.assign({}, this.personneForm.value);
-    this.add.emit(personne);
+    let categorieObject: Categorie = this.findCategorie(this.categories.value);
+    const personne: Personne = Object.assign({}, this.data, {
+      nom: this.nom.value,
+      prenom: this.prenom.value,
+      categorie: categorieObject,
+    });
+    console.log('save Personne(categorie)', JSON.stringify(personne));
+
+    this.store.dispatch(new PersonneAction.Add(personne));
+  }
+
+  findCategorie(id: string): Categorie {
+    let categorie = this.elementsCategorie.find(obj => {
+      return obj.id === id
+    });
+    if (categorie) {
+      return categorie;
+    }
+    return {} as Categorie;
   }
 
   ngOnInit(): void {
@@ -122,10 +144,9 @@ export class DialoguePersonneComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  openDialog(update: string, ticket: Ticket) {
+  openDialog(update: string, ticket: Categorie) {
 
 
   }
 
 }
-

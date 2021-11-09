@@ -34,7 +34,7 @@ body {
 }
 
 .material-icons.red {
-  color: #de6c86;
+  color: #e70a3c;
   margin: 2px;
 }
 
@@ -141,5 +141,10 @@ bouton des dialogs
   background-color: darkgrey;
   color: white;
   border: solid;
+}
+
+.mat-row:nth-child(odd) {
+  background: #c4c4c5;
+  color: #c5c3c3;
 }
 

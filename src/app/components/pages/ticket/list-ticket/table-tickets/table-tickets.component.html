@@ -1,26 +1,15 @@
-<div style="display: block; margin: 10px">
+<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 10px">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
   </mat-form-field>
-
+  <button (click)="editNewDialog()" class="material-icons green" mat-fab>
+    <mat-icon>exposure_plus_1</mat-icon>
+  </button>
+</div>
+<div style="display: block; margin: 10px">
   <div class="mat-elevation-z8">
     <table [dataSource]="dataSource" mat-table matSort>
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="select">
-        <th *matHeaderCellDef mat-header-cell>
-          <mat-checkbox (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()">
-          </mat-checkbox>
-        </th>
-        <td *matCellDef="let row" mat-cell>
-          <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                        (click)="$event.stopPropagation()"
-                        [checked]="selection.isSelected(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
       <!-- identifiant -->
       <ng-container matColumnDef="numero">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Identifiant</th>
@@ -60,11 +49,11 @@
           <button (click)="editDialog(row)" class="material-icons green" mat-fab>
             <mat-icon>edit</mat-icon>
           </button>
-          <button (click)="liberer(row)" *ngIf="isAffecte(row)" class="material-icons red" mat-fab>
-            <mat-icon>star_rate</mat-icon>
+          <button (click)="liberer(row)" *ngIf="isAffecte(row)" class="material-icons orange600" mat-fab>
+            <mat-icon>bookmark_remove</mat-icon>
           </button>
-          <button (click)="openDialog('Delete',row)" class="material-icons red" mat-fab>
-            <mat-icon>delete_forever</mat-icon>
+          <button (click)="supprimer(row)" class="material-icons red" mat-fab>
+            <mat-icon>recycling</mat-icon>
           </button>
         </td>
       </ng-container>

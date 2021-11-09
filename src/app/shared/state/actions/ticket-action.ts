@@ -32,6 +32,13 @@ export namespace TicketAction {
     }
   }
 
+  export class Delete implements Action {
+    public readonly type = TicketTypesActions.DELETE;
+
+    constructor(public payload: Ticket) {
+    }
+  }
+
   export class editerAction implements Action {
     public readonly type = TicketTypesActions.EDIT;
 
@@ -44,6 +51,7 @@ export namespace TicketAction {
    */
   export type Actions =
     Add
+    | Delete
     | Load
     | LoadSuccessAction
     | LoadFailAction

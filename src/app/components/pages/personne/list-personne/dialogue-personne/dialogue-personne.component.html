@@ -1,0 +1,68 @@
+<mat-dialog-content [formGroup]="personneForm">
+  <mat-card class="mat-elevation-z0" fxLayout fxLayoutGap="5px">
+    <!--<mat-card>-->
+    <mat-form-field appearance="standard">
+      <mat-label>Nom</mat-label>
+      <input formControlName="nom" matInput placeholder="Dupont" required type="text">
+      <mat-error *ngIf="personneForm.get('nom')!.errors &&
+               personneForm.get('nom')!.hasError('required')">
+        Le nom est <strong>obligatoire</strong>
+      </mat-error>
+    </mat-form-field>
+    <!--</mat-card>
+    <mat-card>-->
+    <mat-form-field appearance="standard">
+      <mat-label>Prénom</mat-label>
+      <input formControlName="prenom" matInput placeholder="Dupont" required type="text">
+      <mat-error *ngIf="personneForm.get('prenom')!.errors &&
+              personneForm.get('prenom')!.hasError('required')">
+        Le prénom est <strong>obligatoire</strong>
+      </mat-error>
+    </mat-form-field>
+    <!-- </mat-card>
+     <mat-card>-->
+    <mat-form-field appearance="standard" class="full-width">
+      <mat-label>Sélectionner un identifiant</mat-label>
+      <mat-select formControlName="categorie" matNativeControl required>
+        <mat-option *ngFor="let p of elementsCategorie" [value]="p.id">
+          {{ p.nom }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="personneForm.get('categorie')!.errors &&
+              personneForm.get('categorie')!.hasError('required')">
+        L'identifiant est <strong>obligatoire</strong>
+      </mat-error>
+    </mat-form-field>
+    <!--</mat-card>-->
+    <mat-card class="mat-elevation-z0">
+      <button (click)="submitPersonne()" [disabled]="!personneForm.valid" class="material-icons green" mat-button>
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-card>
+  </mat-card>
+  <mat-card class="mat-elevation-z0" fxLayout="row" fxLayoutGap="5px">
+    <mat-card class="child-1" class="mat-elevation-z0" fxFlex="50%">
+      <mat-card-subtitle>Ces Tickets</mat-card-subtitle>
+      <app-tickets-affectes></app-tickets-affectes>
+    </mat-card>
+    <mat-card class="child-2" class="mat-elevation-z0" fxFlex="50%">
+      <mat-card-subtitle>Tickets à affecter</mat-card-subtitle>
+      <app-tickets-non-affectes></app-tickets-non-affectes>
+    </mat-card>
+    <!--        -->
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-elevation-z0" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+
+  <button (click)="close()"
+          class="mat-flat-button mat-warn">
+    Annuler
+  </button>
+
+  <button (click)="save()" [disabled]="!personneForm.valid"
+          class="mat-flat-button mat-primary">
+    Valider
+  </button>
+
+</mat-dialog-actions>
+

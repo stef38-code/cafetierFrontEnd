@@ -16,11 +16,12 @@ export namespace TicketReducer {
       }
 
       case TicketTypesActions.LOAD_SUCCESS_ACTION: {
-        return Object.assign({}, state, {
+        return {
           entitie: action.payload
-        });
+        };
       }
       case TicketTypesActions.EDIT: {
+
         return {
           entitie: state.entitie,
         };

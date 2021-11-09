@@ -28,4 +28,16 @@ export class CategorieHttpService {
     const headers = {'content-type': 'application/json'};
     return this.httpclient.delete<Categorie>(href, {'headers': headers});
   }
+
+  editer(href: string): Observable<Categorie> {
+    const headers = {'content-type': 'application/json'};
+    return this.httpclient.get<Categorie>(href, {'headers': headers});
+  }
+
+  enregister(categorie: Categorie): Observable<Categorie> {
+    const headers = {'content-type': 'application/json'};
+    const body = JSON.stringify(categorie);
+    console.log("const body", body);
+    return this.httpclient.post<Categorie>(this.ApiURL, body, {'headers': headers});
+  }
 }

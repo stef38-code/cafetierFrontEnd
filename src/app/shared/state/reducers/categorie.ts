@@ -16,9 +16,9 @@ export namespace CategorieRecuder {
       }
 
       case CategorieTypesActions.LOAD_SUCCESS_ACTION: {
-        return Object.assign({}, state, {
+        return {
           entitie: action.payload
-        });
+        };
       }
       case CategorieTypesActions.DELETE: {
         return state;

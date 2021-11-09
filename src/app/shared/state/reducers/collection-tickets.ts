@@ -27,10 +27,9 @@ export namespace CollectionTicketsReducer {
 
       case CollectionTicketsTypesActions.LOAD_SUCCESS_ACTION: {
         const tickets = action.payload;
-        const newticket = tickets.filter(personne => !state.entities[personne.id]);
 
-        const newTicketIds = newticket.map(personne => personne.id);
-        const newTicketEntities = newticket.reduce((entities: { [id: string]: Ticket }, ticket: Ticket) => {
+        const newTicketIds = tickets.map(personne => personne.id);
+        const newTicketEntities = tickets.reduce((entities: { [id: string]: Ticket }, ticket: Ticket) => {
           return Object.assign(entities, {
             [ticket.id]: ticket
           });

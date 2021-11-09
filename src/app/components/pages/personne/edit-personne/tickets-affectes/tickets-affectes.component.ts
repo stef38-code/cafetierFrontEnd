@@ -94,8 +94,11 @@ export class TicketsAffectesComponent implements OnInit {
       console.log("this.httpPersonne!.editer", res);
       this.store.dispatch(new SystemAction.Start());
       this.store.dispatch(new CollectionPersonneAction.Load());
-      this.store.dispatch(new PersonneAction.editerAction(res));
+      this.store.dispatch(new PersonneAction.Load(res));
       this.store.dispatch(new SystemAction.Stop());
-    });
+    }, (error => {
+      console.log(error)
+    }));
   }
+
 }

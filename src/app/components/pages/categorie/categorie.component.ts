@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {Categorie} from "../../../shared/state/model/categorie";
-import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dialogue-categorie.component";
+import {DialogueCategorieComponent} from "./list-categorie/table-categories/dialogue-categorie/dialogue-categorie.component";
+import {Lien} from "../../../shared/state/model/lien";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-categorie',
@@ -10,32 +11,30 @@ import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dial
 })
 export class CategorieComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
   editCategorie() {
-    let row: Categorie = {
-      id: '',
-      nom: '',
-      libelle: '',
-      links: []
-    };
-    const dialogConfig = new MatDialogConfig<Categorie>();
+
+    const dialogConfig = new MatDialogConfig<Lien>();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    //dialogConfig.data = row;
+    dialogConfig.data = {} as Lien;
 
     const dialogRef = this.dialog.open(DialogueCategorieComponent,
       dialogConfig);
 
 
     dialogRef.afterClosed().subscribe(
-      val => console.log("Dialog output:", val)
+      val => {
+        console.log("Dialog output:", val);
+        this.router.routeReuseStrategy.shouldReuseRoute = () => true;
+      }
     );
 
   }

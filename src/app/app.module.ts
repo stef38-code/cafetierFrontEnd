@@ -39,17 +39,14 @@ import {CollectionTicketEffects} from './shared/state/effects/collection-ticket.
 import {CollectionCategorieEffects} from './shared/state/effects/collection-categorie.effects';
 import {CategorieComponent} from './components/pages/categorie/categorie.component';
 import {ListCategorieComponent} from './components/pages/categorie/list-categorie/list-categorie.component';
-import {EditCategorieComponent} from './components/pages/categorie/edit-categorie/edit-categorie.component';
-import {EditTicketComponent} from './components/pages/ticket/edit-ticket/edit-ticket.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {TableTicketsComponent} from './components/table/table-tickets/table-tickets.component';
-import {TableCategoriesComponent} from './components/table/table-categories/table-categories.component';
-import {TablePersonnesComponent} from './components/table/table-personnes/table-personnes.component';
-import {DialoguePersonneComponent} from './components/dialogue/dialogue-personne/dialogue-personne.component';
-import {DialogueTicketComponent} from './components/dialogue/dialogue-ticket/dialogue-ticket.component';
-import {DialogueCategorieComponent} from './components/dialogue/dialogue-categorie/dialogue-categorie.component';
+import {TableTicketsComponent} from './components/pages/ticket/list-ticket/table-tickets/table-tickets.component';
+import {TableCategoriesComponent} from './components/pages/categorie/list-categorie/table-categories/table-categories.component';
+import {TablePersonnesComponent} from './components/pages/personne/list-personne/table-personnes/table-personnes.component';
+import {DialogueTicketComponent} from './components/pages/ticket/list-ticket/dialogue-ticket/dialogue-ticket.component';
+import {DialogueCategorieComponent} from './components/pages/categorie/list-categorie/table-categories/dialogue-categorie/dialogue-categorie.component';
 import {CategorieEffectsEffects} from './shared/state/effects/categorie-effects.effects';
 import {PersonneEffectsEffects} from './shared/state/effects/personne-effects.effects';
 import {TicketEffectsEffects} from './shared/state/effects/ticket-effects.effects';
@@ -57,6 +54,7 @@ import {DialogueErrorComponent} from './components/dialogue/dialogue-error/dialo
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {TicketsAffectesComponent} from './components/pages/personne/edit-personne/tickets-affectes/tickets-affectes.component';
 import {TicketsNonAffectesComponent} from './components/pages/personne/edit-personne/tickets-non-affectes/tickets-non-affectes.component';
+import {DialoguePersonneComponent} from './components/pages/personne/list-personne/dialogue-personne/dialogue-personne.component';
 import reducer = ApplicationStore.reducer;
 
 const modules = [
@@ -95,18 +93,16 @@ const modules = [
     EditPersonneComponent,
     CategorieComponent,
     ListCategorieComponent,
-    EditCategorieComponent,
-    EditTicketComponent,
     SpinnerComponent,
     TableTicketsComponent,
     TableCategoriesComponent,
     TablePersonnesComponent,
-    DialoguePersonneComponent,
     DialogueTicketComponent,
     DialogueCategorieComponent,
     DialogueErrorComponent,
     TicketsAffectesComponent,
     TicketsNonAffectesComponent,
+    DialoguePersonneComponent,
   ],
   imports: [...modules, MatCheckboxModule, MatCardModule, MatGridListModule,
     StoreModule.forRoot({reducer}),

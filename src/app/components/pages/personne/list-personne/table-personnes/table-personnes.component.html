@@ -1,27 +1,16 @@
-<div style="display: block; margin: 10px">
+<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 10px">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
   </mat-form-field>
-
+  <button (click)="editNewDialog()" class="material-icons green" mat-fab>
+    <mat-icon>exposure_plus_1</mat-icon>
+  </button>
+</div>
+<div style="display: block; margin: 10px">
   <div class="mat-elevation-z8">
     <table [dataSource]="dataSource" mat-table matSort>
-      <!--<table mat-table *ngFor="let personne of personne$ | async"  matSort table-striped>-->
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="select">
-        <th *matHeaderCellDef mat-header-cell>
-          <mat-checkbox (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()">
-          </mat-checkbox>
-        </th>
-        <td *matCellDef="let row" mat-cell>
-          <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                        (click)="$event.stopPropagation()"
-                        [checked]="selection.isSelected(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
+      <!--</ng-container>-->
       <!-- identifiant -->
       <ng-container matColumnDef="categorie">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Catégorie</th>
@@ -52,14 +41,14 @@
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell> Actions</th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button (click)="editerPersonne(row)" [disabled]="isDesactiveEditer(row)"
+          <button [disabled]="isDesactiveEditer(row)"
                   [routerLink]="['/personne/edite-personne']" class="material-icons green"
                   mat-fab>
-            <mat-icon>history_edu</mat-icon>
+            <mat-icon>edit</mat-icon>
           </button>
           <button (click)="Supprimer(row)" [disabled]="isDesactiveSupprimer(row)" class="material-icons red"
                   mat-fab>
-            <mat-icon>person_remove</mat-icon>
+            <mat-icon>recycling</mat-icon>
           </button>
         </td>
       </ng-container>

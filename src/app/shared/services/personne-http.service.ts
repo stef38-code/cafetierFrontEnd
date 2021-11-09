@@ -30,12 +30,10 @@ export class PersonneHttpService {
     return this.httpclient.post<Personne>(this.ApiURL, body, {'headers': headers})
   }
 
-  supprimer(url: string): Observable<Personne[]> {
+  supprimer(url: string): Observable<any> {
     const headers = {'content-type': 'application/json'}
-    this.httpclient.delete(url, this.optionRequete).subscribe(response => {
-      console.log('suppresion d\'une personne', JSON.stringify(response));
-    });
-    return this.lister();
+    return this.httpclient.delete(url, this.optionRequete);
+
   }
 
   editer(url: string): Observable<Personne> {

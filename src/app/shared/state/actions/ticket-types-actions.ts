@@ -4,4 +4,5 @@ export enum TicketTypesActions {
   LOAD_SUCCESS_ACTION = '[Ticket] Chargement avec SUCCESS',
   LOAD_FAIL_ACTION = '[Ticket] Chargement en FAILED',
   EDIT = '[Ticket] edition d\'un ticket',
+  DELETE = '[Ticket] Suppression d\'un ticket',
 }

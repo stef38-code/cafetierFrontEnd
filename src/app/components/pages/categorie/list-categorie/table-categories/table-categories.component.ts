@@ -1,18 +1,15 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Categorie} from "../../../shared/state/model/categorie";
-import {SelectionModel} from "@angular/cdk/collections";
+import {Categorie} from "../../../../../shared/state/model/categorie";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
-import {ApplicationStore} from "../../../shared/state/reducers";
+import {ApplicationStore} from "../../../../../shared/state/reducers";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {CollectionCategorieSelector} from "../../../shared/state/selectors/collection-categories";
-import {Ticket} from "../../../shared/state/model/ticket";
-import {Lien} from "../../../shared/state/model/lien";
-import {CategorieAction} from "../../../shared/state/actions/categorie-action";
-import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dialogue-categorie.component";
+import {Lien} from "../../../../../shared/state/model/lien";
+import {DialogueCategorieComponent} from "./dialogue-categorie/dialogue-categorie.component";
+import {HttpClient} from "@angular/common/http";
+import {CategorieHttpService} from "../../../../../shared/services/categorie-http.service";
 
 @Component({
   selector: 'app-table-categories',
@@ -20,36 +17,36 @@ import {DialogueCategorieComponent} from "../../dialogue/dialogue-categorie/dial
   styleUrls: ['./table-categories.component.css']
 })
 export class TableCategoriesComponent implements OnInit {
-
+  //todo https://angular.io/guide/observables-in-angular
+  //todo https://rx-angular.io/web/state/tutorials/passing-observables
+  //todo https://almerosteyn.com/2016/03/immutable-component-input-from-observable
   /*displayedColumns: string[] = ['select', 'nom', 'libelle', 'action'];*/
   //displayedColumns: string[] = [ 'nom', 'libelle', 'action'];
   @Input() displayedColumns: string[] = ['nom', 'libelle', 'action'];
   dataSource: MatTableDataSource<Categorie> = new MatTableDataSource();
-  selection = new SelectionModel<Categorie>(true, []);
   allowMultiSelect: boolean = true;
+
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
-  private categorieEntitiesStore$: Observable<Categorie[]>;
+  private httpCategorie: CategorieHttpService;
 
   constructor(private store: Store<ApplicationStore.State>,
-              private dialog: MatDialog) {
-    this.categorieEntitiesStore$ = store.select(CollectionCategorieSelector.getCategorieEntites);
-    //
-    /*this.categorieEntitiesStore$.subscribe(res => this.dataSource = new MatTableDataSource<Categorie>(res));*/
-    this.categorieEntitiesStore$.subscribe(res => {
-      console.log("=========================  Update des Catégories ====================================");
-      this.dataSource.data = res;
-      //this.changeDetectorRefs.markForCheck();
-    });
-    this.selection = new SelectionModel<Categorie>(this.allowMultiSelect, this.dataSource.data, true);
-//this.translate();
+              private dialog: MatDialog,
+              private http$: HttpClient
+  ) {
+    this.httpCategorie = new CategorieHttpService(this.http$);
+
   }
 
   ngOnInit(): void {
+    this.chargerLaliste();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.selection.clear();
+  }
+
+  openDialog(update: string, personne: Categorie) {
+
   }
 
   applyFilter(event: Event) {
@@ -62,31 +59,8 @@ export class TableCategoriesComponent implements OnInit {
 
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected == numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  openDialog(update: string, personne: Ticket) {
-    /* if (window.confirm('êtes-vous sûr de supprimer '.concat(personne.nom, " ", personne.prenom, " ?"))) {
-       let links: Lien[] = personne.links;
-       let find: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
-       if (find) {
-         console.log("url delete:".concat(find.href))
-         this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
-           this.dataSource.data = response;
-         });
-       }
-     }*/
+  editNewCategorie() {
+    this.showDialogue({} as Lien);
   }
 
   isDesactiveEditer(row: Categorie): boolean {
@@ -105,20 +79,32 @@ export class TableCategoriesComponent implements OnInit {
   }
 
   editCategorie(row: Categorie) {
-    const dialogConfig = new MatDialogConfig<Categorie>();
+    var links: Lien[] = row.links;
+    console.log("links:", row.links);
+    let lienEditer = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+    if (lienEditer) {
+      this.showDialogue(lienEditer);
+    }
+  }
+
+  private chargerLaliste() {
+    this.httpCategorie.lister().subscribe(res => {
+      console.log("=========================  Update des Catégories ====================================");
+      this.dataSource.data = res;
+    });
+  }
+
+  private showDialogue(lienEditer: Lien) {
+    const dialogConfig = new MatDialogConfig<Lien>();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    //dialogConfig.data = row;
-    this.store.dispatch(new CategorieAction.Load(row));
+    dialogConfig.data = lienEditer;
     const dialogRef = this.dialog.open(DialogueCategorieComponent,
       dialogConfig);
-
-
-    dialogRef.afterClosed().subscribe(
-      val => console.log("Dialog output:", val)
+    dialogRef.afterClosed().subscribe(() =>
+      this.chargerLaliste()
     );
-
   }
 
   supprimerCategorie(categorie: Categorie) {
@@ -139,11 +125,11 @@ export class TableCategoriesComponent implements OnInit {
     let links: Lien[] = categorie.links;
     let find: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
     if (find) {
-      this.store.dispatch(new CategorieAction.Delete(categorie));
-      /*console.log("url delete:".concat(find.href))
-      this.httpPersonne.supprimer(find.href).subscribe((response: any) => {
-        this.dataSource.data = response;
-      });*/
+      //this.store.dispatch(new CategorieAction.Delete(categorie));
+      console.log("url delete:".concat(find.href))
+      this.httpCategorie.delete(find.href).subscribe((response: any) => {
+        this.chargerLaliste()
+      });
     }
   }
 }

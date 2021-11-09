@@ -25,10 +25,9 @@ export namespace CollectionPersonnesReducer {
 
       case CollectionPersonnesTypesActions.LOAD_SUCCESS_ACTION: {
         const personnes = action.payload;
-        const newPersonnes = personnes.filter(personne => !state.entities[personne.id]);
 
-        const newPersonneIds = newPersonnes.map(personne => personne.id);
-        const newPersonneEntities = newPersonnes.reduce((entities: { [id: string]: Personne }, personne: Personne) => {
+        const newPersonneIds = personnes.map(personne => personne.id);
+        const newPersonneEntities = personnes.reduce((entities: { [id: string]: Personne }, personne: Personne) => {
           return Object.assign(entities, {
             [personne.id]: personne
           });

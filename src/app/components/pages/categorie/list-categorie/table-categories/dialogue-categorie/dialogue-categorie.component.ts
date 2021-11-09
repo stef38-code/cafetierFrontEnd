@@ -1,12 +1,10 @@
-import {Component, OnInit, Optional} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {ApplicationStore} from "../../../shared/state/reducers";
-import {Observable} from "rxjs";
-import {Categorie} from "../../../shared/state/model/categorie";
-import {CategorieSelector} from "../../../shared/state/selectors/categorie";
+import {Component, Inject, OnInit, Optional} from '@angular/core';
+import {Categorie} from "../../../../../../shared/state/model/categorie";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatDialogRef} from "@angular/material/dialog";
-import {CategorieAction} from "../../../shared/state/actions/categorie-action";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {HttpClient} from "@angular/common/http";
+import {CategorieHttpService} from "../../../../../../shared/services/categorie-http.service";
+import {Lien} from "../../../../../../shared/state/model/lien";
 
 @Component({
   selector: 'app-dialogue-categorie',
@@ -15,45 +13,45 @@ import {CategorieAction} from "../../../shared/state/actions/categorie-action";
 })
 export class DialogueCategorieComponent implements OnInit {
   editForm: FormGroup;
-  private editCategorie$: Observable<Categorie>;
   private nom: FormControl;
   private description: FormControl;
-  private id: FormControl;
   private data: Categorie = {
     nom: '',
     libelle: '',
     links: [],
     id: ''
   };
+  private httpCategorie: CategorieHttpService;
 
   constructor(
-    private store: Store<ApplicationStore.State>,
     private fb: FormBuilder,
-    @Optional() private dialogRef: MatDialogRef<DialogueCategorieComponent>) {
-    this.editCategorie$ = store.select(CategorieSelector.getCategorieSelected);
-    this.editCategorie$.subscribe(res => {
-      this.data = res;
-    });
+    @Optional() private dialogRef: MatDialogRef<DialogueCategorieComponent>,
+    @Inject(MAT_DIALOG_DATA) public param: Lien,
+    private http$: HttpClient
+  ) {
+    this.httpCategorie = new CategorieHttpService(this.http$);
+
     this.nom = new FormControl('', [Validators.required]);
     this.description = new FormControl('', [Validators.required]);
-    this.id = new FormControl('');
     this.editForm = this.createFormGroup(fb);
 
   }
 
   ngOnInit(): void {
-    this.editForm.patchValue({
-      nom: this.data.nom,
-      description: this.data.libelle,
-      id: this.data.id
-    });
+    let href = this.param.href;
+    if (href) {
+      this.httpCategorie.editer(href).subscribe(res => {
+        this.data = res;
+        this.nom.setValue(this.data.nom);
+        this.description.setValue(this.data.libelle);
+      });
+    }
   }
 
   createFormGroup(formBuilder: FormBuilder) {
     return formBuilder.group({
       nom: this.nom,
       description: this.description,
-      id: this.id,
     })
   }
 
@@ -63,7 +61,10 @@ export class DialogueCategorieComponent implements OnInit {
       nom: this.nom.value,
       libelle: this.description.value
     });
-    this.store.dispatch(new CategorieAction.Add(categorie));
+    this.httpCategorie.enregister(categorie).subscribe(res => {
+      this.data = res;
+    });
+
     this.close();
   }
 

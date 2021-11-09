@@ -148,7 +148,7 @@ export class EditPersonneComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  openDialog(update: string, ticket: Ticket) {
+  openDialog(update: string, ticket: Categorie) {
 
 
   }

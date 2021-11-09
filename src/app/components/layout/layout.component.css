@@ -16,7 +16,7 @@
   width: 250px;
 }
 
-.sidenav .mat-toolbar {
+.sidenav .mat-toolbar .mat-table {
   background: #9f9797;
   color: #9f9797;
 }
