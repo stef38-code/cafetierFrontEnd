@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Ticket} from "../../../../../shared/state/model/ticket";
+import {Ticket} from "../../../../../../shared/state/model/ticket";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Lien} from "../../../../../shared/state/model/lien";
+import {Lien} from "../../../../../../shared/state/model/lien";
 import {HttpClient} from "@angular/common/http";
-import {TicketHttpService} from "../../../../../shared/services/ticket-http.service";
+import {TicketHttpService} from "../../../../../../shared/services/ticket-http.service";
 
 @Component({
   selector: 'app-dialogue-ticket',

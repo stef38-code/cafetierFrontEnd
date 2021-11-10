@@ -3,7 +3,7 @@ import {Ticket} from "../../../shared/state/model/ticket";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Categorie} from "../../../shared/state/model/categorie";
 import {TicketAction} from "../../../shared/state/actions/ticket-action";
-import {DialogueTicketComponent} from "./list-ticket/dialogue-ticket/dialogue-ticket.component";
+import {DialogueTicketComponent} from "./list-ticket/table-tickets/dialogue-ticket/dialogue-ticket.component";
 import {Store} from "@ngrx/store";
 import {ApplicationStore} from "../../../shared/state/reducers";
 

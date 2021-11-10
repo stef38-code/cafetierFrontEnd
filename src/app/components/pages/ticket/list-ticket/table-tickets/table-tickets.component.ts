@@ -4,7 +4,7 @@ import {Ticket} from "../../../../../shared/state/model/ticket";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {DialogueTicketComponent} from "../dialogue-ticket/dialogue-ticket.component";
+import {DialogueTicketComponent} from "./dialogue-ticket/dialogue-ticket.component";
 import {HttpClient} from "@angular/common/http";
 import {TicketHttpService} from "../../../../../shared/services/ticket-http.service";
 import {Lien} from "../../../../../shared/state/model/lien";
@@ -18,7 +18,7 @@ import {Categorie} from "../../../../../shared/state/model/categorie";
 export class TableTicketsComponent implements OnInit {
   dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
 
-  @Input() displayedColumns: string[] = ['numero', 'montant', 'nom', 'prenom', 'action'];
+  @Input() displayedColumns: string[] = ['numero', 'montant', 'nom', 'prenom', 'liberer', 'editer', 'supprimer'];
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
@@ -98,7 +98,7 @@ export class TableTicketsComponent implements OnInit {
 
   private showDialogue(lienEditer: Lien) {
     const dialogConfig = new MatDialogConfig<Lien>();
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = lienEditer;
     const dialogRef = this.dialog.open(DialogueTicketComponent,

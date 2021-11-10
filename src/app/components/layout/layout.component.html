@@ -44,6 +44,9 @@
     [opened]="isMenuOpen">
 
     <mat-nav-list>
+      <a [routerLink]="['/home']" href="#" mat-list-item routerLinkActive="active">
+        <mat-icon routerLinkActive="active-icon">home</mat-icon>
+        <span class="ml-5"> Accueil</span></a>
       <a [routerLink]="['/personne/liste-personne']" href="#" mat-list-item routerLinkActive="active">
         <mat-icon routerLinkActive="active-icon">group</mat-icon>
         <span class="ml-5"> Etudiants</span></a>

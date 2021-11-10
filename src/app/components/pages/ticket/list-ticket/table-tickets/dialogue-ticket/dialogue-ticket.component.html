@@ -12,18 +12,18 @@
              placeholder="0"
              type="number">
     </mat-form-field>
+
   </mat-card>
 </mat-dialog-content>
-<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="5px">
+<mat-dialog-actions class="mat-elevation-z0" fxLayout="row" layout-align="end center">
 
   <button (click)="close()"
-          class="mat-flat-button mat-warn">
-    Annuler
+          class="material-icons red">
+    <mat-icon>close</mat-icon>
   </button>
 
-  <button (click)="save()" [disabled]="!editForm.valid"
-          class="mat-flat-button mat-primary">
-    Valider
+  <button (click)="save()" [disabled]="!editForm.valid" class="material-icons green" mat-button>
+    <mat-icon>save</mat-icon>
   </button>
 
 </mat-dialog-actions>

@@ -16,7 +16,7 @@ import {DialoguePersonneComponent} from "../dialogue-personne/dialogue-personne.
   styleUrls: ['./table-personnes.component.css']
 })
 export class TablePersonnesComponent implements OnInit {
-  @Input() displayedColumns: string[] = ['categorie', 'nom', 'prenom', 'nombreTicket', 'action'];
+  @Input() displayedColumns: string[] = ['categorie', 'nom', 'prenom', 'nombreTicket', 'editer', 'supprimer'];
 
   dataSource: MatTableDataSource<Personne> = new MatTableDataSource();
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
@@ -110,13 +110,16 @@ export class TablePersonnesComponent implements OnInit {
 
   private showDialogue(lienEditer: Lien) {
     const dialogConfig = new MatDialogConfig<Lien>();
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = lienEditer;
     const dialogRef = this.dialog.open(DialoguePersonneComponent,
       dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => this.chargerLaListe()
+      () => {
+        console.log('dialogRef.afterClosed().subscribe');
+        this.chargerLaListe()
+      }
     );
   }
 }

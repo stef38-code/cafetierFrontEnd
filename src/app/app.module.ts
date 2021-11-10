@@ -22,7 +22,6 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
-import {EditPersonneComponent} from './components/pages/personne/edit-personne/edit-personne.component';
 import {MatSortModule} from "@angular/material/sort";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
@@ -45,15 +44,15 @@ import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {TableTicketsComponent} from './components/pages/ticket/list-ticket/table-tickets/table-tickets.component';
 import {TableCategoriesComponent} from './components/pages/categorie/list-categorie/table-categories/table-categories.component';
 import {TablePersonnesComponent} from './components/pages/personne/list-personne/table-personnes/table-personnes.component';
-import {DialogueTicketComponent} from './components/pages/ticket/list-ticket/dialogue-ticket/dialogue-ticket.component';
+import {DialogueTicketComponent} from './components/pages/ticket/list-ticket/table-tickets/dialogue-ticket/dialogue-ticket.component';
 import {DialogueCategorieComponent} from './components/pages/categorie/list-categorie/table-categories/dialogue-categorie/dialogue-categorie.component';
 import {CategorieEffectsEffects} from './shared/state/effects/categorie-effects.effects';
 import {PersonneEffectsEffects} from './shared/state/effects/personne-effects.effects';
 import {TicketEffectsEffects} from './shared/state/effects/ticket-effects.effects';
 import {DialogueErrorComponent} from './components/dialogue/dialogue-error/dialogue-error.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {TicketsAffectesComponent} from './components/pages/personne/edit-personne/tickets-affectes/tickets-affectes.component';
-import {TicketsNonAffectesComponent} from './components/pages/personne/edit-personne/tickets-non-affectes/tickets-non-affectes.component';
+import {TicketsAffectesComponent} from './components/pages/personne/list-personne/dialogue-personne/tickets-affectes/tickets-affectes.component';
+import {TicketsNonAffectesComponent} from './components/pages/personne/list-personne/dialogue-personne/tickets-non-affectes/tickets-non-affectes.component';
 import {DialoguePersonneComponent} from './components/pages/personne/list-personne/dialogue-personne/dialogue-personne.component';
 import reducer = ApplicationStore.reducer;
 
@@ -90,7 +89,6 @@ const modules = [
     HomeComponent,
     ListPersonneComponent,
     ListTicketComponent,
-    EditPersonneComponent,
     CategorieComponent,
     ListCategorieComponent,
     SpinnerComponent,

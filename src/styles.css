@@ -143,8 +143,44 @@ bouton des dialogs
   border: solid;
 }
 
+/*couleur de lignes des tables*/
 .mat-row:nth-child(odd) {
   background: #c4c4c5;
   color: #c5c3c3;
+}
+
+.child-1 {
+  background-color: orange;
+}
+
+.child-2 {
+  background-color: yellow;
+}
+
+.close-button {
+  float: right;
+  top: -24px;
+  right: -24px;
+  outline: none;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+  outline: none;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+  outline: none;
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+::ng-deep .icon-outside .mat-dialog-container {
+  overflow: unset
 }
 

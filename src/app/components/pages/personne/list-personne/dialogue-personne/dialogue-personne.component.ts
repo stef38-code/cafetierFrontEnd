@@ -169,10 +169,4 @@ export class DialoguePersonneComponent implements OnInit {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
-  openDialog(update: string, ticket: Categorie) {
-
-
-  }
-
 }

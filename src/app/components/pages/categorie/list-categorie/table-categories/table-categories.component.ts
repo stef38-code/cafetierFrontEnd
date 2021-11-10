@@ -22,7 +22,7 @@ export class TableCategoriesComponent implements OnInit {
   //todo https://almerosteyn.com/2016/03/immutable-component-input-from-observable
   /*displayedColumns: string[] = ['select', 'nom', 'libelle', 'action'];*/
   //displayedColumns: string[] = [ 'nom', 'libelle', 'action'];
-  @Input() displayedColumns: string[] = ['nom', 'libelle', 'action'];
+  @Input() displayedColumns: string[] = ['nom', 'libelle', 'editer', "supprimer"];
   dataSource: MatTableDataSource<Categorie> = new MatTableDataSource();
   allowMultiSelect: boolean = true;
 

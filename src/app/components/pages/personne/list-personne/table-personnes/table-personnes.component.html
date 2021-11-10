@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 10px">
+<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 5px">
   <mat-form-field appearance="standard">
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
@@ -7,7 +7,7 @@
     <mat-icon>exposure_plus_1</mat-icon>
   </button>
 </div>
-<div style="display: block; margin: 10px">
+<div style="display: block; margin: 5px">
   <div class="mat-elevation-z8">
     <table [dataSource]="dataSource" mat-table matSort>
       <!--</ng-container>-->
@@ -34,17 +34,22 @@
 
       <!-- Nombre de tickets -->
       <ng-container matColumnDef="nombreTicket">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header>Nombre Tickets</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Tickets</th>
         <td *matCellDef="let row" mat-cell> {{countTicket(row) || 0}} </td>
       </ng-container>
       <!-- Action Column -->
-      <ng-container matColumnDef="action">
-        <th *matHeaderCellDef mat-header-cell> Actions</th>
+      <ng-container matColumnDef="editer">
+        <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let row" class="action-link" mat-cell>
           <button (click)="editPersonne(row)" [disabled]="isDesactiveEditer(row)" class="material-icons green"
                   mat-fab>
             <mat-icon>edit</mat-icon>
           </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="supprimer">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let row" class="action-link" mat-cell>
           <button (click)="Supprimer(row)" [disabled]="isDesactiveSupprimer(row)" class="material-icons red"
                   mat-fab>
             <mat-icon>recycling</mat-icon>

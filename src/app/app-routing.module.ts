@@ -4,7 +4,6 @@ import {PersonneComponent} from './components/pages/personne/personne.component'
 import {HomeComponent} from "./components/pages/home/home.component";
 import {TicketComponent} from './components/pages/ticket/ticket.component';
 import {ListPersonneComponent} from "./components/pages/personne/list-personne/list-personne.component";
-import {EditPersonneComponent} from "./components/pages/personne/edit-personne/edit-personne.component";
 import {ListTicketComponent} from "./components/pages/ticket/list-ticket/list-ticket.component";
 import {ListCategorieComponent} from "./components/pages/categorie/list-categorie/list-categorie.component";
 import {CategorieComponent} from "./components/pages/categorie/categorie.component";
@@ -21,9 +20,6 @@ const appRouteList: Routes = [
       {
         path: 'liste-personne', component: ListPersonneComponent
       },
-      {
-        path: 'edite-personne', component: EditPersonneComponent
-      }
     ]
   },
   {

@@ -1,15 +1,15 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {Ticket} from "../../../../../shared/state/model/ticket";
+import {Ticket} from "../../../../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {HttpClient} from "@angular/common/http";
-import {TicketHttpService} from "../../../../../shared/services/ticket-http.service";
-import {Lien} from "../../../../../shared/state/model/lien";
-import {PersonneHttpService} from "../../../../../shared/services/personne-http.service";
-import {PersonneEchangeTicketService} from "../../../../../shared/services/personne-echange-ticket.service";
-import {RefPersonne} from "../../../../../shared/state/model/personne";
+import {TicketHttpService} from "../../../../../../shared/services/ticket-http.service";
+import {Lien} from "../../../../../../shared/state/model/lien";
+import {PersonneHttpService} from "../../../../../../shared/services/personne-http.service";
+import {PersonneEchangeTicketService} from "../../../../../../shared/services/personne-echange-ticket.service";
+import {RefPersonne} from "../../../../../../shared/state/model/personne";
 
 @Component({
   selector: 'app-tickets-non-affectes',
@@ -21,7 +21,7 @@ export class TicketsNonAffectesComponent implements OnInit {
   selection = new SelectionModel<Ticket>(true, []);
   allowMultiSelect: boolean = true;
 
-  @Input() displayedColumns: string[] = ['numero', 'montant', 'action'];
+  @Input() displayedColumns: string[] = ['numero', 'montant', 'liberer'];
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;

@@ -3,7 +3,7 @@ table {
 }
 
 .mat-form-field {
-  font-size: 14px;
+  font-size: 11px;
   width: 100%;
 }
 
@@ -11,15 +11,10 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
-td, th {
+/*td, th {
   width: 25%;
   text-align: left;
-}
-
-.mat-column-select {
-  flex: 0 0 5% !important;
-  width: 5% !important;
-}
+}*/
 
 .mat-column-montant {
   flex: 0 0 5% !important;
@@ -28,10 +23,20 @@ td, th {
 
 .mat-column-numero {
   flex: 0 0 5% !important;
-  width: 10% !important;
+  width: 25% !important;
 }
 
-.mat-column-actions {
-  flex: 0 0 10% !important;
+.mat-column-nom {
+  flex: 0 0 5% !important;
   width: 30% !important;
+}
+
+.mat-column-prenom {
+  flex: 0 0 5% !important;
+  width: 30% !important;
+}
+
+.mat-column-liberer .mat-column-editer .mat-column-supprimer {
+  flex: 0 0 10% !important;
+  width: 20% !important;
 }

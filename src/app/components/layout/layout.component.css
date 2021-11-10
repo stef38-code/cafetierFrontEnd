@@ -3,8 +3,13 @@
   overflow-x: hidden;
 }
 
+.mat-toolbar-row {
+  min-height: 45px !important;
+  height: 45px !important;
+}
+
 .sidenav-container {
-  height: 92%;
+  height: 95%;
   position: relative;
 }
 
