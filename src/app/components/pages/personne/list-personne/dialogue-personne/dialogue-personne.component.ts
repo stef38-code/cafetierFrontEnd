@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {Ticket} from "../../../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -6,15 +6,13 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Categorie} from "../../../../../shared/state/model/categorie";
-import {Observable} from "rxjs";
 import {Personne} from "../../../../../shared/state/model/personne";
-import {ActivatedRoute} from "@angular/router";
-import {Store} from "@ngrx/store";
-import {ApplicationStore} from "../../../../../shared/state/reducers";
-import {MatDialogRef} from "@angular/material/dialog";
-import {PersonneSelector} from "../../../../../shared/state/selectors/personne";
-import {CollectionCategorieSelector} from "../../../../../shared/state/selectors/collection-categories";
-import {PersonneAction} from "../../../../../shared/state/actions/personne-action";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {HttpClient} from "@angular/common/http";
+import {CategorieHttpService} from 'src/app/shared/services/categorie-http.service';
+import {PersonneHttpService} from "../../../../../shared/services/personne-http.service";
+import {Lien} from "../../../../../shared/state/model/lien";
+import {PersonneEchangeTicketService} from "../../../../../shared/services/personne-echange-ticket.service";
 
 @Component({
   selector: 'app-dialogue-personne',
@@ -36,41 +34,31 @@ export class DialoguePersonneComponent implements OnInit {
   public elementsCategorie: Categorie[] = [];
   private prenom: FormControl;
   private categories: FormControl;
-  personne$: Observable<Personne>;
-  private categorieObservable$: Observable<Categorie[]>;
   @Output() add = new EventEmitter<Personne>();
-  private sub: any;
-  private order: string = '';
-  private url: string = '';
   private data: Personne = {} as Personne;
+  private httpCatgorie: CategorieHttpService;
+  private httpPersonne: PersonneHttpService;
+  private update: boolean = false;
 
-  constructor(private route: ActivatedRoute,
-              private _formBuilder: FormBuilder,
-              private store: Store<ApplicationStore.State>,
-              @Optional() private dialogRef: MatDialogRef<DialoguePersonneComponent>
+  constructor(
+    private personneEchangeTicketService$: PersonneEchangeTicketService,
+    private _formBuilder: FormBuilder,
+    @Optional() private dialogRef: MatDialogRef<DialoguePersonneComponent>,
+    @Inject(MAT_DIALOG_DATA) public param: Lien,
+    private http$: HttpClient
   ) {
+    this.httpCatgorie = new CategorieHttpService(this.http$);
+    this.httpPersonne = new PersonneHttpService(this.http$);
+    this.personneEchangeTicketService$.currentUpdateSource.subscribe(update => {
+      console.log("Message recu dans dialogue:", update);
+      this.update = update;
+    });
+
     this.nom = this._formBuilder.control('', Validators.required);
     this.prenom = this._formBuilder.control('', Validators.required);
     this.categories = this._formBuilder.control('', Validators.required);
     this.personneForm = this.createFormGroup(_formBuilder);
     //
-    this.personne$ = store.select(PersonneSelector.getPersonneSelected);
-    this.personne$.subscribe(res => {
-      this.data = res;
-      this.dataSource.data = res.tickets ? res.tickets : [];
-      console.log("Ticket de la personne", res.tickets);
-      this.personneForm.patchValue({
-        nom: res.nom,
-        prenom: res.prenom,
-        categorie: res.categorie ? res.categorie.id : ''
-      });
-    });
-    this.categorieObservable$ = store.select(CollectionCategorieSelector.getCategorieEntites);
-    this.categorieObservable$.subscribe(res => {
-      this.elementsCategorie = res;
-    });
-
-
     this.selection = new SelectionModel<Ticket>(this.allowMultiSelect, this.dataSource.data, false);
   }
 
@@ -89,9 +77,25 @@ export class DialoguePersonneComponent implements OnInit {
       prenom: this.prenom.value,
       categorie: categorieObject,
     });
-    console.log('save Personne(categorie)', JSON.stringify(personne));
 
-    this.store.dispatch(new PersonneAction.Add(personne));
+    //console.log('save Personne(categorie)', JSON.stringify(personne));
+    this.httpPersonne.enregistrer(personne).subscribe(res => {
+      this.data = res;
+      this.dataSource.data = res.tickets ? res.tickets : [];
+      console.log("Ticket de la personne", res.tickets);
+      this.personneForm.patchValue({
+        nom: res.nom,
+        prenom: res.prenom,
+        categorie: res.categorie ? res.categorie.id : ''
+      });
+      //this.personneEchangeTicketService$.changeUpdateSource(true);
+      this.personneEchangeTicketService$.changeActiverTicketsAffectes(true);
+      this.personneEchangeTicketService$.changeActiverTicketsNonAffectes(true);
+      this.personneEchangeTicketService$.changeRefPersonne({
+        id: this.data.id,
+        links: this.data.links
+      });
+    });
   }
 
   findCategorie(id: string): Categorie {
@@ -105,6 +109,28 @@ export class DialoguePersonneComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let href = this.param.href;
+    if (href) {
+      this.httpPersonne.editer(href).subscribe(res => {
+        this.data = res;
+        this.dataSource.data = res.tickets ? res.tickets : [];
+        console.log("Ticket de la personne", res.tickets);
+        this.personneForm.patchValue({
+          nom: res.nom,
+          prenom: res.prenom,
+          categorie: res.categorie ? res.categorie.id : ''
+        });
+        this.personneEchangeTicketService$.changeActiverTicketsAffectes(true);
+        this.personneEchangeTicketService$.changeActiverTicketsNonAffectes(true);
+        this.personneEchangeTicketService$.changeRefPersonne({
+          id: this.data.id,
+          links: this.data.links
+        });
+      });
+    }
+    this.httpCatgorie.lister().subscribe(res => {
+      this.elementsCategorie = res;
+    });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.selection.clear();

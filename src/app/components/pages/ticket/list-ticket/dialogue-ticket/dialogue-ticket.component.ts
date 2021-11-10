@@ -35,9 +35,11 @@ export class DialogueTicketComponent implements OnInit {
   ) {
     this.httpTicket = new TicketHttpService(this.http$);
 
+
     this.numero = new FormControl('', [Validators.required]);
     this.montant = new FormControl(0, [Validators.required]);
     this.editForm = this.createFormGroup(fb);
+
   }
 
   ngOnInit(): void {

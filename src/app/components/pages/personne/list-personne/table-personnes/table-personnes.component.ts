@@ -29,10 +29,18 @@ export class TablePersonnesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpPersonne.lister().subscribe(res => this.dataSource.data = res);
+    this.chargerLaListe();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.translate();
+  }
+
+  editPersonne(row: Ticket) {
+    const links: Lien[] = row.links;
+    let lienEditer: Lien | undefined = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+    if (lienEditer) {
+      this.showDialogue(lienEditer);
+    }
   }
 
   applyFilter(event: Event) {
@@ -54,20 +62,10 @@ export class TablePersonnesComponent implements OnInit {
     return !links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
   }
 
-  editer(row: Ticket): any {
-    var links: Lien[] = row.links;
-    return links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+  private chargerLaListe() {
+    this.httpPersonne.lister().subscribe(res => this.dataSource.data = res);
   }
 
-  editPersonne(row: Ticket): any {
-    var links: Lien[] = row.links;
-    let lienEditier: Lien | undefined = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
-    if (lienEditier) {
-      return {id: lienEditier.href};
-    } else {
-      return {};
-    }
-  }
   getNomCategorie(row: Personne): string {
     if (row.categorie) return row.categorie.nom;
     return 'N/A';
@@ -118,8 +116,7 @@ export class TablePersonnesComponent implements OnInit {
     const dialogRef = this.dialog.open(DialoguePersonneComponent,
       dialogConfig);
     dialogRef.afterClosed().subscribe(
-      /*() => this.chargerLaListe()*/
-      () => console.log("rrrrrrrrrrrrrrrrrrrrr")
+      () => this.chargerLaListe()
     );
   }
 }

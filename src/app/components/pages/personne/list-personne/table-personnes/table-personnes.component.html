@@ -41,8 +41,7 @@
       <ng-container matColumnDef="action">
         <th *matHeaderCellDef mat-header-cell> Actions</th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button [disabled]="isDesactiveEditer(row)"
-                  [routerLink]="['/personne/edite-personne']" class="material-icons green"
+          <button (click)="editPersonne(row)" [disabled]="isDesactiveEditer(row)" class="material-icons green"
                   mat-fab>
             <mat-icon>edit</mat-icon>
           </button>

@@ -65,9 +65,7 @@ export class TableTicketsComponent implements OnInit {
     let links: Lien[] = row.links;
     const linkLiberer: Lien | undefined = links.find(link => (link.rel === 'liberer' && link.type === 'DELETE' && link.href.length !== 0));
     if (linkLiberer) {
-      this.httpTicket!.liberer(linkLiberer.href).unsubscribe();
-      //
-      this.chargerLaListe();
+      this.httpTicket!.liberer(linkLiberer.href).subscribe(() => this.chargerLaListe());
     }
   }
 

@@ -4,18 +4,12 @@ import {Ticket} from "../../../../../shared/state/model/ticket";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Store} from "@ngrx/store";
-import {ApplicationStore} from "../../../../../shared/state/reducers";
-import {PersonneSelector} from "../../../../../shared/state/selectors/personne";
-import {Observable} from "rxjs";
-import {Personne} from "../../../../../shared/state/model/personne";
+import {RefPersonne} from "../../../../../shared/state/model/personne";
 import {Lien} from "../../../../../shared/state/model/lien";
 import {PersonneHttpService} from "../../../../../shared/services/personne-http.service";
 import {TicketHttpService} from "../../../../../shared/services/ticket-http.service";
 import {HttpClient} from "@angular/common/http";
-import {CollectionPersonneAction} from "../../../../../shared/state/actions/collection-personnes-action";
-import {SystemAction} from "../../../../../shared/state/actions/system-action";
-import {PersonneAction} from "../../../../../shared/state/actions/personne-action";
+import {PersonneEchangeTicketService} from "../../../../../shared/services/personne-echange-ticket.service";
 
 @Component({
   selector: 'app-tickets-affectes',
@@ -33,21 +27,35 @@ export class TicketsAffectesComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
-  idPersonne: string = '';
-  personne$: Observable<Personne>;
-  links: Lien[] = {} as Lien[]
   private httpTicket: TicketHttpService;
   private httpPersonne: PersonneHttpService;
+  activer: boolean = false;
+  private update: boolean = false;
+  private refPersonne: RefPersonne = {} as RefPersonne;
 
-  constructor(private store: Store<ApplicationStore.State>, private http$: HttpClient) {
-    this.personne$ = store.select(PersonneSelector.getPersonneSelected);
-    this.personne$.subscribe(res => {
-      this.dataSource.data = res.tickets ? res.tickets : [];
-      this.idPersonne = res.id;
-      this.links = res.links;
-    });
+  constructor(
+    private personneEchangeTicketService$: PersonneEchangeTicketService,
+    private http$: HttpClient) {
     this.httpTicket = new TicketHttpService(this.http$)
     this.httpPersonne = new PersonneHttpService(this.http$);
+    this.personneEchangeTicketService$.currentUpdateTicketsAffectes.subscribe(update => {
+      console.log("Message recu dans table ticket-affectes:", update);
+      this.update = update;
+      if (update) {
+        console.log("Mise à jour des tickets de la personne");
+        this.loadTicketNonAfectes();
+        this.personneEchangeTicketService$.changeUpdateSource(false);
+      }
+    });
+    this.personneEchangeTicketService$.currentActiverTicketsAffectes.subscribe(activer => {
+      console.log("Activer dans table ticket-affectes:", activer);
+      this.activer = activer;
+    });
+    this.personneEchangeTicketService$.currentRefPersonne.subscribe(refPersonne => {
+      console.log("Changement des refPersonne:", refPersonne);
+      this.refPersonne = refPersonne;
+      this.loadTicketNonAfectes();
+    });
   }
 
   ngOnInit(): void {
@@ -80,25 +88,22 @@ export class TicketsAffectesComponent implements OnInit {
   liberer(row: Ticket) {
     let links: Lien[] = row.links;
     const linkLiberer: Lien | undefined = links.find(link => (link.rel === 'liberer' && link.type === 'DELETE' && link.href.length !== 0));
-    const linkediterPersonne: Lien | undefined = this.links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
-    if (linkLiberer && linkediterPersonne) {
-      this.httpTicket!.liberer(linkLiberer.href).unsubscribe();
-      this.editer(linkediterPersonne.href);
+    if (linkLiberer) {
+      this.httpTicket!.liberer(linkLiberer.href).subscribe(() => {
+          this.loadTicketNonAfectes();
+          this.personneEchangeTicketService$.changeUpdateTicketsNonAffectes(true);
+        }
+      );
+
     }
   }
 
-  private editer(url: string) {
-    console.log("PersonneAction.editerAction", url)
-    //    this.store.dispatch(new PersonneAction.editerAction(url));
-    this.httpPersonne!.editer(url).subscribe((res) => {
-      console.log("this.httpPersonne!.editer", res);
-      this.store.dispatch(new SystemAction.Start());
-      this.store.dispatch(new CollectionPersonneAction.Load());
-      this.store.dispatch(new PersonneAction.Load(res));
-      this.store.dispatch(new SystemAction.Stop());
-    }, (error => {
-      console.log(error)
-    }));
+  private loadTicketNonAfectes() {
+    if (this.refPersonne.id) {
+      this.httpTicket!.personne(this.refPersonne.id).subscribe(
+        (res) => {
+          this.dataSource.data = res;
+        });
+    }
   }
-
 }

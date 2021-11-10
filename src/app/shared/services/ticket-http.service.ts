@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {Ticket} from "../state/model/ticket";
 import {environment} from "../../../environments/environment";
 
@@ -24,11 +24,9 @@ export class TicketHttpService {
     return this.httpclient.delete<Ticket>(href, {'headers': headers});
   }
 
-  liberer(href: string): Subscription {
+  liberer(href: string): Observable<any> {
     const headers = {'content-type': 'application/json'}
-    return this.httpclient.delete(href, this.optionRequete).subscribe(response => {
-      console.log('suppresion d\'un ticket', JSON.stringify(response));
-    });
+    return this.httpclient.delete(href, this.optionRequete);
   }
 
   lister(): Observable<Ticket[]> {
@@ -41,8 +39,6 @@ export class TicketHttpService {
 
   affecter(url: string, idPersonne: string): Observable<any> {
     const headers = {'content-type': 'application/json'};
-    console.log("url:", url);
-    console.log("id:", idPersonne);
     const newUrl = url.replace('@@', idPersonne).replace('idPersonne', idPersonne);
     console.log("newUrl:", newUrl);
     return this.httpclient.post<Ticket>(newUrl, {'headers': headers});
@@ -58,6 +54,13 @@ export class TicketHttpService {
   editer(href: string): Observable<Ticket> {
     const headers = {'content-type': 'application/json'};
     return this.httpclient.get<Ticket>(href, {'headers': headers});
+
+  }
+
+  personne(id: string): Observable<Ticket[]> {
+    const headers = {'content-type': 'application/json'};
+    console.log('=>>>>', this.ApiURL.concat('/personne/').concat(id));
+    return this.httpclient.get<Ticket[]>(this.ApiURL.concat('/personne/').concat(id), {'headers': headers});
 
   }
 

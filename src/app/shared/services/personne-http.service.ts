@@ -26,7 +26,6 @@ export class PersonneHttpService {
   add(payload: any): Observable<Personne> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(payload.payload);
-    console.log(body)
     return this.httpclient.post<Personne>(this.ApiURL, body, {'headers': headers})
   }
 
@@ -39,7 +38,12 @@ export class PersonneHttpService {
   editer(url: string): Observable<Personne> {
     const headers = {'content-type': 'application/json'};
     let personneObservable = this.httpclient.get<Personne>(url, {'headers': headers});
-    console.log('http edit personne', personneObservable);
     return personneObservable;
+  }
+
+  enregistrer(personne: Personne): Observable<Personne> {
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(personne);
+    return this.httpclient.post<Personne>(this.ApiURL, body, {'headers': headers})
   }
 }
