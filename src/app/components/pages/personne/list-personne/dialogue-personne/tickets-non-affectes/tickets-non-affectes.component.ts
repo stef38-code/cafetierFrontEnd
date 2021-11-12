@@ -19,7 +19,6 @@ import {RefPersonne} from "../../../../../../shared/state/model/personne";
 export class TicketsNonAffectesComponent implements OnInit {
   dataSource: MatTableDataSource<Ticket> = new MatTableDataSource();
   selection = new SelectionModel<Ticket>(true, []);
-  allowMultiSelect: boolean = true;
 
   @Input() displayedColumns: string[] = ['numero', 'montant', 'liberer'];
 
@@ -33,32 +32,30 @@ export class TicketsNonAffectesComponent implements OnInit {
   activer: boolean = false;
   private update: boolean = false;
   private refPersonne: RefPersonne = {} as RefPersonne;
+  private DlgSourceShow: boolean = false;
 
   constructor(private personneEchangeTicketService$: PersonneEchangeTicketService,
               private http$: HttpClient) {
     this.httpTicket = new TicketHttpService(this.http$)
     this.httpPersonne = new PersonneHttpService(this.http$)
+    personneEchangeTicketService$.currentDlgSource.subscribe(update => {
+      this.DlgSourceShow = update;
+    });
     this.personneEchangeTicketService$.currentUpdateTicketsNonAffectes.subscribe(update => {
       console.log("Message recu dans ticket non-affectés:", update);
-      this.update = update;
       if (update) {
-        console.log("@@@@@@@@@@ loadTicketNonAfectes @@@@@@@@@@@@");
         this.loadTicketNonAfectes();
-        this.personneEchangeTicketService$.changeUpdateTicketsNonAffectes(false);
       }
     });
-    this.personneEchangeTicketService$.currentActiverTicketsNonAffectes.subscribe(activer => {
-      console.log("Activer dans table ticket-nom-affectes:", activer);
-      this.activer = activer;
-    });
     this.personneEchangeTicketService$.currentRefPersonne.subscribe(refPersonne => {
-      console.log("Nouvelles reference:", refPersonne);
+      console.log("RECEPTION tickets non affectes Nouvelles reference:", refPersonne);
       this.refPersonne = refPersonne;
+      this.loadTicketNonAfectes();
     });
   }
 
   ngOnInit(): void {
-    this.loadTicketNonAfectes();
+    // this.loadTicketNonAfectes();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.selection.clear();
@@ -90,17 +87,20 @@ export class TicketsNonAffectesComponent implements OnInit {
     const linkPourAffecter: Lien | undefined = links.find(link => (link.rel === 'affecter' && link.type === 'POST' && link.href.length !== 0));
     if (linkPourAffecter && this.refPersonne.id) {
       this.httpTicket!.affecter(linkPourAffecter.href, this.refPersonne.id).subscribe(() => {
-        this.personneEchangeTicketService$.changeUpdateTicketsAffectes(true);
+        this.personneEchangeTicketService$.changeUpdateTicketsAffectes(true, this.constructor.name);
         this.loadTicketNonAfectes();
       });
     }
   }
 
   private loadTicketNonAfectes() {
-    this.httpTicket!.nonAffecter().subscribe(
-      (res) => {
-        this.dataSource.data = res;
-      });
+    if (this.DlgSourceShow) {
+      this.httpTicket!.nonAffecter().subscribe(
+        (res) => {
+          console.log("Mise à jours des tickets NON-AFFECTES");
+          this.dataSource.data = res;
+        });
+    }
   }
 
   isAffectable() {

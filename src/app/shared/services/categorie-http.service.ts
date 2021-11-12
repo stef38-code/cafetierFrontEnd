@@ -20,7 +20,7 @@ export class CategorieHttpService {
   add(categorie: any): Observable<Categorie> {
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(categorie.payload);
-    console.log("const body", body);
+    //console.log("const body", body);
     return this.httpclient.post<Categorie>(this.ApiURL, body, {'headers': headers});
   }
 
@@ -37,7 +37,7 @@ export class CategorieHttpService {
   enregister(categorie: Categorie): Observable<Categorie> {
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(categorie);
-    console.log("const body", body);
+    //console.log("const body", body);
     return this.httpclient.post<Categorie>(this.ApiURL, body, {'headers': headers});
   }
 }

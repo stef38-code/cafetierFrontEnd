@@ -1,9 +1,21 @@
-<div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 5px">
-  <mat-form-field appearance="standard">
-    <mat-label>Filter</mat-label>
-    <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
+<div [formGroup]="fControl" fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="5px" style="margin: 5px">
+  <mat-form-field>
+    <input formControlName="numero" matInput>
+    <mat-placeholder>Identifiant</mat-placeholder>
   </mat-form-field>
-  <button (click)="editNewDialog()" class="material-icons green" mat-fab>
+  <mat-form-field>
+    <input formControlName="montant" matInput number>
+    <mat-placeholder>Montant</mat-placeholder>
+  </mat-form-field>
+  <mat-form-field>
+    <input formControlName="nom" matInput>
+    <mat-placeholder>Nom</mat-placeholder>
+  </mat-form-field>
+  <mat-form-field>
+    <input formControlName="prenom" matInput>
+    <mat-placeholder>Prénom</mat-placeholder>
+  </mat-form-field>
+  <button (click)="editNewDialog()" class="material-icons green" mat-button>
     <mat-icon>exposure_plus_1</mat-icon>
   </button>
 </div>
@@ -46,7 +58,7 @@
       <ng-container matColumnDef="liberer">
         <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button (click)="liberer(row)" *ngIf="isAffecte(row)" class="material-icons orange600" mat-fab>
+          <button (click)="liberer(row)" *ngIf="isAffecte(row)" class="material-icons orange600" mat-button>
             <mat-icon>bookmark_remove</mat-icon>
           </button>
         </td>
@@ -54,7 +66,7 @@
       <ng-container matColumnDef="editer">
         <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button (click)="editDialog(row)" class="material-icons green" mat-fab>
+          <button (click)="editDialog(row)" class="material-icons green" mat-button>
             <mat-icon>edit</mat-icon>
           </button>
         </td>
@@ -62,7 +74,7 @@
       <ng-container matColumnDef="supprimer">
         <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let row" class="action-link" mat-cell>
-          <button (click)="supprimer(row)" class="material-icons red" mat-fab>
+          <button (click)="supprimer(row)" class="material-icons red" mat-button>
             <mat-icon>recycling</mat-icon>
           </button>
         </td>
@@ -71,9 +83,9 @@
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 
       <!-- Dans le cas d'une recherche null depuis le filtre -->
-      <tr *matNoDataRow class="mat-row">
-        <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
-      </tr>
+      <!-- <tr *matNoDataRow class="mat-row">
+         <td class="mat-cell" colspan="4">Aucune donnée correspondant au filtre "{{input.value}}"</td>
+       </tr>-->
     </table>
 
     <mat-paginator [pageSizeOptions]="[ 10, 25, 100]" aria-label="Sélectionnez une page"></mat-paginator>

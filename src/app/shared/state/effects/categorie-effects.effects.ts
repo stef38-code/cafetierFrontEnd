@@ -47,12 +47,12 @@ export class CategorieEffectsEffects {
           /*console.log(JSON.stringify(payload));
           payload.
           console.log(JSON.stringify(c));*/
-          console.log("delete:", JSON.stringify(store.payload));
+          //console.log("delete:", JSON.stringify(store.payload));
           const categorie: Categorie = store.payload;
           let links: Lien[] = categorie.links;
           const linkDelete: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
           if (linkDelete) {
-            console.log("delete:", JSON.stringify(linkDelete));
+            //console.log("delete:", JSON.stringify(linkDelete));
             this.httpCategorie!.delete(linkDelete.href).subscribe(
               () => {
                 this.store.dispatch(new SystemAction.Start());

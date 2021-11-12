@@ -21,9 +21,9 @@ export class PersonneEffectsEffects {
       return this.actions$.pipe(
         ofType(PersonneTypesActions.ADD),
         map((payload, c) => {
-          console.log(JSON.stringify(payload));
+          //console.log(JSON.stringify(payload));
 
-          console.log(JSON.stringify(c));
+          //console.log(JSON.stringify(c));
           this.httpPersonne!.add(payload).subscribe(
             (res) => {
               this.store.dispatch(new SystemAction.Start());

@@ -7,6 +7,15 @@ import {RefPersonne} from "../state/model/personne";
 })
 export class PersonneEchangeTicketService {
 
+  public updateDlgSource: boolean = false;
+  private messageDlgSource = new BehaviorSubject(this.updateDlgSource);
+  currentDlgSource = this.messageDlgSource.asObservable();
+
+  changecurrentDlgSource(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changecurrentDlgSource", this.updateDlgSource, update);
+    this.messageDlgSource.next(update);
+  }
+
   /**
    * Mise à jours des informations
    */
@@ -42,38 +51,38 @@ export class PersonneEchangeTicketService {
   constructor() {
   }
 
-  changeUpdateSource(update: boolean) {
-    console.log("changeUpdateSource", this.updateSource, update);
+  changeUpdateSource(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeUpdateSource", this.updateSource, update);
     this.messageUpdateSource.next(update);
   }
 
-  changeUpdateTicketsNonAffectes(update: boolean) {
-    console.log("changeUpdateTicketsNonAffectes", this.updateTicketsNonAffectes, update);
+  changeUpdateTicketsNonAffectes(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeUpdateTicketsNonAffectes", this.updateTicketsNonAffectes, update);
     this.messageUpdateTicketsNonAffectes.next(update);
   }
 
-  changeUpdateTicketsAffectes(update: boolean) {
-    console.log("changeUpdateTicketsAffectes", this.updateTicketsAffectes, update);
+  changeUpdateTicketsAffectes(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeUpdateTicketsAffectes", this.updateTicketsAffectes, update);
     this.messageUpdateTicketsAffectes.next(update);
   }
 
-  changeActiverSource(update: boolean) {
-    console.log("changeActiverSource", this.activerSource, update);
+  changeActiverSource(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeActiverSource", this.activerSource, update);
     this.messageActiverSource.next(update);
   }
 
-  changeActiverTicketsNonAffectes(update: boolean) {
-    console.log("changeActiverTicketsNonAffectes", this.activerTicketsNonAffectes, update);
+  changeActiverTicketsNonAffectes(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeActiverTicketsNonAffectes", this.activerTicketsNonAffectes, update);
     this.messageActiverTicketsNonAffectes.next(update);
   }
 
-  changeActiverTicketsAffectes(update: boolean) {
-    console.log("changeActiverTicketsAffectes", this.activerTicketsAffectes, update);
+  changeActiverTicketsAffectes(update: boolean, msg: string) {
+    console.log("Emmetteur:", msg, "changeActiverTicketsAffectes", this.activerTicketsAffectes, update);
     this.messageActiverTicketsAffectes.next(update);
   }
 
-  changeRefPersonne(refPersonne: RefPersonne) {
-    console.log("changeRefPersonne", this.refPersonne, refPersonne);
+  changeRefPersonne(refPersonne: RefPersonne, msg: string) {
+    console.log("Emmetteur:", msg, "changeRefPersonne", this.refPersonne, refPersonne);
     this.messageRefPersonne.next(refPersonne);
   }
 }

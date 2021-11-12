@@ -9,6 +9,8 @@ import {HttpClient} from "@angular/common/http";
 import {TicketHttpService} from "../../../../../shared/services/ticket-http.service";
 import {Lien} from "../../../../../shared/state/model/lien";
 import {Categorie} from "../../../../../shared/state/model/categorie";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {Personne} from "../../../../../shared/state/model/personne";
 
 @Component({
   selector: 'app-table-tickets',
@@ -25,9 +27,103 @@ export class TableTicketsComponent implements OnInit {
   links: Lien[] = {} as Lien[];
   private httpTicket: TicketHttpService;
 
+  readonly fControl: FormGroup;
+
   constructor(private dialog: MatDialog,
-              private http$: HttpClient) {
+              private http$: HttpClient,
+              formBuilder: FormBuilder) {
     this.httpTicket = new TicketHttpService(this.http$);
+    this.dataSource.filterPredicate = this.createFilter();
+    this.fControl = formBuilder.group({
+      numero: '',
+      montant: '',
+      nom: '',
+      prenom: ''
+    })
+    this.fControl.valueChanges.subscribe(value => {
+      const filter = {...value, numero: value.numero.trim().toLowerCase()} as string;
+      this.dataSource.filter = filter;
+    });
+  }
+
+  editDialog(row: Ticket) {
+    var links: Lien[] = row.links;
+    //console.log("links:", row.links);
+    let lienEditer = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
+    if (lienEditer) {
+      this.showDialogue(lienEditer);
+    }
+  }
+
+  private createFilter(): (ticket: Ticket, filter: string) => boolean {
+    return (ticket: Ticket, filter: string): boolean => {
+
+      let searchTerms = JSON.parse(JSON.stringify(filter));
+
+
+      let testIdentifiant = this.getTestIdentifiant(ticket, searchTerms);
+      let testMontant = this.getTestMontant(ticket, searchTerms);
+      let testPersonneNom = this.getTestPersonneNom(ticket, searchTerms);
+      let testPersonnePrenom = this.getTestPersonnePrenom(ticket, searchTerms);
+
+      let b = testIdentifiant
+        && testMontant
+        && testPersonneNom
+        && testPersonnePrenom;
+      /*if(b){
+        console.log('-------filter------');
+        console.group();
+        console.log(testIdentifiant,testMontant,testPersonneNom,testPersonnePrenom);
+        console.log(ticket.numero,searchTerms.numero);
+        console.log(ticket.montant,searchTerms.montant);
+        if(ticket!.personne && ticket!.personne!.nom) {
+          console.log(ticket!.personne!.nom, searchTerms.nom);
+        }
+        if(ticket!.personne && ticket!.personne!.prenom) {
+          console.log(ticket!.personne!.prenom, searchTerms.prenom);
+        }
+        console.log("Resulat:",b);
+        console.groupEnd();
+
+      }*/
+      return b;
+    }
+  }
+
+  private getTestIdentifiant(ticket: Ticket, searchTerms: any) {
+    let b = ticket.numero.toLowerCase().indexOf(searchTerms.numero.toLowerCase()) !== -1;
+    /*console.group();
+    console.log('numero',ticket.numero);
+    console.log('filtre',searchTerms.numero);
+    console.log('resultat',b);
+    console.groupEnd();*/
+    return b;
+  }
+
+  private getTestPersonnePrenom(ticket: Ticket, searchTerms: any) {
+    let personne: Personne = ticket.personne;
+    if ((!personne || !personne.prenom) && searchTerms.prenom) {
+      return false;
+    }
+    if ((!personne || !personne.prenom) && !searchTerms.prenom) {
+      return true;
+    }
+
+    let b = personne!.prenom.toLowerCase().indexOf(searchTerms.prenom.toLowerCase()) !== -1;
+    return b;
+  }
+
+  private getTestPersonneNom(ticket: Ticket, searchTerms: any): boolean {
+    let personne: Personne = ticket.personne;
+    if ((!personne || !personne.nom) && searchTerms.nom) {
+      return false;
+    }
+    if ((!personne || !personne.nom) && !searchTerms.nom) {
+      return true;
+    }
+
+    let b = personne!.nom.toLowerCase().indexOf(searchTerms.nom.toLowerCase()) !== -1;
+    return b;
   }
 
   ngOnInit() {
@@ -36,13 +132,10 @@ export class TableTicketsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  editDialog(row: Ticket) {
-    var links: Lien[] = row.links;
-    console.log("links:", row.links);
-    let lienEditer = links.find(link => (link.rel === 'self' && link.type === 'GET' && link.href.length !== 0));
-    if (lienEditer) {
-      this.showDialogue(lienEditer);
-    }
+  private getTestMontant(ticket: Ticket, searchTerms: any): boolean {
+    //debugger;
+    let b = ticket.montant.toString().toLowerCase().indexOf(searchTerms.montant.toLowerCase()) !== -1;
+    return b;
   }
 
   applyFilter(event: Event) {
@@ -90,7 +183,7 @@ export class TableTicketsComponent implements OnInit {
   private chargerLaListe() {
     this.httpTicket.lister().subscribe(
       res => {
-        console.log("Chargement des tickets-----", res);
+        //console.log("Chargement des tickets-----", res);
         this.dataSource.data = res ? res : [];
       }
     );

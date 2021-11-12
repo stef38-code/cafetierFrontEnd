@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  hostBackend: 'http://localhost:8888/cafetierBackEnd/'
+  hostBackend: 'http://localhost:8081/'
 };

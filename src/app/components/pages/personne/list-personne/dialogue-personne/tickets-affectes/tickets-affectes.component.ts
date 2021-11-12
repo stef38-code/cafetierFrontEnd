@@ -32,30 +32,28 @@ export class TicketsAffectesComponent implements OnInit {
   activer: boolean = false;
   private update: boolean = false;
   private refPersonne: RefPersonne = {} as RefPersonne;
+  private DlgSourceShow: boolean = false;
 
   constructor(
     private personneEchangeTicketService$: PersonneEchangeTicketService,
     private http$: HttpClient) {
     this.httpTicket = new TicketHttpService(this.http$)
     this.httpPersonne = new PersonneHttpService(this.http$);
-    this.personneEchangeTicketService$.currentUpdateTicketsAffectes.subscribe(update => {
-      console.log("Message recu dans table ticket-affectes:", update);
-      this.update = update;
-      if (update) {
-        console.log("Mise à jour des tickets de la personne");
-        this.loadTicketNonAfectes();
-        this.personneEchangeTicketService$.changeUpdateSource(false);
-      }
+    personneEchangeTicketService$.currentDlgSource.subscribe(update => {
+      this.DlgSourceShow = update;
     });
-    this.personneEchangeTicketService$.currentActiverTicketsAffectes.subscribe(activer => {
-      console.log("Activer dans table ticket-affectes:", activer);
-      this.activer = activer;
-    });
+
     this.personneEchangeTicketService$.currentRefPersonne.subscribe(refPersonne => {
-      console.log("Changement des refPersonne:", refPersonne);
+      console.log(" RECEPTION Tickets AFFECTES Changement des refPersonne:", refPersonne);
       this.refPersonne = refPersonne;
-      this.loadTicketNonAfectes();
+      this.loadTicketAfectes();
     });
+    this.personneEchangeTicketService$.currentUpdateTicketsAffectes.subscribe(update => {
+      console.log("currentUpdateTicketsAffectes:", update);
+      this.loadTicketAfectes();
+    });
+
+    //this.loadTicketAfectes();
   }
 
   ngOnInit(): void {
@@ -90,20 +88,27 @@ export class TicketsAffectesComponent implements OnInit {
     const linkLiberer: Lien | undefined = links.find(link => (link.rel === 'liberer' && link.type === 'DELETE' && link.href.length !== 0));
     if (linkLiberer) {
       this.httpTicket!.liberer(linkLiberer.href).subscribe(() => {
-          this.loadTicketNonAfectes();
-          this.personneEchangeTicketService$.changeUpdateTicketsNonAffectes(true);
+          this.loadTicketAfectes();
+          this.personneEchangeTicketService$.changeUpdateTicketsNonAffectes(true, this.constructor.name);
         }
       );
 
     }
   }
 
-  private loadTicketNonAfectes() {
-    if (this.refPersonne.id) {
+  private loadTicketAfectes() {
+    console.log("undefined", (typeof this.refPersonne.id !== 'undefined'));
+    console.log("size", (!!this.refPersonne.id));
+    if (!!this.refPersonne.id && this.DlgSourceShow) {
       this.httpTicket!.personne(this.refPersonne.id).subscribe(
         (res) => {
+          console.log("Mise à jours des tickets AFFECTES......", this.refPersonne.id);
           this.dataSource.data = res;
         });
+    } else {
+      console.log("------ new MatTableDataSource() -------")
+      this.dataSource
+        = new MatTableDataSource();
     }
   }
 }

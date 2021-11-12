@@ -47,12 +47,12 @@ export class CollectionPersonneEffects {
       return this.action$.pipe(
         ofType(PersonneTypesActions.DELETE),
         map((store: any, c) => {
-          console.log("delete:", JSON.stringify(store.payload));
+          //console.log("delete:", JSON.stringify(store.payload));
           const personne: Personne = store.payload;
           let links: Lien[] = personne.links;
           const linkDelete: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
           if (linkDelete) {
-            console.log("delete:", JSON.stringify(linkDelete));
+            // console.log("delete:", JSON.stringify(linkDelete));
             /*this.httpPersonne!.supprimer(linkDelete.href).subscribe(
               () => {
                 this.store.dispatch(new SystemAction.Start());

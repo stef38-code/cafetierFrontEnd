@@ -40,14 +40,14 @@ export class TicketHttpService {
   affecter(url: string, idPersonne: string): Observable<any> {
     const headers = {'content-type': 'application/json'};
     const newUrl = url.replace('@@', idPersonne).replace('idPersonne', idPersonne);
-    console.log("newUrl:", newUrl);
+    //console.log("newUrl:", newUrl);
     return this.httpclient.post<Ticket>(newUrl, {'headers': headers});
   }
 
   add(ticket: any) {
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(ticket.payload);
-    console.log("const Add Ticket body", body);
+    //console.log("const Add Ticket body", body);
     return this.httpclient.post<Ticket>(this.ApiURL, body, {'headers': headers});
   }
 
@@ -59,7 +59,7 @@ export class TicketHttpService {
 
   personne(id: string): Observable<Ticket[]> {
     const headers = {'content-type': 'application/json'};
-    console.log('=>>>>', this.ApiURL.concat('/personne/').concat(id));
+    //console.log('=>>>>', this.ApiURL.concat('/personne/').concat(id));
     return this.httpclient.get<Ticket[]>(this.ApiURL.concat('/personne/').concat(id), {'headers': headers});
 
   }
@@ -67,7 +67,7 @@ export class TicketHttpService {
   enregister(ticket: Ticket): Observable<Ticket> {
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(ticket);
-    console.log("const body", body);
+    //console.log("const body", body);
     return this.httpclient.post<Ticket>(this.ApiURL, body, {'headers': headers});
   }
 }

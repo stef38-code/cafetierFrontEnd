@@ -25,12 +25,12 @@ export class TicketEffectsEffects {
           /*console.log(JSON.stringify(payload));
           payload.
           console.log(JSON.stringify(c));*/
-          console.log("Ticket delete:", JSON.stringify(store.payload));
+          //console.log("Ticket delete:", JSON.stringify(store.payload));
           const categorie: Ticket = store.payload;
           let links: Lien[] = categorie.links;
           const linkDelete: Lien | undefined = links.find(link => (link.rel === 'supprimer' && link.type === 'DELETE' && link.href.length !== 0));
           if (linkDelete) {
-            console.log("delete:", JSON.stringify(linkDelete));
+            //console.log("delete:", JSON.stringify(linkDelete));
             this.httpTicket!.delete(linkDelete.href).subscribe(
               () => {
                 this.store.dispatch(new SystemAction.Start());

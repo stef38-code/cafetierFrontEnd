@@ -54,6 +54,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {TicketsAffectesComponent} from './components/pages/personne/list-personne/dialogue-personne/tickets-affectes/tickets-affectes.component';
 import {TicketsNonAffectesComponent} from './components/pages/personne/list-personne/dialogue-personne/tickets-non-affectes/tickets-non-affectes.component';
 import {DialoguePersonneComponent} from './components/pages/personne/list-personne/dialogue-personne/dialogue-personne.component';
+import {MatButtonModule} from "@angular/material/button";
 import reducer = ApplicationStore.reducer;
 
 const modules = [
@@ -106,7 +107,7 @@ const modules = [
     StoreModule.forRoot({reducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([CollectionPersonneEffects]),
-    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects, CategorieEffectsEffects, PersonneEffectsEffects, TicketEffectsEffects]), MatProgressSpinnerModule, MatDialogModule,
+    EffectsModule.forFeature([CollectionTicketEffects, CollectionCategorieEffects, CategorieEffectsEffects, PersonneEffectsEffects, TicketEffectsEffects]), MatProgressSpinnerModule, MatDialogModule, MatButtonModule,
   ],
   exports: [...modules],
   providers: [{
